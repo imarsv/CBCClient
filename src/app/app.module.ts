@@ -13,7 +13,7 @@ import { StreamsViewComponent } from './stream/streams-view/streams-view.compone
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NodeViewComponent } from './node/node-view/node-view.component';
-import { NodeModule } from './node/node/node.module';
+import { NodeModule } from './node/node.module';
 
 @NgModule({
   imports: [
