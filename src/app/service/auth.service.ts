@@ -7,9 +7,8 @@ export class AuthService {
   private token?: string = null;
 
   constructor(private httpClient: HttpClient) {
-    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-      'eyJ1c2VySWQiOiJhNzgzYjhjZC01ODNjLTQ4NWQtOTcyMS1mZDczN2RhOGQ0YTIiLCJpYXQiOjE1MjQ1Nzk4MzR9.' +
-      'XdK3-kbL80SnoHvvUNUKEpZg0E3PaN3YYpywv9pUxFg';
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhNzgzYjhjZC01ODNjLTQ4NWQtOTcyMS1mZDczN2RhOGQ' +
+      '0YTIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1MjY1NDM2NDF9.8EY-J5sIorU4hiRb4tJpU9hL5qJjuqruyfZH8BBN8eI';
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
