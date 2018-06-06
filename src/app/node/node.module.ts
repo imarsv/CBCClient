@@ -5,10 +5,11 @@ import { NodeListComponent } from './node-list/node-list.component';
 import { NodeEditComponent } from './node-edit/node-edit.component';
 import { StreamService } from '../service/stream.service';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule, RouterModule
+    CommonModule, RouterModule, FormsModule
   ],
   providers: [StreamService],
   declarations: [NodeListComponent, NodeEditComponent, NodeViewComponent],

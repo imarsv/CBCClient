@@ -1,3 +1,34 @@
-<p>
-  node-edit works!
-</p>
+<form novalidate #form="ngForm" (submit)="save(form)">
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" class="form-control"
+           [readonly]="editing" [(ngModel)]="node.name"/>
+  </div>
+
+  <div class="form-group">
+    <label for="protocol">Protocol</label>
+    <select id="protocol" name="protocol" class="form-control"
+            [(ngModel)]="node.connection.protocol">
+      <option [ngValue]="'http'">HTTP</option>
+      <option [ngValue]="'https'">HTTPS</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="hostname">Hostname</label>
+    <input id="hostname" name="hostname" type="text" class="form-control"
+           [readonly]="editing" [(ngModel)]="node.connection.hostname"/>
+  </div>
+
+  <div class="form-group">
+    <label for="port">Port</label>
+    <input id="port" name="port" type="number" min="0" class="form-control"
+           [readonly]="editing" [(ngModel)]="node.connection.port"/>
+  </div>
+
+  <div class="container">
+    <button type="submit" class="btn btn-primary" [disabled]="editing">{{ editing ? "Save" : "Create"}}</button>
+    <button routerLink="/nodes" class="btn btn-light float-right">Cancel</button>
+  </div>
+</form>

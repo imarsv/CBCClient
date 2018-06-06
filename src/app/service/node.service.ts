@@ -30,4 +30,11 @@ export class NodeService {
     return this.httpClient
       .get<Node[]>(url, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
+
+  get(id: string) {
+    const url = `http://${location.hostname}:3000/nodes/${id}`;
+
+    return this.httpClient
+      .get<Node>(url, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
 }
