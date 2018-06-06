@@ -21,20 +21,24 @@ export class NodeConnection {
 })
 export class NodeService {
 
+  private url = `http://${location.hostname}:3000`;
+
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
   list() {
-    const url = `http://${location.hostname}:3000/nodes`;
-
     return this.httpClient
-      .get<Node[]>(url, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Node[]>(`${this.url}/nodes`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   get(id: string) {
-    const url = `http://${location.hostname}:3000/nodes/${id}`;
-
     return this.httpClient
-      .get<Node>(url, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Node>(`${this.url}/nodes/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
+  delete(id: string) {
+    this.httpClient
+      .delete(`${this.url}/nodes/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
+      .subscribe((data) => data, error => console.error(error));
   }
 }

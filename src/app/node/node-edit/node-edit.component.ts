@@ -9,12 +9,12 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./node-edit.component.css']
 })
 export class NodeEditComponent implements OnInit {
-  editing = false;
+  viewing = false;
   node: Node = new Node(null, null, new NodeConnection());
 
   constructor(private nodeService: NodeService, private router: Router, activatedRoute: ActivatedRoute) {
-    this.editing = activatedRoute.snapshot.params['mode'] === 'view';
-    if (this.editing) {
+    this.viewing = activatedRoute.snapshot.params['mode'] === 'view';
+    if (this.viewing) {
       const id = activatedRoute.snapshot.params['id'];
       this.nodeService.get(id)
         .subscribe(item => Object.assign(this.node, item));
@@ -27,5 +27,12 @@ export class NodeEditComponent implements OnInit {
   save(form: NgForm) {
     console.log(form);
     console.log(this.node);
+  }
+
+  delete() {
+    if (this.node.id) {
+      this.nodeService.delete(this.node.id);
+      this.router.navigateByUrl('/nodes');
+    }
   }
 }
