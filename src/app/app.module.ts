@@ -14,25 +14,36 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
+import { NodeEditComponent } from './node/node-edit/node-edit.component';
 
 @NgModule({
   imports: [
     BrowserModule, FormsModule, HttpClientModule, StreamModule, NodeModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
-      {
-        path: 'streams', component: StreamsViewComponent,
-        canActivate: [FirstGuard]
-      },
-      {
-        path: 'nodes', component: NodeViewComponent,
-        canActivate: [FirstGuard]
-      },
-      {
-        path: 'login', component: AuthComponent
-      },
-      { path: '**', redirectTo: '/login' }
-    ])
+        {
+          path: 'streams', component: StreamsViewComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'nodes', component: NodeViewComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'nodes/:mode', component: NodeEditComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'nodes/:mode/:id', component: NodeEditComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'login', component: AuthComponent
+        },
+        { path: '**', redirectTo: '/login' }
+      ],
+      // { enableTracing: true }
+    )
   ],
   providers: [FirstGuard, AuthService],
   declarations: [AppComponent, AuthComponent, NavbarComponent],

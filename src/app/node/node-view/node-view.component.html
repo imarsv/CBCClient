@@ -1,3 +1,19 @@
-<p>
-  node-view works!
-</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+  <button routerLink="/nodes/create" type="button" class="btn btn-danger btn-circle">
+    <i class="fa fa-plus"></i>
+  </button>
+</nav>
+  
+<div class="row mt-1">
+  <div *ngFor="let node of nodes" class="col-sm-6 col-md-4 col-lg-3">
+    <div class="card m-1">
+      <div class="card-body">
+        <h5 class="card-title">{{ node.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          {{ node.connection.protocol }}://{{ node.connection.hostname }}:{{ node.connection.protocol }}
+        </h6>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

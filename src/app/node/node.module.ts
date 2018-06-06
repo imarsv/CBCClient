@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { NodeViewComponent } from './node-view/node-view.component';
 import { NodeListComponent } from './node-list/node-list.component';
 import { NodeEditComponent } from './node-edit/node-edit.component';
+import { StreamService } from '../service/stream.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule, RouterModule
   ],
+  providers: [StreamService],
   declarations: [NodeListComponent, NodeEditComponent, NodeViewComponent],
-  exports: [NodeViewComponent]
+  exports: [NodeViewComponent, NodeEditComponent]
 })
-export class NodeModule { }
+export class NodeModule {}
