@@ -1,6 +1,74 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
-  <button type="button" class="btn btn-danger btn-circle"
-          (click)="delete()">
-    <i class="fa fa-trash"></i>
-  </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+  <span class="navbar-brand mb-0 h1 font-weight-bold"
+        *ngIf="stream"
+        [class.text-success]="stream.status === inputStatus.Ingestion"
+        [class.text-danger]="stream.status === inputStatus.Error">{{ stream.status }}</span>
+
+  <div>
+    <button type="button" class="btn btn-success mr-5"
+            *ngIf="stream"
+            [routerLink]="['/statistics/stream', stream.id]">
+      <i class="fa fa-calculator"></i>
+    </button>
+
+    <button type="button" class="btn btn-success mr-5"
+            [disabled]="!stream || stream.status != inputStatus.Ingestion"
+            (click)="output()" >
+      <i class="fa fa-eye"></i>
+    </button>
+
+    <button type="button" class="btn btn-danger"
+            [disabled]="!stream" (click)="delete()">
+      <i class="fa fa-trash"></i>
+    </button>
+  </div>
 </nav>
+
+<div class="mt-3" *ngIf="stream">
+  <div class="row">
+    <div class="col-6" *ngIf="stream.streamer || stream.callbackUri">
+      <div class="card">
+        <div class="card-header font-weight-bold">Streamer</div>
+        <div class="card-body">
+          <ul class="list-group  list-group-flush">
+            <span class="list-group-item card-text" *ngIf="stream.callbackUri">
+              Callback URI: <span class="font-weight-bold">{{ stream.callbackUri }}</span>
+            </span>
+            <span class="list-group-item card-text" *ngIf="stream.streamer">
+              Streamer IP: <span class="font-weight-bold">{{ stream.streamer.ipAddress }}</span>
+            </span>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6" *ngIf="stream.connection">
+      <div class="card">
+        <div class="card-header font-weight-bold">Input endpoint</div>
+        <div class="card-body" [ngSwitch]="stream.format">
+          <span class="card-text" *ngSwitchCase="streamFormat.RTMP">{{ getHttpConnection().uri }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-6" *ngIf="stream?.statusMessages?.length > 0">
+      <div class="card">
+        <div class="card-header bg-warning font-weight-bold">Messages</div>
+        <div class="card-body">
+          <span class="card-text" *ngFor="let message of stream.statusMessages">{{ message }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6" *ngIf="stream?.parameters">
+      <div class="card">
+        <div class="card-header font-weight-bold">Parameters</div>
+        <div class="card-body">
+          <span class="card-text">{{ stream?.parameters | json }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

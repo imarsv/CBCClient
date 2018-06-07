@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InputEndpoint, StreamService } from '../../service/stream.service';
+import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService } from '../../service/stream.service';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -9,6 +9,9 @@ import { InputEndpoint, StreamService } from '../../service/stream.service';
 })
 export class StreamDashboardComponent implements OnInit {
   viewing = false;
+  streamFormat = StreamFormat;
+  inputStatus = InputStatus;
+
   stream?: InputEndpoint;
 
   constructor(private streamService: StreamService, private router: Router, activatedRoute: ActivatedRoute) {
@@ -18,11 +21,20 @@ export class StreamDashboardComponent implements OnInit {
         if (!this.stream) {
           this.stream = <InputEndpoint>{};
         }
+        console.log(item);
         return Object.assign(this.stream, item);
       });
   }
 
   ngOnInit() {
+  }
+
+  getHttpConnection(): HttpConnection {
+    return (this.stream.connection as HttpConnection);
+  }
+
+  output() {
+
   }
 
   delete() {
