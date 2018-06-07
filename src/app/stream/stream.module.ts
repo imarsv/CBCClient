@@ -7,13 +7,22 @@ import { StreamService } from '../service/stream.service';
 import { RouterModule } from '@angular/router';
 import { StreamDashboardComponent } from './stream-dashboard/stream-dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { OutputStreamConnectionComponent } from './output-stream-connection/output-stream-connection.component';
 
 @NgModule({
   imports: [
-    CommonModule, RouterModule, FormsModule, ReactiveFormsModule,
+    CommonModule, RouterModule, FormsModule, ReactiveFormsModule, NgbModule,
   ],
   providers: [StreamService],
-  declarations: [InputStreamComponent, OutputStreamComponent, StreamsViewComponent, StreamDashboardComponent],
-  exports: [InputStreamComponent, StreamDashboardComponent]
+  entryComponents: [InputStreamComponent, OutputStreamComponent, OutputStreamConnectionComponent],
+  declarations: [
+    InputStreamComponent,
+    OutputStreamComponent,
+    StreamsViewComponent,
+    StreamDashboardComponent,
+    OutputStreamConnectionComponent
+  ],
+  exports: [StreamDashboardComponent]
 })
 export class StreamModule {}

@@ -61,6 +61,24 @@ export class GeoLocation {
   }
 }
 
+export class StreamOutput {
+
+  streamId: string;
+
+  format: StreamFormat;
+
+  viewer: StreamViewer | undefined;
+}
+
+export class StreamViewer {
+  ipAddress: string | undefined;
+  geoLocation: GeoLocation | undefined;
+}
+
+export interface OutputEndpoint {
+  connection: HttpConnection | WebRTCConnection | undefined;
+}
+
 export interface InputEndpoint {
 
   /**
@@ -103,9 +121,14 @@ export class StreamService {
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
-  add(input: Input) {
+  input(input: Input) {
     return this.httpClient
       .post<InputEndpoint>(`${this.url}/inputs`, input, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
+  output(output: StreamOutput) {
+    return this.httpClient
+      .post<OutputEndpoint>(`${this.url}/outputs`, output, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   get(id: string) {

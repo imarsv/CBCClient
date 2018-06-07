@@ -31,13 +31,13 @@ export class StreamsViewComponent implements OnInit {
   }
 
   async newStream() {
-    const modalRef = this.modalService.open(InputStreamComponent);
+    const ngbModal = this.modalService.open(InputStreamComponent);
 
     try {
-      const input = await modalRef.result;
+      const input = await ngbModal.result;
       if (input) {
         try {
-          await this.streamService.add(input).toPromise();
+          await this.streamService.input(input).toPromise();
           this.load();
         } catch (e) {
           alert(e);

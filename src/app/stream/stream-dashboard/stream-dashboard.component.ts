@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService } from '../../service/stream.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OutputStreamComponent } from '../output-stream/output-stream.component';
+import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -14,14 +17,14 @@ export class StreamDashboardComponent implements OnInit {
 
   stream?: InputEndpoint;
 
-  constructor(private streamService: StreamService, private router: Router, activatedRoute: ActivatedRoute) {
+  constructor(private streamService: StreamService, private modalService: NgbModal,
+              private router: Router, private activatedRoute: ActivatedRoute) {
     const id = activatedRoute.snapshot.params['id'];
     this.streamService.get(id)
       .subscribe(item => {
         if (!this.stream) {
           this.stream = <InputEndpoint>{};
         }
-        console.log(item);
         return Object.assign(this.stream, item);
       });
   }
@@ -33,8 +36,24 @@ export class StreamDashboardComponent implements OnInit {
     return (this.stream.connection as HttpConnection);
   }
 
-  output() {
-
+  async output() {
+    const outputStreamModal = this.modalService.open(OutputStreamComponent);
+    try {
+      const output = await outputStreamModal.result;
+      if (output) {
+        output.streamId = this.stream.id;
+        try {
+          const outputEndpoint = await this.streamService.output(output).toPromise();
+          console.log(outputEndpoint);
+          const outputStreamConnectionModal =  this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
+          outputStreamConnectionModal.componentInstance.format = output.format;
+          outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
+        } catch (e) {
+          console.log('E', e);
+        }
+      }
+    } catch (e) {
+    }
   }
 
   delete() {
