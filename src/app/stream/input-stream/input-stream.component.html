@@ -1,3 +1,60 @@
-<p>
-  input-stream works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title">New Input</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="form-row">
+    <div class="form-group col">
+      <select id="format" name="format" class="form-control"
+              [(ngModel)]="format">
+        <option [ngValue]="streamFormat.RTMP">RTMP</option>
+        <option [ngValue]="streamFormat.WebRTC">WebRTC</option>
+      </select>
+    </div>
+
+    <div class="form-group col">
+      <div class="form-check mt-2">
+        <input id="passthrough" name="passthrough" type="checkbox" class="form-check-input"
+               [(ngModel)]="!passthrough">
+        <label for="passthrough" class="form-check-label">
+          Multiprofile transcoding
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="ipAddress">IP address</label>
+      <input id="ipAddress" name="ipAddress" type="text" class="form-control" placeholder="127.0.0.1"
+             [(ngModel)]="ipAddress">
+    </div>
+    <div class="form-group col">
+      <label for="latitude">Latitude</label>
+      <input id="latitude" name="latitude" type="number" class="form-control" placeholder="52.3639219"
+             [(ngModel)]="latitude">
+    </div>
+    <div class="form-group col">
+      <label for="longitude">Longitude</label>
+      <input id="longitude" name="longitude" type="number" class="form-control" placeholder="4.8439003"
+             [(ngModel)]="longitude">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="callbackUri">Callback URI</label>
+      <input id="callbackUri" name="callbackUri" type="text" class="form-control"
+             placeholder="http://myservice.com/notifications"
+             [(ngModel)]="callbackUri">
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(getInput())">Create</button>
+</div>

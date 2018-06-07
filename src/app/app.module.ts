@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { FirstGuard } from './first.guard';
 import { RouterModule } from '@angular/router';
@@ -15,6 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
 import { NodeEditComponent } from './node/node-edit/node-edit.component';
+import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
+import { InputStreamComponent } from './stream/input-stream/input-stream.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,18 @@ import { NodeEditComponent } from './node/node-edit/node-edit.component';
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'streams/create', component: InputStreamComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'streams/:mode', component: StreamDashboardComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'streams/:mode/:id', component: StreamDashboardComponent,
           canActivate: [FirstGuard]
         },
         {
