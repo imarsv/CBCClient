@@ -15,7 +15,6 @@ import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
 import { NodeEditComponent } from './node/node-edit/node-edit.component';
 import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
-import { InputStreamComponent } from './stream/input-stream/input-stream.component';
 
 @NgModule({
   imports: [
@@ -24,10 +23,6 @@ import { InputStreamComponent } from './stream/input-stream/input-stream.compone
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
-          canActivate: [FirstGuard]
-        },
-        {
-          path: 'streams/create', component: InputStreamComponent,
           canActivate: [FirstGuard]
         },
         {
