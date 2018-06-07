@@ -9,7 +9,8 @@
     <div class="card m-1" [routerLink]="['/streams/view/', stream.id]">
       <div class="card-header font-weight-bold"
            [class.bg-success]="stream.status === inputStatus.Ingestion"
-           [class.bg-danger]="stream.status === inputStatus.Error">{{ stream.status }} >
+           [class.bg-danger]="stream.status === inputStatus.Error">
+        {{ stream.status }}
       </div>
       <div class="card-body">
         <h5 class="card-title">{{ stream.format }}</h5>

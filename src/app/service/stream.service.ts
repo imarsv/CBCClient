@@ -108,8 +108,19 @@ export class StreamService {
       .post<InputEndpoint>(`${this.url}/inputs`, input, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
+  get(id: string) {
+    return this.httpClient
+      .get<InputEndpoint>(`${this.url}/inputs/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
   list() {
     return this.httpClient
       .get<InputEndpoint[]>(`${this.url}/inputs`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
+  delete(id: string) {
+    this.httpClient
+      .delete(`${this.url}/inputs/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
+      .subscribe((data) => data, error => console.error(error));
   }
 }
