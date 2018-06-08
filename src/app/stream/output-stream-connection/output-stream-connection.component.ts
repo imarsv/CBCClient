@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpConnection, OutputEndpoint, StreamFormat } from '../../service/stream.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ClipboardService } from '../../service/clipboard.service';
 
 @Component({
   selector: 'app-output-stream-connection',
@@ -12,7 +13,7 @@ export class OutputStreamConnectionComponent implements OnInit {
   @Input() format: StreamFormat;
   @Input() endpoint: OutputEndpoint;
 
-  constructor(private activeModal: NgbActiveModal) {
+  constructor(private activeModal: NgbActiveModal, private clipboardService: ClipboardService) {
   }
 
   ngOnInit() {
@@ -20,5 +21,9 @@ export class OutputStreamConnectionComponent implements OnInit {
 
   getHttpConnection(): HttpConnection {
     return this.endpoint.connection as HttpConnection;
+  }
+
+  copy() {
+    this.clipboardService.copy(this.getHttpConnection().uri);
   }
 }

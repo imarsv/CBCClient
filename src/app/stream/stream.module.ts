@@ -9,12 +9,13 @@ import { StreamDashboardComponent } from './stream-dashboard/stream-dashboard.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OutputStreamConnectionComponent } from './output-stream-connection/output-stream-connection.component';
+import { ClipboardService } from '../service/clipboard.service';
 
 @NgModule({
   imports: [
     CommonModule, RouterModule, FormsModule, ReactiveFormsModule, NgbModule,
   ],
-  providers: [StreamService],
+  providers: [StreamService, ClipboardService],
   entryComponents: [InputStreamComponent, OutputStreamComponent, OutputStreamConnectionComponent],
   declarations: [
     InputStreamComponent,

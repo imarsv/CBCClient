@@ -5,5 +5,13 @@
   </button>
 </div>
 <div class="modal-body">
-  <span class="font-weight-bold">{{getHttpConnection().uri}}</span>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" aria-describedby="basic-addon2"
+           [value]="getHttpConnection().uri">
+    <div class="input-group-append">
+      <button id="basic-addon2" class="btn input-group-text" (click)="copy()">
+        <i class="fa fa-clipboard" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
 </div>
