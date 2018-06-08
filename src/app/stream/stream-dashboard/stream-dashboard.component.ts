@@ -4,6 +4,7 @@ import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OutputStreamComponent } from '../output-stream/output-stream.component';
 import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
+import { ClipboardService } from '../../service/clipboard.service';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -17,7 +18,8 @@ export class StreamDashboardComponent implements OnInit {
 
   stream?: InputEndpoint;
 
-  constructor(private streamService: StreamService, private modalService: NgbModal,
+  constructor(private streamService: StreamService, private clipboardService: ClipboardService,
+              private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
     const id = activatedRoute.snapshot.params['id'];
     this.streamService.get(id)
@@ -34,6 +36,10 @@ export class StreamDashboardComponent implements OnInit {
 
   getHttpConnection(): HttpConnection {
     return (this.stream.connection as HttpConnection);
+  }
+
+  copy() {
+    this.clipboardService.copy(this.getHttpConnection().uri);
   }
 
   async output() {

@@ -13,7 +13,7 @@
 
     <button type="button" class="btn btn-success mr-5"
             [disabled]="!stream || stream.status != inputStatus.Ingestion"
-            (click)="output()" >
+            (click)="output()">
       <i class="fa fa-eye"></i>
     </button>
 
@@ -46,7 +46,15 @@
       <div class="card">
         <div class="card-header font-weight-bold">Input endpoint</div>
         <div class="card-body" [ngSwitch]="stream.format">
-          <span class="card-text" *ngSwitchCase="streamFormat.RTMP">{{ getHttpConnection().uri }}</span>
+          <div class="input-group" *ngSwitchCase="streamFormat.RTMP">
+            <input type="text" class="form-control" aria-describedby="basic-addon2"
+                   [value]="getHttpConnection().uri">
+            <div class="input-group-append">
+              <button id="basic-addon2" class="btn input-group-text" (click)="copy()">
+                <i class="fa fa-clipboard" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
