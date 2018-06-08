@@ -6,13 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { StatisticsService } from '../service/statistics.service';
 import { MomentModule } from 'ngx-moment';
 import { FileSizeModule } from 'ngx-filesize';
+import { AccountStatisticsDashboardComponent } from './account-statistics-dashboard/account-statistics-dashboard.component';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, NgbModule, MomentModule, FileSizeModule
   ],
   providers: [StatisticsService],
-  declarations: [StreamStatisticsDashboardComponent],
-  exports: [StreamStatisticsDashboardComponent]
+  declarations: [StreamStatisticsDashboardComponent, AccountStatisticsDashboardComponent],
+  exports: [StreamStatisticsDashboardComponent, AccountStatisticsDashboardComponent]
 })
 export class StatisticsModule {}

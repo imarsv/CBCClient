@@ -19,6 +19,7 @@ import { StreamStatisticsDashboardComponent } from './statistics/stream-statisti
 import { StatisticsModule } from './statistics/statistics.module';
 import { AccountModule } from './account/account.module';
 import { AccountsViewComponent } from './account/accounts-view/accounts-view.component';
+import { AccountStatisticsDashboardComponent } from './statistics/account-statistics-dashboard/account-statistics-dashboard.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,10 @@ import { AccountsViewComponent } from './account/accounts-view/accounts-view.com
         },
         {
           path: 'statistics/stream/:id', component: StreamStatisticsDashboardComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'statistics/account/:id', component: AccountStatisticsDashboardComponent,
           canActivate: [FirstGuard]
         },
         {
