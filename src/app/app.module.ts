@@ -17,10 +17,12 @@ import { NodeEditComponent } from './node/node-edit/node-edit.component';
 import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
 import { StreamStatisticsDashboardComponent } from './statistics/stream-statistics-dashboard/stream-statistics-dashboard.component';
 import { StatisticsModule } from './statistics/statistics.module';
+import { AccountModule } from './account/account.module';
+import { AccountsViewComponent } from './account/accounts-view/accounts-view.component';
 
 @NgModule({
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, NodeModule, StreamModule, StatisticsModule,
+    BrowserModule, FormsModule, HttpClientModule, AccountModule, NodeModule, StreamModule, StatisticsModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
         {
@@ -52,11 +54,18 @@ import { StatisticsModule } from './statistics/statistics.module';
           canActivate: [FirstGuard]
         },
         {
+          path: 'accounts', component: AccountsViewComponent,
+          canActivate: [FirstGuard]
+        },
+        {
           path: 'login', component: AuthComponent
         },
         { path: '**', redirectTo: '/login' }
       ],
-      // { enableTracing: true }
+      {
+        // enableTracing: true,
+        useHash: true,
+      }
     )
   ],
   providers: [FirstGuard, AuthService],
