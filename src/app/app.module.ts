@@ -15,10 +15,12 @@ import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
 import { NodeEditComponent } from './node/node-edit/node-edit.component';
 import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
+import { StreamStatisticsDashboardComponent } from './statistics/stream-statistics-dashboard/stream-statistics-dashboard.component';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @NgModule({
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, StreamModule, NodeModule,
+    BrowserModule, FormsModule, HttpClientModule, NodeModule, StreamModule, StatisticsModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
         {
@@ -31,6 +33,10 @@ import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashb
         },
         {
           path: 'streams/:mode/:id', component: StreamDashboardComponent,
+          canActivate: [FirstGuard]
+        },
+        {
+          path: 'statistics/stream/:id', component: StreamStatisticsDashboardComponent,
           canActivate: [FirstGuard]
         },
         {
