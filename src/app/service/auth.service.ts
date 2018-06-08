@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Token } from '@angular/compiler';
 
 @Injectable()
 export class AuthService {
@@ -9,6 +10,9 @@ export class AuthService {
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+      'eyJ1c2VySWQiOiJhNzgzYjhjZC01ODNjLTQ4NWQtOTcyMS1mZDczN2RhOGQ0YTIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1MjY1NDM2NDF9.' +
+      '8EY-J5sIorU4hiRb4tJpU9hL5qJjuqruyfZH8BBN8eI';
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
@@ -39,6 +43,10 @@ export class AuthService {
 
   getToken() {
     return this.token;
+  }
+
+  impersonate(id: string) {
+    console.log('Impersonate: ', id);
   }
 
   clear() {

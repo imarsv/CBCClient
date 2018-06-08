@@ -3,7 +3,8 @@
   <tr class="d-flex">
     <th scope="col" class="col-4">Username</th>
     <th scope="col" class="col-4">Email</th>
-    <th scope="col" class="col-2">Role</th>
+    <th scope="col" class="col-1">Role</th>
+    <th scope="col" class="col-1">Impersonate</th>
     <th scope="col" class="col-1">Streams</th>
     <th scope="col" class="col-1">Statistics</th>
   </tr>
@@ -12,7 +13,11 @@
   <tr class="d-flex" *ngFor="let account of accounts">
     <td class="col-4">{{ account.username }}</td>
     <td class="col-4">{{ account.email }}</td>
-    <td class="col-2">{{ account.role }}</td>
+    <td class="col-1">{{ account.role }}</td>
+    <td class="col-1"
+        [routerLink]="['/accounts', account.id, 'impersonate']">
+      <i class="fab fa-pied-piper-alt"></i>
+    </td>
     <td class="col-1"
         [routerLink]="['/streams/account', account.id]">
       <i class="fa fa-stream"></i>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -12,14 +12,24 @@ export class AuthComponent {
   public password: string;
   public errorMessage: string;
 
-  constructor(private router: Router, private auth: AuthService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+              private authService: AuthService) {
+    const id = activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.impersonate(id);
+    }
+  }
+
+  async impersonate(id: string) {
+    await this.authService.impersonate(id);
+    this.router.navigateByUrl('/');
   }
 
   async authenticate(form: NgForm) {
     if (form.valid) {
-      const authenticated = await this.auth.authenticate(this.username, this.password);
+      const authenticated = await this.authService.authenticate(this.username, this.password);
       if (authenticated) {
-        this.router.navigateByUrl('/streams');
+        this.router.navigateByUrl('/');
       } else {
         this.errorMessage = 'Invalid credentials';
       }
@@ -27,5 +37,4 @@ export class AuthComponent {
       this.errorMessage = 'Form data invalid';
     }
   }
-
 }
