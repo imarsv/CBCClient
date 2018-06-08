@@ -6,15 +6,25 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item" routerLinkActive="active" *ngIf="account">
         <a class="nav-link" routerLink="streams">Stream</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" routerLinkActive="active" *ngIf="account?.role === role.ADMIN">
         <a class="nav-link" routerLink="nodes">Nodes</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" routerLinkActive="active" *ngIf="account?.role === role.ADMIN">
         <a class="nav-link" routerLink="accounts">Accounts</a>
       </li>
     </ul>
+  </div>
+
+  <div class="btn-group mr-3" *ngIf="account">
+    <button type="button" class="btn  btn-success"><i class="fas fa-user"></i> {{ account.username }}</button>
+    <div class="btn-group" ngbDropdown role="group" placement="bottom-right">
+      <button class="btn btn-success" ngbDropdownToggle></button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <button class="dropdown-item" (click)="logout()">Logout</button>
+      </div>
+    </div>
   </div>
 </nav>

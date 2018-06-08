@@ -15,9 +15,9 @@ export class AuthComponent {
   constructor(private router: Router, private auth: AuthService) {
   }
 
-  authenticate(form: NgForm) {
+  async authenticate(form: NgForm) {
     if (form.valid) {
-      const authenticated = this.auth.authenticate(this.username, this.password);
+      const authenticated = await this.auth.authenticate(this.username, this.password);
       if (authenticated) {
         this.router.navigateByUrl('/streams');
       } else {

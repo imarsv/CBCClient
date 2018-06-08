@@ -8,7 +8,6 @@ export enum Role {
 }
 
 export interface Account {
-
   id: string;
   username: string;
   email: string;
@@ -23,9 +22,15 @@ export class AccountService {
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
+  getMyAccount() {
+    return this.httpClient
+      .get<Account>(`${this.url}/account/whoami`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
   list() {
     return this.httpClient
       .get<Account[]>(`${this.url}/account`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
-
   }
+
+
 }

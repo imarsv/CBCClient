@@ -65,7 +65,7 @@ import { AccountStatisticsDashboardComponent } from './statistics/account-statis
         {
           path: 'login', component: AuthComponent
         },
-        { path: '**', redirectTo: '/login' }
+        { path: '**', redirectTo: '/streams' }
       ],
       {
         // enableTracing: true,

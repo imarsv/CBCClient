@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -6,9 +6,9 @@ export class AuthService {
 
   private token?: string = null;
 
+  @Output() change: EventEmitter<any> = new EventEmitter();
+
   constructor(private httpClient: HttpClient) {
-    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhNzgzYjhjZC01ODNjLTQ4NWQtOTcyMS1mZDczN2RhOGQ' +
-      '0YTIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1MjY1NDM2NDF9.8EY-J5sIorU4hiRb4tJpU9hL5qJjuqruyfZH8BBN8eI';
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
@@ -23,6 +23,7 @@ export class AuthService {
       const response = await this.httpClient.post(url, body).toPromise() as Token;
       if (response && response.token) {
         this.token = response.token;
+        this.change.emit(null);
         return true;
       }
     } catch (e) {
@@ -42,5 +43,6 @@ export class AuthService {
 
   clear() {
     this.token = null;
+    this.change.emit(null);
   }
 }
