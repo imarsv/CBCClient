@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">New Account</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="alert alert-warning" role="alert" *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" class="form-control" placeholder="vasya"
+             [(ngModel)]="username">
+    </div>
+
+    <div class="form-group col">
+      <label for="password">Password</label>
+      <input id="password" name="ipAddress" type="text" class="form-control" placeholder="secret"
+             [(ngModel)]="password">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <select id="userRole" name="userRole" class="form-control"
+              [(ngModel)]="userRole">
+        <option [ngValue]="role.ADMIN">ADMIN</option>
+        <option [ngValue]="role.USER">USER</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="create()">Create</button>
+</div>

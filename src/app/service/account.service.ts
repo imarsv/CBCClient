@@ -10,6 +10,7 @@ export enum Role {
 export interface Account {
   id: string;
   username: string;
+  password: string;
   email: string;
   role: Role;
 }
@@ -22,6 +23,11 @@ export class AccountService {
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
+  add(account: Account) {
+    return this.httpClient
+      .post<Account>(`${this.url}/account`, account, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+  }
+
   getMyAccount() {
     return this.httpClient
       .get<Account>(`${this.url}/account/whoami`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
@@ -31,6 +37,4 @@ export class AccountService {
     return this.httpClient
       .get<Account[]>(`${this.url}/account`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
-
-
 }
