@@ -26,4 +26,8 @@ export class AccountsViewComponent implements OnInit {
       this.router.navigateByUrl('/');
     }
   }
+
+  newAccount() {
+
+  }
 }

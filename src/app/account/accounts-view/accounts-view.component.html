@@ -1,31 +1,39 @@
-<table class="table" *ngIf="accounts">
-  <thead>
-  <tr class="d-flex">
-    <th scope="col" class="col-4">Username</th>
-    <th scope="col" class="col-4">Email</th>
-    <th scope="col" class="col-1">Role</th>
-    <th scope="col" class="col-1">Impersonate</th>
-    <th scope="col" class="col-1">Streams</th>
-    <th scope="col" class="col-1">Statistics</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr class="d-flex" *ngFor="let account of accounts">
-    <td class="col-4">{{ account.username }}</td>
-    <td class="col-4">{{ account.email }}</td>
-    <td class="col-1">{{ account.role }}</td>
-    <td class="col-1"
-        (click)="impersonate(account.id)">
-      <i class="fab fa-pied-piper-alt"></i>
-    </td>
-    <td class="col-1"
-        [routerLink]="['/streams/account', account.id]">
-      <i class="fa fa-stream"></i>
-    </td>
-    <td class="col-1"
-        [routerLink]="['/statistics/account', account.id]">
-      <i class="fa fa-calculator"></i>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+  <button type="button" class="btn btn-danger btn-circle" (click)="newAccount()">
+    <i class="fa fa-plus"></i>
+  </button>
+</nav>
+
+<div class="table-responsive-lg">
+  <table class="table" *ngIf="accounts">
+    <thead>
+    <tr class="d-flex">
+      <th scope="col" class="col-4">Username</th>
+      <th scope="col" class="col-4">Email</th>
+      <th scope="col" class="col-1">Role</th>
+      <th scope="col" class="col-1">Impersonate</th>
+      <th scope="col" class="col-1">Streams</th>
+      <th scope="col" class="col-1">Statistics</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="d-flex" *ngFor="let account of accounts">
+      <td scope="row" class="col-4">{{ account.username }}</td>
+      <td scope="row" class="col-4">{{ account.email }}</td>
+      <td scope="row" class="col-1">{{ account.role }}</td>
+      <td scope="row" class="col-1"
+          (click)="impersonate(account.id)">
+        <i class="fab fa-pied-piper-alt"></i>
+      </td>
+      <td scope="row" class="col-1"
+          [routerLink]="['/streams/account', account.id]">
+        <i class="fa fa-stream"></i>
+      </td>
+      <td scope="row" class="col-1"
+          [routerLink]="['/statistics/account', account.id]">
+        <i class="fa fa-calculator"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
