@@ -122,27 +122,27 @@ export class StreamService {
 
   input(input: Input) {
     return this.httpClient
-      .post<InputEndpoint>(`${API.endpoint()}/inputs`, input, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .post<InputEndpoint>(`${API.endpoint()}/inputs`, input, { headers: this.auth.authorizationHeader() });
   }
 
   output(output: StreamOutput) {
     return this.httpClient
-      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output, { headers: this.auth.authorizationHeader() });
   }
 
   get(id: string) {
     return this.httpClient
-      .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`, { headers: this.auth.authorizationHeader() });
   }
 
   list() {
     return this.httpClient
-      .get<InputEndpoint[]>(`${API.endpoint()}/inputs`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<InputEndpoint[]>(`${API.endpoint()}/inputs`, { headers: this.auth.authorizationHeader() });
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${API.endpoint()}/inputs/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) })
+      .delete(`${API.endpoint()}/inputs/${id}`, { headers: this.auth.authorizationHeader() })
       .subscribe((data) => data, error => console.error(error));
   }
 }

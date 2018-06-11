@@ -19,6 +19,6 @@ export class StatisticsService {
   getByStream(streamId: string, from: Date, to: Date) {
     const url = `${API.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
     return this.httpClient
-      .get<StreamStatistics>(url, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<StreamStatistics>(url, { headers: this.auth.authorizationHeader() });
   }
 }

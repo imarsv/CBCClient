@@ -42,6 +42,10 @@ export class AuthService {
     return this.token;
   }
 
+  authorizationHeader() {
+    return { 'Authorization': `Bearer ${this.token}` };
+  }
+
   get impersonated(): boolean {
     return this.superuserToken != null;
   }
@@ -53,8 +57,7 @@ export class AuthService {
       }
 
       const response = await this.httpClient
-        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`,
-          { headers: API.authorizationHeader(this.token) }).toPromise();
+        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`, { headers: this.authorizationHeader() }).toPromise();
       if (response && response.token) {
         this.superuserToken = this.token;
         this.token = response.token;

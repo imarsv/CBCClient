@@ -24,16 +24,16 @@ export class AccountService {
 
   add(account: Account) {
     return this.httpClient
-      .post<Account>(`${API.endpoint()}/account`, account, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .post<Account>(`${API.endpoint()}/account`, account, { headers: this.auth.authorizationHeader() });
   }
 
   getMyAccount() {
     return this.httpClient
-      .get<Account>(`${API.endpoint()}/account/whoami`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<Account>(`${API.endpoint()}/account/whoami`, { headers: this.auth.authorizationHeader() });
   }
 
   list() {
     return this.httpClient
-      .get<Account[]>(`${API.endpoint()}/account`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<Account[]>(`${API.endpoint()}/account`, { headers: this.auth.authorizationHeader() });
   }
 }

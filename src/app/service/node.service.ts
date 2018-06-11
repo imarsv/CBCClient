@@ -27,17 +27,17 @@ export class NodeService {
 
   list() {
     return this.httpClient
-      .get<Node[]>(`${API.endpoint()}/nodes`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<Node[]>(`${API.endpoint()}/nodes`, { headers: this.auth.authorizationHeader() });
   }
 
   get(id: string) {
     return this.httpClient
-      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) });
+      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() });
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${API.endpoint()}/nodes/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) })
+      .delete(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() })
       .subscribe((data) => data, error => console.error(error));
   }
 }
