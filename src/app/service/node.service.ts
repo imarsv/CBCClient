@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { CBCAPI } from './CBCAPI';
+import { API } from './API';
 
 export class Node {
   constructor(public id?: string,
@@ -27,17 +27,17 @@ export class NodeService {
 
   list() {
     return this.httpClient
-      .get<Node[]>(`${CBCAPI.endpoint()}/nodes`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Node[]>(`${API.endpoint()}/nodes`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   get(id: string) {
     return this.httpClient
-      .get<Node>(`${CBCAPI.endpoint()}/nodes/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${CBCAPI.endpoint()}/nodes/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
+      .delete(`${API.endpoint()}/nodes/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) })
       .subscribe((data) => data, error => console.error(error));
   }
 }

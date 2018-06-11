@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { InputEndpoint } from './stream.service';
-import { CBCAPI } from './CBCAPI';
+import { API } from './API';
 
 export enum StreamFormat {
   RTMP = 'RTMP',
@@ -122,32 +122,27 @@ export class StreamService {
 
   input(input: Input) {
     return this.httpClient
-      .post<InputEndpoint>(`${CBCAPI.endpoint()}/inputs`, input,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .post<InputEndpoint>(`${API.endpoint()}/inputs`, input, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   output(output: StreamOutput) {
     return this.httpClient
-      .post<OutputEndpoint>(`${CBCAPI.endpoint()}/outputs`, output,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   get(id: string) {
     return this.httpClient
-      .get<InputEndpoint>(`${CBCAPI.endpoint()}/inputs/${id}`,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   list() {
     return this.httpClient
-      .get<InputEndpoint[]>(`${CBCAPI.endpoint()}/inputs`,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<InputEndpoint[]>(`${API.endpoint()}/inputs`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${CBCAPI.endpoint()}/inputs/${id}`,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
+      .delete(`${API.endpoint()}/inputs/${id}`, { headers: API.authorizationHeader(this.auth.getToken()) })
       .subscribe((data) => data, error => console.error(error));
   }
 }

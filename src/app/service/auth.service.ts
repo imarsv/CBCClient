@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CBCAPI } from './CBCAPI';
+import { API } from './API';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,7 @@ export class AuthService {
 
       const body = { username: username, password: password };
 
-      const response = await this.httpClient.post(`${CBCAPI.endpoint()}/login`, body).toPromise() as Token;
+      const response = await this.httpClient.post(`${API.endpoint()}/login`, body).toPromise() as Token;
       if (response && response.token) {
         this.token = response.token;
         this.change.emit(null);
@@ -53,8 +53,8 @@ export class AuthService {
       }
 
       const response = await this.httpClient
-        .get<Token>(`${CBCAPI.endpoint()}/account/${id}/impersonate`,
-          { headers: { 'Authorization': `Bearer ${this.token}` } }).toPromise();
+        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`,
+          { headers: API.authorizationHeader(this.token) }).toPromise();
       if (response && response.token) {
         this.superuserToken = this.token;
         this.token = response.token;

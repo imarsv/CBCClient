@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { CBCAPI } from './CBCAPI';
+import { API } from './API';
 
 export interface StreamStatistics {
   streamId: string;
@@ -17,8 +17,8 @@ export class StatisticsService {
   }
 
   getByStream(streamId: string, from: Date, to: Date) {
-    const url = `${CBCAPI.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
+    const url = `${API.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
     return this.httpClient
-      .get<StreamStatistics>(url, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<StreamStatistics>(url, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 }

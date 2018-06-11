@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { CBCAPI } from './CBCAPI';
+import { API } from './API';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -24,19 +24,16 @@ export class AccountService {
 
   add(account: Account) {
     return this.httpClient
-      .post<Account>(`${CBCAPI.endpoint()}/account`, account,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .post<Account>(`${API.endpoint()}/account`, account, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   getMyAccount() {
     return this.httpClient
-      .get<Account>(`${CBCAPI.endpoint()}/account/whoami`,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Account>(`${API.endpoint()}/account/whoami`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 
   list() {
     return this.httpClient
-      .get<Account[]>(`${CBCAPI.endpoint()}/account`,
-        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<Account[]>(`${API.endpoint()}/account`, { headers: API.authorizationHeader(this.auth.getToken()) });
   }
 }
