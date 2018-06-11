@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CBCAPI } from './CBCAPI';
 
 @Injectable()
 export class AuthService {
@@ -14,14 +15,13 @@ export class AuthService {
 
   async authenticate(username: string, password: string): Promise<boolean> {
     try {
-      const url = `http://${location.hostname}:3000/login`;
-      const body = { username: username, password: password };
-
       interface Token {
         token: string;
       }
 
-      const response = await this.httpClient.post(url, body).toPromise() as Token;
+      const body = { username: username, password: password };
+
+      const response = await this.httpClient.post(`${CBCAPI.endpoint()}/login`, body).toPromise() as Token;
       if (response && response.token) {
         this.token = response.token;
         this.change.emit(null);
@@ -48,13 +48,13 @@ export class AuthService {
 
   async impersonate(id: string) {
     try {
-      const url = `http://${location.hostname}:3000/account/${id}/impersonate`;
-
       interface Token {
         token: string;
       }
 
-      const response = await this.httpClient.get<Token>(url, { headers: { 'Authorization': `Bearer ${this.token}` } }).toPromise();
+      const response = await this.httpClient
+        .get<Token>(`${CBCAPI.endpoint()}/account/${id}/impersonate`,
+          { headers: { 'Authorization': `Bearer ${this.token}` } }).toPromise();
       if (response && response.token) {
         this.superuserToken = this.token;
         this.token = response.token;

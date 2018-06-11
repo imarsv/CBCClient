@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { InputEndpoint } from './stream.service';
+import { CBCAPI } from './CBCAPI';
 
 export enum StreamFormat {
   RTMP = 'RTMP',
@@ -116,34 +117,37 @@ export interface InputEndpoint {
 @Injectable()
 export class StreamService {
 
-  private url = `http://${location.hostname}:3000`;
-
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
   input(input: Input) {
     return this.httpClient
-      .post<InputEndpoint>(`${this.url}/inputs`, input, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .post<InputEndpoint>(`${CBCAPI.endpoint()}/inputs`, input,
+        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   output(output: StreamOutput) {
     return this.httpClient
-      .post<OutputEndpoint>(`${this.url}/outputs`, output, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .post<OutputEndpoint>(`${CBCAPI.endpoint()}/outputs`, output,
+        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   get(id: string) {
     return this.httpClient
-      .get<InputEndpoint>(`${this.url}/inputs/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<InputEndpoint>(`${CBCAPI.endpoint()}/inputs/${id}`,
+        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   list() {
     return this.httpClient
-      .get<InputEndpoint[]>(`${this.url}/inputs`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
+      .get<InputEndpoint[]>(`${CBCAPI.endpoint()}/inputs`,
+        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } });
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${this.url}/inputs/${id}`, { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
+      .delete(`${CBCAPI.endpoint()}/inputs/${id}`,
+        { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } })
       .subscribe((data) => data, error => console.error(error));
   }
 }
