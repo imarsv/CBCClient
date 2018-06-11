@@ -14,15 +14,6 @@ export class AuthComponent {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
               private authService: AuthService) {
-    const id = activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.impersonate(id);
-    }
-  }
-
-  async impersonate(id: string) {
-    await this.authService.impersonate(id);
-    this.router.navigateByUrl('/');
   }
 
   async authenticate(form: NgForm) {

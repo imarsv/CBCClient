@@ -23,6 +23,11 @@
     <div class="btn-group" ngbDropdown role="group" placement="bottom-right">
       <button class="btn btn-success" ngbDropdownToggle></button>
       <div class="dropdown-menu" ngbDropdownMenu>
+        <button class="dropdown-item"
+                *ngIf="impersonated"
+                (click)="unimpersonate()">Unimpersonate</button>
+        <div class="dropdown-divider"
+             *ngIf="impersonated"></div>
         <button class="dropdown-item" (click)="logout()">Logout</button>
       </div>
     </div>

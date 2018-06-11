@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InputEndpoint, InputStatus, StreamService } from '../../service/stream.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InputStreamComponent } from '../input-stream/input-stream.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-streams-view',
@@ -14,7 +15,8 @@ export class StreamsViewComponent implements OnInit {
 
   public inputStatus = InputStatus;
 
-  constructor(private streamService: StreamService, private modalService: NgbModal) {
+  constructor(private router: Router, private route: ActivatedRoute,
+              private streamService: StreamService, private modalService: NgbModal) {
     this.load();
   }
 
@@ -23,7 +25,12 @@ export class StreamsViewComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.route.queryParams.subscribe(params => {
+      if (params.refresh) {
+        this.load();
+        this.router.navigateByUrl('/streams');
+      }
+    });
   }
 
   get streams(): InputEndpoint[] {

@@ -15,7 +15,7 @@
     <td class="col-4">{{ account.email }}</td>
     <td class="col-1">{{ account.role }}</td>
     <td class="col-1"
-        [routerLink]="['/accounts', account.id, 'impersonate']">
+        (click)="impersonate(account.id)">
       <i class="fab fa-pied-piper-alt"></i>
     </td>
     <td class="col-1"

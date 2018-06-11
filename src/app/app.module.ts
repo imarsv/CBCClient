@@ -63,10 +63,6 @@ import { AccountStatisticsDashboardComponent } from './statistics/account-statis
           canActivate: [FirstGuard]
         },
         {
-          path: 'accounts/:id/impersonate', component: AuthComponent,
-          canActivate: [FirstGuard]
-        },
-        {
           path: 'login', component: AuthComponent
         },
         { path: '**', redirectTo: '/streams' }
