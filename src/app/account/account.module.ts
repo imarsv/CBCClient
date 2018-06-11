@@ -4,11 +4,11 @@ import { AccountsViewComponent } from './accounts-view/accounts-view.component';
 import { AccountService } from '../service/account.service';
 import { RouterModule } from '@angular/router';
 import { AccountEditComponent } from './account-edit/account-edit.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule, RouterModule, FormsModule,
+    CommonModule, RouterModule, ReactiveFormsModule,
   ],
   providers: [AccountService],
   declarations: [AccountsViewComponent, AccountEditComponent],

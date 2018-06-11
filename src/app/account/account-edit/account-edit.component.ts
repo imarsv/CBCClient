@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Account, Role } from '../../service/account.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-account-edit',
@@ -13,31 +14,24 @@ export class AccountEditComponent implements OnInit {
 
   errorMessage?: string;
 
-  username?: string;
-  password?: string;
-  userRole = Role.USER;
+  form: FormGroup;
 
-  constructor(private activeModal: NgbActiveModal) {
+  constructor(private activeModal: NgbActiveModal, private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: [Role.USER],
+    });
   }
 
   ngOnInit() {
   }
 
-  create() {
-    if (!this.username || !this.password) {
-      this.errorMessage = 'Username or password are empty!';
-      return;
+  onSubmit() {
+    if (this.form.valid) {
+      this.activeModal.close(this.form.value as Account);
+    } else {
+      this.errorMessage = 'Invalid!';
     }
-
-    this.activeModal.close(this.getAccount());
-  }
-
-  getAccount(): Account {
-    const account = <Account>{};
-    account.username = this.username;
-    account.password = this.password;
-    account.role = this.userRole;
-
-    return account;
   }
 }

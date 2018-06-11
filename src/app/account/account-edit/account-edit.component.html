@@ -4,37 +4,35 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
 
-  <div class="alert alert-warning" role="alert" *ngIf="errorMessage">
-    {{errorMessage}}
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
 
-  <div class="form-row">
-    <div class="form-group col">
-      <label for="username">Username</label>
-      <input id="username" name="username" type="text" class="form-control" placeholder="vasya"
-             [(ngModel)]="username">
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="username">Username</label>
+        <input formControlName="username" id="username" type="text" class="form-control" placeholder="vasya">
+      </div>
+
+      <div class="form-group col">
+        <label for="password">Password</label>
+        <input formControlName="password" id="password" type="text" class="form-control" placeholder="vasya">
+      </div>
     </div>
 
-    <div class="form-group col">
-      <label for="password">Password</label>
-      <input id="password" name="ipAddress" type="text" class="form-control" placeholder="secret"
-             [(ngModel)]="password">
+    <div class="form-row">
+      <div class="form-group col">
+        <select formControlName="role" class="form-control">
+          <option [ngValue]="role.ADMIN">ADMIN</option>
+          <option [ngValue]="role.USER">USER</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark"
+              [disabled]="!form.valid">Create
+      </button>
     </div>
   </div>
-
-  <div class="form-row">
-    <div class="form-group col">
-      <select id="userRole" name="userRole" class="form-control"
-              [(ngModel)]="userRole">
-        <option [ngValue]="role.ADMIN">ADMIN</option>
-        <option [ngValue]="role.USER">USER</option>
-      </select>
-    </div>
-  </div>
-
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="create()">Create</button>
-</div>
+</form>
