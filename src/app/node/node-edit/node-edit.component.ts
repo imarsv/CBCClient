@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
 })
 export class NodeEditComponent implements OnInit {
   viewing = false;
-  node: Node = new Node(null, null, new NodeConnection());
+  node: Node = new Node(null, null, new NodeConnection(), true);
 
   constructor(private nodeService: NodeService, private router: Router, activatedRoute: ActivatedRoute) {
     this.viewing = activatedRoute.snapshot.params['mode'] === 'view';
@@ -25,8 +25,10 @@ export class NodeEditComponent implements OnInit {
   }
 
   save(form: NgForm) {
-    console.log(form);
-    console.log(this.node);
+    if (form.valid) {
+      this.nodeService.update(this.node.id, this.node)
+        .subscribe(() => this.router.navigateByUrl('/nodes'));
+    }
   }
 
   delete() {

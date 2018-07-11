@@ -6,7 +6,8 @@ import { API } from './API';
 export class Node {
   constructor(public id?: string,
               public name?: string,
-              public connection?: NodeConnection) {
+              public connection?: NodeConnection,
+              public enabled?: boolean) {
   }
 }
 
@@ -25,14 +26,19 @@ export class NodeService {
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
+  get(id: string) {
+    return this.httpClient
+      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() });
+  }
+
   list() {
     return this.httpClient
       .get<Node[]>(`${API.endpoint()}/nodes`, { headers: this.auth.authorizationHeader() });
   }
 
-  get(id: string) {
+  update(id: string, node: Node) {
     return this.httpClient
-      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() });
+      .put<Node>(`${API.endpoint()}/nodes/${id}`, node, { headers: this.auth.authorizationHeader() });
   }
 
   delete(id: string) {
