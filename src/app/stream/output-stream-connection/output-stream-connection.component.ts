@@ -15,7 +15,7 @@ export class OutputStreamConnectionComponent implements OnInit {
 
   streamFormat = StreamFormat;
 
-  constructor(private activeModal: NgbActiveModal, private clipboardService: ClipboardService) {
+  constructor(public activeModal: NgbActiveModal, private clipboardService: ClipboardService) {
   }
 
   ngOnInit() {
