@@ -11,6 +11,8 @@ export class AuthService {
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
+    this.token = localStorage.getItem('token');
+    this.superuserToken = localStorage.getItem('superuser_token');
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
@@ -23,7 +25,8 @@ export class AuthService {
 
       const response = await this.httpClient.post(`${API.endpoint()}/login`, body).toPromise() as Token;
       if (response && response.token) {
-        this.token = response.token;
+        this.storeToken(response.token);
+
         this.change.emit(null);
         return true;
       }
@@ -57,10 +60,13 @@ export class AuthService {
       }
 
       const response = await this.httpClient
-        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`, { headers: this.authorizationHeader() }).toPromise();
+        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`, { headers: this.authorizationHeader() })
+        .toPromise();
+
       if (response && response.token) {
-        this.superuserToken = this.token;
-        this.token = response.token;
+        this.storeSuperuserToken(this.token);
+        this.storeToken(response.token);
+
         this.change.emit(null);
         return true;
       }
@@ -72,14 +78,36 @@ export class AuthService {
   }
 
   unimpersonate() {
-    this.token = this.superuserToken;
-    this.superuserToken = null;
+    this.storeToken(this.superuserToken);
+    this.removeSuperuserToken();
+
     this.change.emit(null);
   }
 
   clear() {
-    this.token = null;
-    this.superuserToken = null;
+    this.removeToken();
+    this.removeSuperuserToken();
+
     this.change.emit(null);
+  }
+
+  storeToken(token: string) {
+    this.token = token;
+    localStorage.setItem('token', token);
+  }
+
+  storeSuperuserToken(token: string) {
+    this.superuserToken = token;
+    localStorage.setItem('superuser_token', token);
+  }
+
+  removeToken() {
+    this.token = null;
+    localStorage.removeItem('token');
+  }
+
+  removeSuperuserToken() {
+    this.superuserToken = null;
+    localStorage.removeItem('superuser_token');
   }
 }
