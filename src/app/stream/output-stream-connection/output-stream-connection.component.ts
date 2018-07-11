@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HttpConnection, OutputEndpoint, StreamFormat } from '../../service/stream.service';
+import { HttpConnection, OutputEndpoint, StreamFormat, WebRTCConnection } from '../../service/stream.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardService } from '../../service/clipboard.service';
 
@@ -13,6 +13,8 @@ export class OutputStreamConnectionComponent implements OnInit {
   @Input() format: StreamFormat;
   @Input() endpoint: OutputEndpoint;
 
+  streamFormat = StreamFormat;
+
   constructor(private activeModal: NgbActiveModal, private clipboardService: ClipboardService) {
   }
 
@@ -23,7 +25,11 @@ export class OutputStreamConnectionComponent implements OnInit {
     return this.endpoint.connection as HttpConnection;
   }
 
-  copy() {
-    this.clipboardService.copy(this.getHttpConnection().uri);
+  getWebRTCConnection(): WebRTCConnection {
+    return (this.endpoint.connection as WebRTCConnection);
+  }
+
+  copy(value: string) {
+    this.clipboardService.copy(value);
   }
 }

@@ -24,9 +24,9 @@ export class HttpConnection {
 }
 
 export class WebRTCConnection {
-  constructor(public stun: string,
-              public turn: string,
-              public signallingUri: string) {
+  constructor(public signallingUri: string,
+              public stun?: string,
+              public turn?: string) {
   }
 }
 

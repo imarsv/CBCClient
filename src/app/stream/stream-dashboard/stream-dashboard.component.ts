@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService } from '../../service/stream.service';
+import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService, WebRTCConnection } from '../../service/stream.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OutputStreamComponent } from '../output-stream/output-stream.component';
 import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
@@ -38,8 +38,12 @@ export class StreamDashboardComponent implements OnInit {
     return (this.stream.connection as HttpConnection);
   }
 
-  copy() {
-    this.clipboardService.copy(this.getHttpConnection().uri);
+  getWebRTCConnection(): WebRTCConnection {
+    return (this.stream.connection as WebRTCConnection);
+  }
+
+  copy(value: string) {
+    this.clipboardService.copy(value);
   }
 
   async output() {

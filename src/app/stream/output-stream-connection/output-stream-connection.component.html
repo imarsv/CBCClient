@@ -4,12 +4,24 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <div class="input-group">
+<div class="modal-body" [ngSwitch]="format">
+  <div class="input-group" *ngSwitchCase="streamFormat.WebRTC">
+    <label for="signallingUri" class="col-sm-3 col-form-label">Signalling URI</label>
+    <input id="signallingUri" type="text" class="form-control" aria-describedby="basic-addon2"
+           [value]="getWebRTCConnection().signallingUri">
+    <div class="input-group-append">
+      <button class="btn input-group-text" (click)="copy(getWebRTCConnection().signallingUri)">
+        <i class="fa fa-clipboard" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="input-group" *ngSwitchDefault="">
+
     <input type="text" class="form-control" aria-describedby="basic-addon2"
            [value]="getHttpConnection().uri">
     <div class="input-group-append">
-      <button id="basic-addon2" class="btn input-group-text" (click)="copy()">
+      <button class="btn input-group-text" (click)="copy(getHttpConnection().uri)">
         <i class="fa fa-clipboard" aria-hidden="true"></i>
       </button>
     </div>

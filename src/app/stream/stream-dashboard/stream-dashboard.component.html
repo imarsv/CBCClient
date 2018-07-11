@@ -47,10 +47,20 @@
         <div class="card-header font-weight-bold">Input endpoint</div>
         <div class="card-body" [ngSwitch]="stream.format">
           <div class="input-group" *ngSwitchCase="streamFormat.RTMP">
-            <input type="text" class="form-control" aria-describedby="basic-addon2"
+            <input type="text" class="form-control"
                    [value]="getHttpConnection().uri">
             <div class="input-group-append">
-              <button id="basic-addon2" class="btn input-group-text" (click)="copy()">
+              <button class="btn input-group-text" (click)="copy(getHttpConnection().uri)">
+                <i class="fa fa-clipboard" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group" *ngSwitchCase="streamFormat.WebRTC">
+            <label for="signallingUri" class="col-sm-3 col-form-label">Signalling URI</label>
+            <input id="signallingUri" type="text" class="form-control"
+                   [value]="getWebRTCConnection().signallingUri">
+            <div class="input-group-append">
+              <button class="btn input-group-text" (click)="copy(getWebRTCConnection().signallingUri)">
                 <i class="fa fa-clipboard" aria-hidden="true"></i>
               </button>
             </div>

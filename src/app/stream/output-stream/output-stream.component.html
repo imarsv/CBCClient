@@ -11,6 +11,7 @@
       <select id="format" name="format" class="form-control"
               [(ngModel)]="format">
         <option [ngValue]="streamFormat.RTMP">RTMP</option>
+        <option [ngValue]="streamFormat.WebRTC">WebRTC</option>
         <option [ngValue]="streamFormat.HLS">HLS</option>
         <option [ngValue]="streamFormat.DASH">DASH</option>
       </select>
