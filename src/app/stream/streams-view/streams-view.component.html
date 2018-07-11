@@ -11,9 +11,12 @@
            [class.bg-success]="stream.status === inputStatus.Ingestion"
            [class.bg-danger]="stream.status === inputStatus.Error">
         {{ stream.status }}
+        <span class="badge badge-dark float-right">{{ stream.format }}</span>
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{ stream.format }}</h5>
+        <div class="card-subtitle mb-2 text-nowrap text-truncate">
+          <span class="text-muted"><small>{{ stream.id }}</small></span>
+        </div>
       </div>
     </div>
   </div>
