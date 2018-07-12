@@ -12,7 +12,7 @@ export class InputStreamComponent implements OnInit {
   streamFormat = StreamFormat;
 
   format: StreamFormat = StreamFormat.RTMP;
-  passthrough = false;
+  transcode = false;
 
   ipAddress?: string;
 
@@ -30,7 +30,7 @@ export class InputStreamComponent implements OnInit {
   getInput() {
     const input = new Input();
     input.format = this.format;
-    input.output = new Output(this.passthrough);
+    input.output = new Output(!this.transcode);
 
     if (this.ipAddress || (this.latitude && this.longitude)) {
       const streamer = new InputStreamer();
