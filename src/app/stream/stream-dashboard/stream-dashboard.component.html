@@ -4,7 +4,7 @@
           *ngIf="stream"
           [class.text-success]="stream.status === inputStatus.Ingestion"
           [class.text-danger]="stream.status === inputStatus.Error">{{ stream.status }}</span>
-    <span>{{ stream.id }}</span>
+    <span *ngIf="stream">{{ stream.id }}</span>
   </div>
 
   <div>
