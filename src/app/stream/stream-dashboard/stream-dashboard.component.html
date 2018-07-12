@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-  <span class="navbar-brand mb-0 h1 font-weight-bold"
-        *ngIf="stream"
-        [class.text-success]="stream.status === inputStatus.Ingestion"
-        [class.text-danger]="stream.status === inputStatus.Error">{{ stream.status }}</span>
+  <div class="d-inline">
+    <span class="navbar-brand mb-0 h1 font-weight-bold"
+          *ngIf="stream"
+          [class.text-success]="stream.status === inputStatus.Ingestion"
+          [class.text-danger]="stream.status === inputStatus.Error">{{ stream.status }}</span>
+    <span>{{ stream.id }}</span>
+  </div>
 
   <div>
     <button type="button" class="btn btn-success mr-5"
