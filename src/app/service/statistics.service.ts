@@ -16,6 +16,16 @@ export class StatisticsService {
   constructor(private auth: AuthService, private httpClient: HttpClient) {
   }
 
+  list(from: Date, to: Date, accountId?: string) {
+    let url = `${API.endpoint()}/statistics/stream/from/${from.toISOString()}/to/${to.toISOString()}`;
+    if (accountId) {
+      url += `?account=${accountId}`;
+    }
+
+    return this.httpClient
+      .get<StreamStatistics>(url, { headers: this.auth.authorizationHeader() });
+  }
+
   getByStream(streamId: string, from: Date, to: Date) {
     const url = `${API.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
     return this.httpClient

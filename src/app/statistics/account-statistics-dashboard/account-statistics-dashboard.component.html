@@ -1,3 +1,79 @@
-<p>
-  account-statistics-dashboard works!
-</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <form class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <label for="fromDatepicker" class="font-weight-bold">From:</label>
+        <input id="fromDatepicker" name="fromDatepicker" class="form-control" placeholder="yyyy-mm-dd"
+               [(ngModel)]="from" ngbDatepicker #fromDatepicker="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="fromDatepicker.toggle()" type="button">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="form-inline ml-3">
+    <div class="form-group">
+      <div class="input-group">
+        <label for="toDatepicker" class="font-weight-bold">To:</label>
+        <input id="toDatepicker" name="toDatepicker" class="form-control" placeholder="yyyy-mm-dd"
+               [(ngModel)]="to" ngbDatepicker #toDatepicker="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="toDatepicker.toggle()" type="button">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <button class="btn ml-5" (click)="load()">
+    <i class="fa fa-search"></i>
+  </button>
+</nav>
+
+<div class="mt-3" *ngIf="statistics.length > 0">
+  <div class="d-inline p-2 bg-light text-black h5">
+    <span><i class="fa fa-clock-o"></i> Duration:</span>
+    <span class="badge badge-dark font-weight-bold ml-1" [title]="durationTotal + ' seconds'">
+        {{ durationTotal | amDuration:'seconds' }}
+    </span>
+  </div>
+
+  <div class="d-inline p-2 bg-light text-black h5 ml-2">
+    <span><i class="fa fa-cloud-upload"></i> Upload:</span>
+    <span class="badge badge-dark font-weight-bold ml-1" [title]="uploadTotal + ' bytes'">
+        {{ uploadTotal | filesize }}
+    </span>
+  </div>
+
+  <div class="d-inline p-2 bg-light text-black h5 ml-2">
+    <span><i class="fa fa-cloud-download"></i> Download:</span>
+    <span class="badge badge-dark font-weight-bold ml-1" [title]="downloadTotal + ' bytes'">
+        {{ downloadTotal | filesize }}
+    </span>
+  </div>
+</div>
+
+<div class="mt-3" *ngIf="statistics.length > 0">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Upload</th>
+      <th scope="col">Download</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of statistics">
+      <th scope="row">{{ item.streamId }}</th>
+      <td>{{ item.duration | amDuration:'seconds' }}</td>
+      <td>{{ item.upload | filesize }}</td>
+      <td>{{ item.download | filesize }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

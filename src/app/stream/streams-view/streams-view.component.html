@@ -1,4 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+
+  <button type="button" class="btn btn-info btn-circle"
+          [routerLink]="['/statistics/account']">
+    <i class="fa fa-calculator"></i>
+  </button>
+
   <button type="button" class="btn btn-danger btn-circle" (click)="newStream()">
     <i class="fa fa-plus"></i>
   </button>

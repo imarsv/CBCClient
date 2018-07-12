@@ -15,7 +15,7 @@ export class StreamsViewComponent implements OnInit {
 
   public inputStatus = InputStatus;
 
-  constructor(private router: Router, private route: ActivatedRoute,
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
               private streamService: StreamService, private modalService: NgbModal) {
     this.load();
   }
@@ -25,7 +25,7 @@ export class StreamsViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(params => {
       if (params.refresh) {
         this.load();
         this.router.navigateByUrl('/streams');

@@ -47,6 +47,10 @@ import { AccountStatisticsDashboardComponent } from './statistics/account-statis
           canActivate: [FirstGuard]
         },
         {
+          path: 'statistics/account', component: AccountStatisticsDashboardComponent,
+          canActivate: [FirstGuard]
+        },
+        {
           path: 'nodes', component: NodeViewComponent,
           canActivate: [FirstGuard]
         },
