@@ -21,7 +21,25 @@ export class StreamsViewComponent implements OnInit {
   }
 
   load() {
-    this.streamService.list().subscribe(data => this._streams = data);
+    const compareString = (a: string, b: string) => {
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      }
+      return 0;
+    };
+
+    this.streamService.list()
+      .subscribe(data => {
+        this._streams = data.sort((a, b) => {
+          let comp = compareString(a.format, b.format);
+          if (comp === 0) {
+            comp = compareString(a.id, b.id);
+          }
+          return comp;
+        });
+      });
   }
 
   ngOnInit() {
