@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class StreamsViewComponent implements OnInit {
 
   private _streams: InputEndpoint[];
+  public newInputId = undefined;
 
   public inputStatus = InputStatus;
 
@@ -62,7 +63,9 @@ export class StreamsViewComponent implements OnInit {
       const input = await ngbModal.result;
       if (input) {
         try {
-          await this.streamService.input(input).toPromise();
+          const inputEndpoint = await this.streamService.input(input).toPromise();
+          this.newInputId = inputEndpoint.id;
+
           this.load();
         } catch (e) {
           alert(e);

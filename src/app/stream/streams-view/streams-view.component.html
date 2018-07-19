@@ -18,7 +18,11 @@
            [class.bg-success]="stream.status === inputStatus.Ingestion"
            [class.bg-danger]="stream.status === inputStatus.Error">
         {{ stream.status }}
-        <span class="badge badge-dark float-right">{{ stream.format }}</span>
+        <div class="float-right">
+          <span class="badge badge-success"
+                *ngIf="newInputId && newInputId === stream.id">new</span>
+          <span class="badge badge-dark">{{ stream.format }}</span>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-subtitle mb-2 text-nowrap text-truncate">
