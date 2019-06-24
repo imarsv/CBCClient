@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from './API';
+import { API } from '../API';
 
 @Injectable()
 export class AuthService {
@@ -45,9 +45,9 @@ export class AuthService {
     return this.token;
   }
 
-  authorizationHeader() {
-    return { 'Authorization': `Bearer ${this.token}` };
-  }
+  // authorizationHeader() {
+  //   return { 'Authorization': `Bearer ${this.token}` };
+  // }
 
   get impersonated(): boolean {
     return this.superuserToken != null;
@@ -60,7 +60,7 @@ export class AuthService {
       }
 
       const response = await this.httpClient
-        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`, { headers: this.authorizationHeader() })
+        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`)
         .toPromise();
 
       if (response && response.token) {

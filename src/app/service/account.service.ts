@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 
@@ -24,16 +24,16 @@ export class AccountService {
 
   add(account: Account) {
     return this.httpClient
-      .post<Account>(`${API.endpoint()}/account`, account, { headers: this.auth.authorizationHeader() });
+      .post<Account>(`${API.endpoint()}/account`, account);
   }
 
   getMyAccount() {
     return this.httpClient
-      .get<Account>(`${API.endpoint()}/account/whoami`, { headers: this.auth.authorizationHeader() });
+      .get<Account>(`${API.endpoint()}/account/whoami`);
   }
 
   list() {
     return this.httpClient
-      .get<Account[]>(`${API.endpoint()}/account`, { headers: this.auth.authorizationHeader() });
+      .get<Account[]>(`${API.endpoint()}/account`);
   }
 }

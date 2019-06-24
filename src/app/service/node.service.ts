@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 
@@ -28,27 +28,27 @@ export class NodeService {
 
   get(id: string) {
     return this.httpClient
-      .get<Node>(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() });
+      .get<Node>(`${API.endpoint()}/nodes/${id}`);
   }
 
   list() {
     return this.httpClient
-      .get<Node[]>(`${API.endpoint()}/nodes`, { headers: this.auth.authorizationHeader() });
+      .get<Node[]>(`${API.endpoint()}/nodes`);
   }
 
   add(node: Node) {
     return this.httpClient
-      .post<Node>(`${API.endpoint()}/nodes`, node, { headers: this.auth.authorizationHeader() });
+      .post<Node>(`${API.endpoint()}/nodes`, node);
   }
 
   update(id: string, node: Node) {
     return this.httpClient
-      .put<Node>(`${API.endpoint()}/nodes/${id}`, node, { headers: this.auth.authorizationHeader() });
+      .put<Node>(`${API.endpoint()}/nodes/${id}`, node);
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${API.endpoint()}/nodes/${id}`, { headers: this.auth.authorizationHeader() })
+      .delete(`${API.endpoint()}/nodes/${id}`)
       .subscribe((data) => data, error => console.error(error));
   }
 }

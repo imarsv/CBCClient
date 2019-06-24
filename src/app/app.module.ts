@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 import { StreamModule } from './stream/stream.module';
 import { AuthComponent } from './security/auth/auth.component';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from './service/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './service/auth/auth.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StreamsViewComponent } from './stream/streams-view/streams-view.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,8 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { AccountModule } from './account/account.module';
 import { AccountsViewComponent } from './account/accounts-view/accounts-view.component';
 import { AccountStatisticsDashboardComponent } from './statistics/account-statistics-dashboard/account-statistics-dashboard.component';
-import { AuthGuardService } from './service/auth-guard.service';
+import { AuthGuardService } from './service/auth/auth-guard.service';
+import { TokenInterceptor } from './service/auth/token-interceptor';
 
 @NgModule({
   imports: [
@@ -76,7 +77,12 @@ import { AuthGuardService } from './service/auth-guard.service';
       }
     )
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   declarations: [AppComponent, AuthComponent, NavbarComponent],
   bootstrap: [AppComponent]
 })

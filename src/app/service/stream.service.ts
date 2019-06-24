@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { InputEndpoint } from './stream.service';
 import { API } from './API';
@@ -122,27 +122,27 @@ export class StreamService {
 
   input(input: Input) {
     return this.httpClient
-      .post<InputEndpoint>(`${API.endpoint()}/inputs`, input, { headers: this.auth.authorizationHeader() });
+      .post<InputEndpoint>(`${API.endpoint()}/inputs`, input);
   }
 
   output(output: StreamOutput) {
     return this.httpClient
-      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output, { headers: this.auth.authorizationHeader() });
+      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output);
   }
 
   get(id: string) {
     return this.httpClient
-      .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`, { headers: this.auth.authorizationHeader() });
+      .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`);
   }
 
   list() {
     return this.httpClient
-      .get<InputEndpoint[]>(`${API.endpoint()}/inputs`, { headers: this.auth.authorizationHeader() });
+      .get<InputEndpoint[]>(`${API.endpoint()}/inputs`);
   }
 
   delete(id: string) {
     this.httpClient
-      .delete(`${API.endpoint()}/inputs/${id}`, { headers: this.auth.authorizationHeader() })
+      .delete(`${API.endpoint()}/inputs/${id}`)
       .subscribe((data) => data, error => console.error(error));
   }
 }

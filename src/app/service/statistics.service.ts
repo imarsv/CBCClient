@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 
@@ -23,12 +23,12 @@ export class StatisticsService {
     }
 
     return this.httpClient
-      .get<StreamStatistics>(url, { headers: this.auth.authorizationHeader() });
+      .get<StreamStatistics>(url);
   }
 
   getByStream(streamId: string, from: Date, to: Date) {
     const url = `${API.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
     return this.httpClient
-      .get<StreamStatistics>(url, { headers: this.auth.authorizationHeader() });
+      .get<StreamStatistics>(url);
   }
 }

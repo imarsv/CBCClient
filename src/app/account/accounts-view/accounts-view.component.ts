@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Account, AccountService } from '../../service/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../service/auth/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountEditComponent } from '../account-edit/account-edit.component';
 
