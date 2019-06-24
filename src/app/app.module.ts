@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { FirstGuard } from './first.guard';
 import { RouterModule } from '@angular/router';
 import { StreamModule } from './stream/stream.module';
 import { AuthComponent } from './security/auth/auth.component';
@@ -20,51 +19,51 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { AccountModule } from './account/account.module';
 import { AccountsViewComponent } from './account/accounts-view/accounts-view.component';
 import { AccountStatisticsDashboardComponent } from './statistics/account-statistics-dashboard/account-statistics-dashboard.component';
+import { AuthGuardService } from './service/auth-guard.service';
 
 @NgModule({
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, AccountModule, NodeModule, StreamModule, StatisticsModule,
-    NgbModule.forRoot(),
+    BrowserModule, FormsModule, HttpClientModule, AccountModule, NodeModule, StreamModule, StatisticsModule, NgbModule,
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'streams/:mode', component: StreamDashboardComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'streams/:mode/:id', component: StreamDashboardComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'statistics/stream/:id', component: StreamStatisticsDashboardComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'statistics/account/:id', component: AccountStatisticsDashboardComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'statistics/account', component: AccountStatisticsDashboardComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'nodes', component: NodeViewComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'nodes/:mode', component: NodeEditComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'nodes/:mode/:id', component: NodeEditComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'accounts', component: AccountsViewComponent,
-          canActivate: [FirstGuard]
+          canActivate: [AuthGuardService]
         },
         {
           path: 'login', component: AuthComponent
@@ -77,7 +76,7 @@ import { AccountStatisticsDashboardComponent } from './statistics/account-statis
       }
     )
   ],
-  providers: [FirstGuard, AuthService],
+  providers: [AuthService, AuthGuardService],
   declarations: [AppComponent, AuthComponent, NavbarComponent],
   bootstrap: [AppComponent]
 })
