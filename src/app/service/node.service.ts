@@ -36,6 +36,11 @@ export class NodeService {
       .get<Node[]>(`${API.endpoint()}/nodes`, { headers: this.auth.authorizationHeader() });
   }
 
+  add(node: Node) {
+    return this.httpClient
+      .post<Node>(`${API.endpoint()}/nodes`, node, { headers: this.auth.authorizationHeader() });
+  }
+
   update(id: string, node: Node) {
     return this.httpClient
       .put<Node>(`${API.endpoint()}/nodes/${id}`, node, { headers: this.auth.authorizationHeader() });

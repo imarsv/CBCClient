@@ -26,8 +26,13 @@ export class NodeEditComponent implements OnInit {
 
   save(form: NgForm) {
     if (form.valid) {
-      this.nodeService.update(this.node.id, this.node)
-        .subscribe(() => this.router.navigateByUrl('/nodes'));
+      if (this.viewing) {
+        this.nodeService.update(this.node.id, this.node)
+          .subscribe(() => this.router.navigateByUrl('/nodes'));
+      } else {
+        this.nodeService.add(this.node)
+          .subscribe(() => this.router.navigateByUrl('/nodes'));
+      }
     }
   }
 
