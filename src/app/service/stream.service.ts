@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { InputEndpoint } from './stream.service';
 import { API } from './API';
 
@@ -44,6 +44,8 @@ export class Input {
   streamer: InputStreamer | undefined;
 
   callbackUri: string | undefined;
+
+  access: AccessMode | undefined;
 }
 
 export class Output {
@@ -71,13 +73,20 @@ export class StreamOutput {
   viewer: StreamViewer | undefined;
 }
 
+export enum AccessMode {
+  Public = 'Public',
+  Private = 'Private',
+}
+
 export class StreamViewer {
+  id: string;
   ipAddress: string | undefined;
   geoLocation: GeoLocation | undefined;
 }
 
 export interface OutputEndpoint {
   connection: HttpConnection | WebRTCConnection | undefined;
+  viewer: StreamViewer | undefined;
 }
 
 export interface InputEndpoint {
@@ -112,6 +121,19 @@ export interface InputEndpoint {
   statusMessages: string[];
 
   callbackUri: string | undefined;
+
+  access: AccessMode | undefined;
+}
+
+export class ViewerOutput {
+
+  id: string;
+
+  viewerId: string;
+
+  sessions: string[];
+
+  callbackUri?: string;
 }
 
 @Injectable()
@@ -128,6 +150,14 @@ export class StreamService {
   output(output: StreamOutput) {
     return this.httpClient
       .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output);
+  }
+
+  viewers(streamId: string) {
+    const params = new HttpParams()
+      .set('streamId', streamId);
+
+    return this.httpClient
+      .get<ViewerOutput[]>(`${API.endpoint()}/outputs/viewers`, { params: params });
   }
 
   get(id: string) {

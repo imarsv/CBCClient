@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { GeoLocation, Input, InputStreamer, Output, StreamFormat } from '../../service/stream.service';
+import { AccessMode, GeoLocation, Input, InputStreamer, Output, StreamFormat } from '../../service/stream.service';
 
 @Component({
   selector: 'app-input-stream',
@@ -10,6 +10,7 @@ import { GeoLocation, Input, InputStreamer, Output, StreamFormat } from '../../s
 export class InputStreamComponent implements OnInit {
 
   streamFormat = StreamFormat;
+  accessMode = AccessMode;
 
   format: StreamFormat = StreamFormat.RTMP;
   transcode = false;
@@ -20,6 +21,8 @@ export class InputStreamComponent implements OnInit {
   longitude?: number;
 
   callbackUri?: string;
+
+  access = AccessMode.Public;
 
   constructor(public activeModal: NgbActiveModal) {
   }
@@ -49,6 +52,8 @@ export class InputStreamComponent implements OnInit {
     if (this.callbackUri) {
       input.callbackUri = this.callbackUri;
     }
+
+    input.access = this.access;
 
     return input;
   }

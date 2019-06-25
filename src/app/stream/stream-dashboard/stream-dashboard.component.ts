@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpConnection, InputEndpoint, InputStatus, StreamFormat, StreamService, WebRTCConnection } from '../../service/stream.service';
+import {
+  AccessMode,
+  HttpConnection,
+  InputEndpoint,
+  InputStatus,
+  StreamFormat,
+  StreamService,
+  ViewerOutput,
+  WebRTCConnection
+} from '../../service/stream.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OutputStreamComponent } from '../output-stream/output-stream.component';
 import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
 import { ClipboardService } from '../../service/clipboard.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -14,9 +24,11 @@ import { ClipboardService } from '../../service/clipboard.service';
 export class StreamDashboardComponent implements OnInit {
   viewing = false;
   streamFormat = StreamFormat;
+  accessMode = AccessMode;
   inputStatus = InputStatus;
 
   stream?: InputEndpoint;
+  viewers: Observable<ViewerOutput[]>;
 
   constructor(private streamService: StreamService, private clipboardService: ClipboardService,
               private modalService: NgbModal,
@@ -29,6 +41,8 @@ export class StreamDashboardComponent implements OnInit {
         }
         return Object.assign(this.stream, item);
       });
+
+    this.viewers = this.streamService.viewers(id);
   }
 
   ngOnInit() {
@@ -48,14 +62,16 @@ export class StreamDashboardComponent implements OnInit {
 
   async output() {
     const outputStreamModal = this.modalService.open(OutputStreamComponent);
+    outputStreamModal.componentInstance.access = this.stream.access;
+
     try {
       const output = await outputStreamModal.result;
       if (output) {
         output.streamId = this.stream.id;
         try {
           const outputEndpoint = await this.streamService.output(output).toPromise();
-          console.log(outputEndpoint);
-          const outputStreamConnectionModal =  this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
+
+          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
         } catch (e) {

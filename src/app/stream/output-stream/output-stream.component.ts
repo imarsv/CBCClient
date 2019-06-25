@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { GeoLocation, StreamFormat, StreamOutput, StreamViewer } from '../../service/stream.service';
+import { AccessMode, GeoLocation, StreamFormat, StreamOutput, StreamViewer } from '../../service/stream.service';
 
 @Component({
   selector: 'app-output-stream',
@@ -9,6 +9,9 @@ import { GeoLocation, StreamFormat, StreamOutput, StreamViewer } from '../../ser
 })
 export class OutputStreamComponent implements OnInit {
 
+  @Input() access: AccessMode;
+
+  accessMode = AccessMode;
   streamFormat = StreamFormat;
 
   format: StreamFormat = StreamFormat.RTMP;
@@ -17,6 +20,8 @@ export class OutputStreamComponent implements OnInit {
 
   latitude?: number;
   longitude?: number;
+
+  viewerId?: string;
 
   constructor(public activeModal: NgbActiveModal) {
   }
@@ -29,7 +34,7 @@ export class OutputStreamComponent implements OnInit {
 
     output.format = this.format;
 
-    if (this.ipAddress || (this.latitude && this.longitude)) {
+    if (this.ipAddress || (this.latitude && this.longitude) || this.viewerId) {
       const viewer = new StreamViewer();
 
       if (this.ipAddress) {
@@ -38,6 +43,10 @@ export class OutputStreamComponent implements OnInit {
 
       if (this.latitude && this.longitude) {
         viewer.geoLocation = new GeoLocation(this.longitude, this.latitude);
+      }
+
+      if (this.viewerId) {
+        viewer.id = this.viewerId;
       }
 
       output.viewer = viewer;

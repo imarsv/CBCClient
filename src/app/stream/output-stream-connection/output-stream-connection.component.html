@@ -1,29 +1,46 @@
 <div class="modal-header">
   <h4 class="modal-title">Output endpoint</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" [ngSwitch]="format">
-  <div class="input-group" *ngSwitchCase="streamFormat.WebRTC">
-    <label for="signallingUri" class="col-sm-3 col-form-label">Signalling URI</label>
-    <input id="signallingUri" type="text" class="form-control" aria-describedby="basic-addon2"
-           [value]="getWebRTCConnection().signallingUri">
-    <div class="input-group-append">
-      <button class="btn input-group-text" (click)="copy(getWebRTCConnection().signallingUri)">
-        <i class="fa fa-clipboard" aria-hidden="true"></i>
-      </button>
+<div [ngSwitch]="format" class="modal-body">
+  <div class="form-row">
+
+    <label class="col-sm-3 col-form-label" for="signallingUri">Signalling URI</label>
+    <div *ngSwitchCase="streamFormat.WebRTC" class="input-group">
+
+      <input [value]="getWebRTCConnection().signallingUri"
+             aria-describedby="basic-addon2" class="form-control" id="signallingUri" type="text">
+      <div class="input-group-append">
+        <button (click)="copy(getWebRTCConnection().signallingUri)" class="btn input-group-text">
+          <i aria-hidden="true" class="fa fa-clipboard"></i>
+        </button>
+      </div>
     </div>
+
+    <div class="input-group">
+      <input [value]="getHttpConnection().uri"
+             aria-describedby="basic-addon2" class="form-control" type="text">
+      <div class="input-group-append">
+        <button (click)="copy(getHttpConnection().uri)" class="btn input-group-text">
+          <i aria-hidden="true" class="fa fa-clipboard"></i>
+        </button>
+      </div>
+    </div>
+
   </div>
 
-  <div class="input-group" *ngSwitchDefault="">
-
-    <input type="text" class="form-control" aria-describedby="basic-addon2"
-           [value]="getHttpConnection().uri">
-    <div class="input-group-append">
-      <button class="btn input-group-text" (click)="copy(getHttpConnection().uri)">
-        <i class="fa fa-clipboard" aria-hidden="true"></i>
-      </button>
+  <div *ngIf="endpoint && endpoint.viewer && endpoint.viewer.id" class="form-row">
+    <label class="col-sm-3 col-form-label" for="viewerId">ID</label>
+    <div class="input-group">
+      <input [value]="endpoint.viewer.id"
+             aria-describedby="basic-addon2" class="form-control" id="viewerId" type="text">
+      <div class="input-group-append">
+        <button (click)="copy(endpoint.viewer.id)" class="btn input-group-text">
+          <i aria-hidden="true" class="fa fa-clipboard"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

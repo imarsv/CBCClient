@@ -1,26 +1,29 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
 
-  <button type="button" class="btn btn-info btn-circle"
-          [routerLink]="['/statistics/account']">
+  <button [routerLink]="['/statistics/account']" class="btn btn-info btn-circle"
+          type="button">
     <i class="fa fa-calculator"></i>
   </button>
 
-  <button type="button" class="btn btn-danger btn-circle" (click)="newStream()">
+  <button (click)="newStream()" class="btn btn-danger btn-circle" type="button">
     <i class="fa fa-plus"></i>
   </button>
 </nav>
 
 <div class="row mt-1">
-  <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let stream of streams">
+  <div *ngFor="let stream of streams" class="col-sm-6 col-md-4 col-lg-3">
     <div class="card m-1">
-      <div class="card-header font-weight-bold"
-           [routerLink]="['/streams/view/', stream.id]"
+      <div [class.bg-danger]="stream.status === inputStatus.Error"
            [class.bg-success]="stream.status === inputStatus.Ingestion"
-           [class.bg-danger]="stream.status === inputStatus.Error">
+           [routerLink]="['/streams/view/', stream.id]"
+           class="card-header font-weight-bold">
         {{ stream.status }}
         <div class="float-right">
-          <span class="badge badge-success"
-                *ngIf="newInputId && newInputId === stream.id">new</span>
+          <span *ngIf="newInputId && newInputId === stream.id"
+                class="badge badge-success">new</span>
+          <span *ngIf="stream.access === accessMode.Private" class="badge badge-info">
+            <i class="fas fa-key"></i>
+          </span>
           <span class="badge badge-dark">{{ stream.format }}</span>
         </div>
       </div>

@@ -12,6 +12,7 @@ export class OutputStreamConnectionComponent implements OnInit {
 
   @Input() format: StreamFormat;
   @Input() endpoint: OutputEndpoint;
+  @Input() viewerId?: string;
 
   streamFormat = StreamFormat;
 

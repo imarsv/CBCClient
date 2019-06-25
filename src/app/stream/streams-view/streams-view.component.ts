@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InputEndpoint, InputStatus, StreamService } from '../../service/stream.service';
+import { AccessMode, InputEndpoint, InputStatus, StreamService } from '../../service/stream.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InputStreamComponent } from '../input-stream/input-stream.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,8 @@ export class StreamsViewComponent implements OnInit {
   public newInputId = undefined;
 
   public inputStatus = InputStatus;
+
+  public accessMode = AccessMode;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
               private streamService: StreamService, private modalService: NgbModal) {
