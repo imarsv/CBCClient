@@ -79,14 +79,17 @@ export enum AccessMode {
 }
 
 export class StreamViewer {
-  id: string;
+  accessToken: string;
   ipAddress: string | undefined;
   geoLocation: GeoLocation | undefined;
 }
 
 export interface OutputEndpoint {
+  id: string | undefined;
   connection: HttpConnection | WebRTCConnection | undefined;
   viewer: StreamViewer | undefined;
+  sessions: string[] | undefined;
+  callbackUri: string | undefined;
 }
 
 export interface InputEndpoint {
@@ -125,17 +128,6 @@ export interface InputEndpoint {
   access: AccessMode | undefined;
 }
 
-export class ViewerOutput {
-
-  id: string;
-
-  viewerId: string;
-
-  sessions: string[];
-
-  callbackUri?: string;
-}
-
 @Injectable()
 export class StreamService {
 
@@ -152,12 +144,10 @@ export class StreamService {
       .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output);
   }
 
-  viewers(streamId: string) {
-    const params = new HttpParams()
-      .set('streamId', streamId);
-
+  listOutputsByStream(streamId: string) {
+    const params = new HttpParams().set('streamId', streamId);
     return this.httpClient
-      .get<ViewerOutput[]>(`${API.endpoint()}/outputs/viewers`, { params: params });
+      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, { params: params });
   }
 
   get(id: string) {
@@ -174,5 +164,15 @@ export class StreamService {
     this.httpClient
       .delete(`${API.endpoint()}/inputs/${id}`)
       .subscribe((data) => data, error => console.error(error));
+  }
+
+  clearSessions(outputId: string) {
+    return this.httpClient
+      .delete(`${API.endpoint()}/outputs/${outputId}/sessions`);
+  }
+
+  deleteOutput(outputId: string) {
+    return this.httpClient
+      .delete(`${API.endpoint()}/outputs/${outputId}`);
   }
 }

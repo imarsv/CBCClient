@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="input-group">
+    <div *ngSwitchDefault class="input-group">
       <input [value]="getHttpConnection().uri"
              aria-describedby="basic-addon2" class="form-control" type="text">
       <div class="input-group-append">
@@ -31,13 +31,13 @@
 
   </div>
 
-  <div *ngIf="endpoint && endpoint.viewer && endpoint.viewer.id" class="form-row">
-    <label class="col-sm-3 col-form-label" for="viewerId">ID</label>
+  <div *ngIf="endpoint && endpoint.viewer && endpoint.viewer.accessToken" class="form-row">
+    <label class="col-sm-3 col-form-label" for="accessToken">Token</label>
     <div class="input-group">
-      <input [value]="endpoint.viewer.id"
-             aria-describedby="basic-addon2" class="form-control" id="viewerId" type="text">
+      <input [value]="endpoint.viewer.accessToken"
+             aria-describedby="basic-addon2" class="form-control" id="accessToken" type="text">
       <div class="input-group-append">
-        <button (click)="copy(endpoint.viewer.id)" class="btn input-group-text">
+        <button (click)="copy(endpoint.viewer.accessToken)" class="btn input-group-text">
           <i aria-hidden="true" class="fa fa-clipboard"></i>
         </button>
       </div>

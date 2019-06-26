@@ -21,7 +21,7 @@ export class OutputStreamComponent implements OnInit {
   latitude?: number;
   longitude?: number;
 
-  viewerId?: string;
+  accessToken?: string;
 
   constructor(public activeModal: NgbActiveModal) {
   }
@@ -34,7 +34,7 @@ export class OutputStreamComponent implements OnInit {
 
     output.format = this.format;
 
-    if (this.ipAddress || (this.latitude && this.longitude) || this.viewerId) {
+    if (this.ipAddress || (this.latitude && this.longitude) || this.accessToken) {
       const viewer = new StreamViewer();
 
       if (this.ipAddress) {
@@ -45,8 +45,8 @@ export class OutputStreamComponent implements OnInit {
         viewer.geoLocation = new GeoLocation(this.longitude, this.latitude);
       }
 
-      if (this.viewerId) {
-        viewer.id = this.viewerId;
+      if (this.accessToken) {
+        viewer.accessToken = this.accessToken;
       }
 
       output.viewer = viewer;

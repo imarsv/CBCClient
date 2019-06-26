@@ -5,9 +5,9 @@ import {
   HttpConnection,
   InputEndpoint,
   InputStatus,
+  OutputEndpoint,
   StreamFormat,
   StreamService,
-  ViewerOutput,
   WebRTCConnection
 } from '../../service/stream.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,7 @@ export class StreamDashboardComponent implements OnInit {
   inputStatus = InputStatus;
 
   stream?: InputEndpoint;
-  viewers: Observable<ViewerOutput[]>;
+  outputs: Observable<OutputEndpoint[]>;
 
   constructor(private streamService: StreamService, private clipboardService: ClipboardService,
               private modalService: NgbModal,
@@ -42,7 +42,7 @@ export class StreamDashboardComponent implements OnInit {
         return Object.assign(this.stream, item);
       });
 
-    this.viewers = this.streamService.viewers(id);
+    this.loadOutputs(id);
   }
 
   ngOnInit() {
@@ -71,6 +71,8 @@ export class StreamDashboardComponent implements OnInit {
         try {
           const outputEndpoint = await this.streamService.output(output).toPromise();
 
+          this.loadOutputs(output.streamId);
+
           const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
@@ -82,10 +84,32 @@ export class StreamDashboardComponent implements OnInit {
     }
   }
 
+  clearSessions(id: string) {
+    this.streamService.clearSessions(id).subscribe(item => {
+      if (this.stream) {
+        this.loadOutputs(this.stream.id);
+      }
+    });
+  }
+
+  deleteOutput(id: string) {
+    this.streamService.deleteOutput(id).subscribe(item => {
+      if (this.stream) {
+        this.loadOutputs(this.stream.id);
+      }
+    });
+
+  }
+
   delete() {
     if (this.stream.id) {
       this.streamService.delete(this.stream.id);
       this.router.navigateByUrl('/streams');
     }
+  }
+
+  private loadOutputs(id: string) {
+    console.log(`Loading outputs #${id}`);
+    this.outputs = this.streamService.listOutputsByStream(id);
   }
 }

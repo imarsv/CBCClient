@@ -13,8 +13,7 @@
       <i class="fa fa-calculator"></i>
     </button>
 
-    <button (click)="output()" [disabled]="!stream"
-            class="btn btn-success mr-5" type="button">
+    <button (click)="output()" [disabled]="!stream" class="btn btn-success mr-5" type="button">
       <i class="fa fa-eye"></i>
     </button>
 
@@ -91,10 +90,24 @@
       <div class="card">
         <div class="card-header font-weight-bold">Viewers</div>
         <div class="card-body">
-          <ul class="list-group list-group-flush" *ngFor="let viewer of viewers | async">
+          <ul *ngFor="let output of outputs | async" class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              {{ viewer.viewerId }}
-              <span class="badge badge-primary badge-pill">{{ viewer.sessions.length }}</span>
+              <div>
+                <span>{{ output.viewer.accessToken }}</span>
+              </div>
+
+              <div>
+                <span class="badge badge-primary badge-pill">{{ output.sessions.length }}</span>
+
+                <button (click)="clearSessions(output.id)" class="btn" type="button">
+                  <i class="fa fa-broom"></i>
+                </button>
+
+                <button (click)="deleteOutput(output.id)" class="btn" type="button">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+
             </li>
           </ul>
         </div>
