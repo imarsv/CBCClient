@@ -8,11 +8,17 @@ export class AuthService {
   private superuserToken?: string = null;
   private token?: string = null;
 
+  private LS_TOKEN_KEY = 'token';
+  private LS_SUPERUSER_TOKEN_KEY = 'superuser_token';
+
+  // private LS_TOKEN_KEY = 'bongacam.ceeblue.tv.token';
+  // private LS_SUPERUSER_TOKEN_KEY = 'bongacam.ceeblue.tv.superuser_token';
+
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
-    this.token = localStorage.getItem('token');
-    this.superuserToken = localStorage.getItem('superuser_token');
+    this.token = localStorage.getItem(this.LS_TOKEN_KEY);
+    this.superuserToken = localStorage.getItem(this.LS_SUPERUSER_TOKEN_KEY);
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
@@ -93,21 +99,21 @@ export class AuthService {
 
   storeToken(token: string) {
     this.token = token;
-    localStorage.setItem('token', token);
+    localStorage.setItem(this.LS_TOKEN_KEY, token);
   }
 
   storeSuperuserToken(token: string) {
     this.superuserToken = token;
-    localStorage.setItem('superuser_token', token);
+    localStorage.setItem(this.LS_SUPERUSER_TOKEN_KEY, token);
   }
 
   removeToken() {
     this.token = null;
-    localStorage.removeItem('token');
+    localStorage.removeItem(this.LS_TOKEN_KEY);
   }
 
   removeSuperuserToken() {
     this.superuserToken = null;
-    localStorage.removeItem('superuser_token');
+    localStorage.removeItem(this.LS_SUPERUSER_TOKEN_KEY);
   }
 }
