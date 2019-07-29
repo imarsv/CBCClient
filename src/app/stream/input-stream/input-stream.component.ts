@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AccessMode, GeoLocation, Input, InputStreamer, Output, StreamFormat } from '../../service/stream.service';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {AccessMode, GeoLocation, Input, InputStreamer, Output, StreamFormat} from '../../service/stream.service';
 
 @Component({
   selector: 'app-input-stream',
@@ -23,6 +23,7 @@ export class InputStreamComponent implements OnInit {
   callbackUri?: string;
 
   access = AccessMode.Public;
+  accessToken?: string;
 
   constructor(public activeModal: NgbActiveModal) {
   }
@@ -54,6 +55,9 @@ export class InputStreamComponent implements OnInit {
     }
 
     input.access = this.access;
+    if (this.accessToken && (input.access === AccessMode.Private)) {
+      input.accessToken = this.accessToken;
+    }
 
     return input;
   }

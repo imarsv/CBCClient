@@ -8,11 +8,9 @@ export class AuthService {
   private superuserToken?: string = null;
   private token?: string = null;
 
-  private LS_TOKEN_KEY = 'token';
-  private LS_SUPERUSER_TOKEN_KEY = 'superuser_token';
-
-  // private LS_TOKEN_KEY = 'bongacam.ceeblue.tv.token';
-  // private LS_SUPERUSER_TOKEN_KEY = 'bongacam.ceeblue.tv.superuser_token';
+  private LS_DOMAIN = ''; // 'lls.rncdn7.com.'
+  private LS_TOKEN_KEY = this.LS_DOMAIN + 'token';
+  private LS_SUPERUSER_TOKEN_KEY = this.LS_DOMAIN + 'superuser_token';
 
   @Output() change: EventEmitter<any> = new EventEmitter();
 

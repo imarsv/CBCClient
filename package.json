@@ -6,7 +6,7 @@
     "start": "ng serve --host 0.0.0.0 --port 3080",
     "build": "ng build",
     "build prod ceeblue.tv": "ng build --prod --build-optimizer --base-href=/cdndemo/bo/",
-    "build prod bongocam": "ng build --prod --build-optimizer --base-href=/bo/",
+    "build prod reflected": "ng build --prod --build-optimizer --base-href=/bo/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

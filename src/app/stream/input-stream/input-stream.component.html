@@ -63,6 +63,15 @@
     </div>
   </div>
 
+  <div *ngIf="access === accessMode.Private" class="form-row">
+    <div class="form-group col">
+      <label for="accessToken">ID</label>
+      <input [(ngModel)]="accessToken"
+             class="form-control" id="accessToken" name="accessToken" placeholder="access token (blank - generated)"
+             type="text">
+    </div>
+  </div>
+
 </div>
 <div class="modal-footer">
   <button (click)="activeModal.close(getInput())" class="btn btn-outline-dark" type="button">Create</button>

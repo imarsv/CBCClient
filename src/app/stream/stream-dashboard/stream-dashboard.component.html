@@ -25,7 +25,8 @@
 
 <div *ngIf="stream" class="mt-3">
   <div class="row">
-    <div *ngIf="stream.streamer || stream.callbackUri" class="col-6">
+
+    <div *ngIf="stream.streamer || stream.callbackUri" class="col-lg mt-3">
       <div class="card">
         <div class="card-header font-weight-bold">Streamer</div>
         <div class="card-body">
@@ -41,34 +42,54 @@
       </div>
     </div>
 
-    <div *ngIf="stream.connection" class="col-6">
+    <div *ngIf="stream.connection" class="col-lg mt-3">
       <div class="card">
-        <div class="card-header font-weight-bold">Input endpoint</div>
-        <div [ngSwitch]="stream.format" class="card-body">
-          <div *ngSwitchCase="streamFormat.RTMP" class="input-group">
-            <input [value]="getHttpConnection().uri" class="form-control" type="text">
-            <div class="input-group-append">
-              <button (click)="copy(getHttpConnection().uri)" class="btn input-group-text">
-                <i aria-hidden="true" class="fa fa-clipboard"></i>
-              </button>
+        <div class="card-header font-weight-bold">Input</div>
+        <div class="card-body">
+
+          <div>
+            <label class="col-form-label" for="streamName">Stream id</label>
+            <div class="input-group">
+              <input [value]="getStreamId()" class="form-control" type="text" id="streamName">
+              <div class="input-group-append">
+                <button (click)="copy(getStreamId())" class="btn btn-outline-secondary" type="button">
+                  <i aria-hidden="true" class="fa fa-clipboard"></i>
+                </button>
+              </div>
             </div>
           </div>
-          <div *ngSwitchCase="streamFormat.WebRTC" class="input-group">
-            <label class="col-sm-3 col-form-label" for="signallingUri">Signalling URI</label>
-            <input [value]="getWebRTCConnection().signallingUri" class="form-control" id="signallingUri" type="text">
-            <div class="input-group-append">
-              <button (click)="copy(getWebRTCConnection().signallingUri)" class="btn input-group-text">
-                <i aria-hidden="true" class="fa fa-clipboard"></i>
-              </button>
+
+          <div *ngIf="stream?.access === accessMode.Private">
+            <label class="col-form-label" for="accessToken">Access token</label>
+            <div class="input-group">
+              <input [value]="stream.accessToken" class="form-control" type="text" id="accessToken">
+              <div class="input-group-append">
+                <button (click)="copy(stream.accessToken)" class="btn btn-outline-secondary" type="button">
+                  <i aria-hidden="true" class="fa fa-clipboard"></i>
+                </button>
+              </div>
             </div>
           </div>
+
+          <div>
+            <label class="col-form-label" for="connectionUri">Endpoint</label>
+            <div class="input-group">
+              <input [value]="getConnectionURI()" class="form-control" type="text" id="connectionUri">
+              <div class="input-group-append">
+                <button (click)="copy(getConnectionURI())" class="btn btn-outline-secondary" type="button">
+                  <i aria-hidden="true" class="fa fa-clipboard"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div *ngIf="stream?.statusMessages?.length > 0" class="col-6">
+  <div class="row mt-3">
+    <div *ngIf="stream?.statusMessages?.length > 0" class="col-lg mt-3">
       <div class="card">
         <div class="card-header bg-warning font-weight-bold">Messages</div>
         <div class="card-body">
@@ -77,7 +98,7 @@
       </div>
     </div>
 
-    <div *ngIf="stream?.parameters" class="col-6">
+    <div *ngIf="stream?.parameters" class="col-lg mt-3">
       <div class="card">
         <div class="card-header font-weight-bold">Parameters</div>
         <div class="card-body">
@@ -86,7 +107,7 @@
       </div>
     </div>
 
-    <div *ngIf="stream?.access === accessMode.Private" class="col-6">
+    <div *ngIf="stream?.access === accessMode.Private" class="col-lg mt-3">
       <div class="card">
         <div class="card-header font-weight-bold">Viewers</div>
         <div class="card-body">

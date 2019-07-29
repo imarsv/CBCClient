@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   AccessMode,
   HttpConnection,
@@ -10,11 +10,11 @@ import {
   StreamService,
   WebRTCConnection
 } from '../../service/stream.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { OutputStreamComponent } from '../output-stream/output-stream.component';
-import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
-import { ClipboardService } from '../../service/clipboard.service';
-import { Observable } from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {OutputStreamComponent} from '../output-stream/output-stream.component';
+import {OutputStreamConnectionComponent} from '../output-stream-connection/output-stream-connection.component';
+import {ClipboardService} from '../../service/clipboard.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -54,6 +54,24 @@ export class StreamDashboardComponent implements OnInit {
 
   getWebRTCConnection(): WebRTCConnection {
     return (this.stream.connection as WebRTCConnection);
+  }
+
+  getConnectionURI() {
+    if (this.stream.format === StreamFormat.WebRTC) {
+      return (this.stream.connection as WebRTCConnection).signallingUri;
+    } else {
+      return (this.stream.connection as HttpConnection).uri;
+    }
+  }
+
+  getStreamId() {
+    const uri = this.getConnectionURI();
+    if (uri) {
+      const index = uri.lastIndexOf('/');
+      if (index !== -1) {
+        return uri.substr(index + 1);
+      }
+    }
   }
 
   copy(value: string) {

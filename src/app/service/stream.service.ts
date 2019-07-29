@@ -46,6 +46,8 @@ export class Input {
   callbackUri: string | undefined;
 
   access: AccessMode | undefined;
+
+  accessToken: string | undefined;
 }
 
 export class Output {
@@ -126,6 +128,8 @@ export interface InputEndpoint {
   callbackUri: string | undefined;
 
   access: AccessMode | undefined;
+
+  accessToken: string | undefined;
 }
 
 @Injectable()
