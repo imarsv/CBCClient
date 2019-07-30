@@ -64,6 +64,30 @@ export class StreamDashboardComponent implements OnInit {
     }
   }
 
+  getPushPageURI() {
+    const hostname = this.getHostname();
+
+    let uri = 'https://' + hostname + '/push.html' + '?' +
+      'stream=' + this.getStreamId();
+    if (this.stream.accessToken) {
+      uri += '&token=' + this.stream.accessToken;
+    }
+
+    return uri;
+  }
+
+  getPlaybackPageURI(token?: string) {
+    const hostname = this.getHostname();
+
+    let uri = 'https://' + hostname + '/play.html' + '?' +
+      'stream=' + this.getStreamId();
+    if (token) {
+      uri += '&token=' + token;
+    }
+
+    return uri;
+  }
+
   getStreamId() {
     const uri = this.getConnectionURI();
     if (uri) {
@@ -91,7 +115,7 @@ export class StreamDashboardComponent implements OnInit {
 
           this.loadOutputs(output.streamId);
 
-          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
+          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, {size: 'lg'});
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
         } catch (e) {
@@ -123,6 +147,16 @@ export class StreamDashboardComponent implements OnInit {
     if (this.stream.id) {
       this.streamService.delete(this.stream.id);
       this.router.navigateByUrl('/streams');
+    }
+  }
+
+  private getHostname() {
+    const uri = this.getConnectionURI();
+    if (uri) {
+      const match = uri.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+      if (match && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+        return match[2];
+      }
     }
   }
 
