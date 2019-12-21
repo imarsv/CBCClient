@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from './auth/auth.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { InputEndpoint } from './stream.service';
-import { API } from './API';
+import {Injectable} from '@angular/core';
+import {AuthService} from './auth/auth.service';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {InputEndpoint} from './stream.service';
+import {API} from './API';
 
 export enum StreamFormat {
   RTMP = 'RTMP',
@@ -73,6 +73,8 @@ export class StreamOutput {
   format: StreamFormat;
 
   viewer: StreamViewer | undefined;
+
+  callbackUri: string | undefined;
 }
 
 export enum AccessMode {
@@ -151,7 +153,7 @@ export class StreamService {
   listOutputsByStream(streamId: string) {
     const params = new HttpParams().set('streamId', streamId);
     return this.httpClient
-      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, { params: params });
+      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, {params: params});
   }
 
   get(id: string) {

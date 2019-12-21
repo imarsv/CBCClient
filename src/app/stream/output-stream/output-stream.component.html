@@ -37,6 +37,14 @@
 
   <div *ngIf="access === accessMode.Private" class="form-row">
     <div class="form-group col">
+      <label for="callbackUri">Callback URI</label>
+      <input [(ngModel)]="callbackUri" class="form-control" id="callbackUri" name="callbackUri"
+             placeholder="http://myservice.com/notifications" type="text">
+    </div>
+  </div>
+
+  <div *ngIf="access === accessMode.Private" class="form-row">
+    <div class="form-group col">
       <label for="accessToken">ID</label>
       <input [(ngModel)]="accessToken"
              class="form-control" id="accessToken" name="accessToken" placeholder="viewer access token (blank - generated)"
