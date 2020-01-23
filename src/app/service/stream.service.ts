@@ -8,7 +8,7 @@ export enum StreamFormat {
   RTMP = 'RTMP',
   WebRTC = 'WebRTC',
   HLS = 'HLS',
-  DASH = 'DASH',
+  CMAF = 'CMAF',
 }
 
 export enum InputStatus {
