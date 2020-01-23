@@ -50,9 +50,16 @@ export class Input {
   accessToken: string | undefined;
 }
 
-export class Output {
-  constructor(public passthrough: boolean) {
+export class Overlay {
+  constructor(public data: string,
+              public offsetX: number | undefined,
+              public offsetY: number | undefined) {
   }
+}
+
+export class Output {
+  passthrough: boolean;
+  overlay: Overlay | undefined;
 }
 
 

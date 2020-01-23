@@ -66,9 +66,9 @@ export class StreamDashboardComponent implements OnInit {
 
   getPushPageURI() {
     const hostname = this.getHostname();
+    const streamId = this.getStreamId();
 
-    let uri = 'https://' + hostname + '/push.html' + '?' +
-      'stream=' + this.getStreamId();
+    let uri = `https://${hostname}/push.html?stream=${streamId}`;
     if (this.stream.accessToken) {
       uri += '&token=' + this.stream.accessToken;
     }
@@ -78,11 +78,20 @@ export class StreamDashboardComponent implements OnInit {
 
   getPlaybackPageURI(token?: string) {
     const hostname = this.getHostname();
+    let streamId = this.getStreamId();
 
-    let uri = 'https://' + hostname + '/play.html' + '?' +
-      'stream=' + this.getStreamId();
+    const streamIdParts = streamId.split('+');
+    if (streamIdParts.length === 2) {
+      let prefix = streamIdParts[0];
+      if (prefix === 'in') {
+        prefix = 'out';
+      }
+      streamId = `${prefix}+${streamIdParts[1]}`;
+    }
+
+    let uri = `https://${hostname}/play.html?stream=${streamId}`;
     if (token) {
-      uri += '&token=' + token;
+      uri += `&token=${token}`;
     }
 
     return uri;
