@@ -15,13 +15,11 @@
     </div>
 
     <div class="form-group col">
-      <div class="form-check mt-2">
-        <input [(ngModel)]="transcode" class="form-check-input" id="passthrough" name="passthrough"
-               type="checkbox">
-        <label class="form-check-label" for="passthrough">
-          Multiprofile transcoding
-        </label>
-      </div>
+      <select [(ngModel)]="output" class="form-control" id="output" name="output">
+        <option [ngValue]="outputMode.Passthrough">Passthrough</option>
+        <option [ngValue]="outputMode.Overlay">Overlay</option>
+        <option [ngValue]="outputMode.Transcode">Transcode</option>
+      </select>
     </div>
   </div>
 
@@ -31,7 +29,8 @@
       <fieldset class="form-group">
         <label>Logo</label>
         <div class="custom-file logo-input-wrap">
-          <input (change)="logoChangeEvent($event)" class="logo-input" type="file">
+          <input (change)="logoChangeEvent($event)" [disabled]="output != outputMode.Overlay"
+                 class="logo-input" type="file">
           <div class="img-space">
             <ng-container *ngIf="logoImageBase64; else elseTemplate">
               <img [src]="logoImageBase64" alt="Logo"/>
@@ -47,14 +46,14 @@
     <div class="form-group col">
       <div class=" ">
         <label for="offset_x">Offset X</label>
-        <input [(ngModel)]="offsetX"
+        <input [(ngModel)]="offsetX" [disabled]="output != outputMode.Overlay"
                class="form-control" id="offset_x" name="offset_x" placeholder="0" type="number">
       </div>
     </div>
     <div class="form-group col">
       <div class="">
         <label for="offset_y">Offset Y</label>
-        <input [(ngModel)]="offsetY"
+        <input [(ngModel)]="offsetY" [disabled]="output != outputMode.Overlay"
                class="form-control" id="offset_y" name="offset_y" placeholder="0" type="number">
       </div>
     </div>
@@ -109,5 +108,7 @@
 
 </div>
 <div class="modal-footer">
-  <button (click)="activeModal.close(getInput())" class="btn btn-outline-dark" type="button">Create</button>
+  <button (click)="activeModal.close(getInput())" [disabled]="(output === outputMode.Overlay) && !this.logoImageBase64"
+          class="btn btn-outline-dark" type="button">Create
+  </button>
 </div>

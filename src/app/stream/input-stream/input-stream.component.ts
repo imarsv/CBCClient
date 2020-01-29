@@ -2,6 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AccessMode, GeoLocation, Input, InputStreamer, Output, Overlay, StreamFormat} from '../../service/stream.service';
 
+export enum OutputMode {
+  Passthrough = 'Passthrough',
+  Overlay = 'Overlay',
+  Transcode = 'transcode'
+}
+
 @Component({
   selector: 'app-input-stream',
   templateUrl: './input-stream.component.html',
@@ -11,12 +17,12 @@ export class InputStreamComponent implements OnInit {
 
   streamFormat = StreamFormat;
   accessMode = AccessMode;
+  outputMode = OutputMode;
 
   format: StreamFormat = StreamFormat.RTMP;
-  transcode = false;
+  output = OutputMode.Passthrough;
 
   ipAddress?: string;
-
   latitude?: number;
   longitude?: number;
 
@@ -86,9 +92,13 @@ export class InputStreamComponent implements OnInit {
     input.format = this.format;
 
     const output = new Output();
-    output.passthrough = !this.transcode;
-    if (output.passthrough && this.logoImageBase64) {
+    if (this.output === OutputMode.Passthrough) {
+      output.passthrough = true;
+    } else if (this.output === OutputMode.Overlay) {
+      output.passthrough = false;
       output.overlay = new Overlay(this.logoImageBase64, this.offsetX, this.offsetY);
+    } else {
+      output.passthrough = false;
     }
     input.output = output;
 
