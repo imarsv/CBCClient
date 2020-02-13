@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {AccessMode, GeoLocation, Input, InputStreamer, Output, Overlay, StreamFormat} from '../../service/stream.service';
+import {AccessMode, GeoLocation, Input, InputStreamer, Output, StreamFormat} from '../../service/stream.service';
 
 export enum OutputMode {
   Passthrough = 'Passthrough',
-  Overlay = 'Overlay',
-  Transcode = 'transcode'
+  StaticTranscode = 'StaticTranscode',
+  AdjustableTranscode = 'AdjustableTranscode',
 }
 
 @Component({
@@ -31,60 +31,10 @@ export class InputStreamComponent implements OnInit {
   access = AccessMode.Public;
   accessToken?: string;
 
-  logoImageBase64: string;
-  offsetX?: number;
-  offsetY?: number;
-
   constructor(public activeModal: NgbActiveModal) {
   }
 
   ngOnInit() {
-  }
-
-  logoChangeEvent(input: any) {
-    if (input.target.files && input.target.files[0]) {
-      // Size Filter Bytes
-      const max_size = 1024 * 1024;
-      const allowed_types = ['image/png', 'image/jpeg'];
-      const max_height = 360;
-      const max_width = 360;
-
-      console.log(`Logo size ${input.target.files[0].size} bytes`);
-      if (input.target.files[0].size > max_size) {
-        alert(`Maximum size allowed is ${max_size / (1024 * 1024)} Mb`);
-        return false;
-      }
-
-      console.log(`Logo type ${input.target.files[0].type}`);
-      if (!allowed_types.includes(input.target.files[0].type)) {
-        alert(`Only Images are allowed ( JPG | PNG )`);
-        return false;
-      }
-
-      const fileReader = new FileReader();
-      fileReader.onload = fev => {
-        const fileResult = fileReader.result;
-        if (fileResult && (typeof fileResult === 'string')) {
-          const image = new Image();
-          image.src = fileResult;
-          image.onload = iev => {
-            const height = iev.currentTarget['height'];
-            const width = iev.currentTarget['width'];
-
-            console.log(`Logo dimensions ${height}x${width}`);
-
-            if ((height > max_height) && (width > max_width)) {
-              alert(`Maximum dimensions allowed ${max_height}x${max_width} px`);
-              return false;
-            } else {
-              this.logoImageBase64 = fileResult;
-            }
-          };
-        }
-      };
-
-      fileReader.readAsDataURL(input.target.files[0]);
-    }
   }
 
   getInput() {
@@ -94,11 +44,11 @@ export class InputStreamComponent implements OnInit {
     const output = new Output();
     if (this.output === OutputMode.Passthrough) {
       output.passthrough = true;
-    } else if (this.output === OutputMode.Overlay) {
+    } else if (this.output === OutputMode.StaticTranscode) {
       output.passthrough = false;
-      output.overlay = new Overlay(this.logoImageBase64, this.offsetX, this.offsetY);
-    } else {
+    } else if (this.output === OutputMode.AdjustableTranscode) {
       output.passthrough = false;
+      output.tracks = [];
     }
     input.output = output;
 

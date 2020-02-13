@@ -13,6 +13,11 @@
       <i class="fa fa-calculator"></i>
     </button>
 
+    <button *ngIf="stream" [disabled]="!stream || !isAdjustableTranscode()" [routerLink]="['/streams/transcode/', stream.id]"
+            class="btn btn-success mr-5" type="button">
+      <i class="fa fa-sitemap"></i>
+    </button>
+
     <button (click)="output()" [disabled]="!stream" class="btn btn-success mr-5" type="button">
       <i class="fa fa-eye"></i>
     </button>
@@ -48,7 +53,7 @@
           <span>Input</span>
 
           <div *ngIf="stream.format === streamFormat.WebRTC">
-            <a target="_blank" [href]="getPushPageURI()">Push</a>
+            <a [href]="getPushPageURI()" target="_blank">Push</a>
           </div>
         </div>
         <div class="card-body">
@@ -56,7 +61,7 @@
           <div>
             <label class="col-form-label" for="streamName">Stream id</label>
             <div class="input-group">
-              <input [value]="getStreamId()" class="form-control" type="text" id="streamName">
+              <input [value]="getStreamId()" class="form-control" id="streamName" type="text">
               <div class="input-group-append">
                 <button (click)="copy(getStreamId())" class="btn btn-outline-secondary" type="button">
                   <i aria-hidden="true" class="fa fa-clipboard"></i>
@@ -68,7 +73,7 @@
           <div *ngIf="stream?.access === accessMode.Private">
             <label class="col-form-label" for="accessToken">Access token</label>
             <div class="input-group">
-              <input [value]="stream.accessToken" class="form-control" type="text" id="accessToken">
+              <input [value]="stream.accessToken" class="form-control" id="accessToken" type="text">
               <div class="input-group-append">
                 <button (click)="copy(stream.accessToken)" class="btn btn-outline-secondary" type="button">
                   <i aria-hidden="true" class="fa fa-clipboard"></i>
@@ -80,7 +85,7 @@
           <div>
             <label class="col-form-label" for="connectionUri">Endpoint</label>
             <div class="input-group">
-              <input [value]="getConnectionURI()" class="form-control" type="text" id="connectionUri">
+              <input [value]="getConnectionURI()" class="form-control" id="connectionUri" type="text">
               <div class="input-group-append">
                 <button (click)="copy(getConnectionURI())" class="btn btn-outline-secondary" type="button">
                   <i aria-hidden="true" class="fa fa-clipboard"></i>
@@ -118,7 +123,7 @@
         <div class="card-header font-weight-bold d-flex justify-content-between">
           <span>Viewers</span>
           <div *ngIf="stream?.access === accessMode.Public">
-            <a target="_blank" [href]="getPlaybackPageURI()">View</a>
+            <a [href]="getPlaybackPageURI()" target="_blank">View</a>
           </div>
         </div>
         <div class="card-body">
@@ -129,7 +134,7 @@
               </div>
 
               <div>
-                <a class="btn" target="_blank" [href]="getPlaybackPageURI(output.viewer.accessToken)">
+                <a [href]="getPlaybackPageURI(output.viewer.accessToken)" class="btn" target="_blank">
                   <i class="fas fa-eye"></i>
                 </a>
 

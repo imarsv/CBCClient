@@ -57,9 +57,71 @@ export class Overlay {
   }
 }
 
+export enum TrackType {
+  Video = 'Video',
+  Audio = 'Audio',
+}
+
+export enum CodecType {
+  H264 = 'H264',
+  VP8 = 'VP8',
+  VP9 = 'VP9',
+}
+
+export abstract class EncoderSettings {
+  public codec: CodecType;
+}
+
+export enum SpeedPresetH264 {
+  Ultrafast = 'ultrafast', // (1)
+  Superfast = 'superfast', // (2)
+  Veryfast = 'veryfast', // (3)
+  Faster = 'faster', // (4)
+  Fast = 'fast', // (5)
+  Medium = 'medium', // (6)
+  Slow = 'slow', // (7)
+  Slower = 'slower', // (8)
+  Veryslow = 'veryslow', // (9)
+  Placebo = 'placebo', // (10)
+}
+
+export class EncoderSettingsH264 extends EncoderSettings {
+
+  // Bitrate in kbit/sec
+  public bitrate: number;
+
+  // Preset name for speed/quality tradeoff options
+  // (can affect decode compatibility - impose
+  // restrictions separately for your target decoder)
+  public speedPreset: SpeedPresetH264;
+
+  // Maximal distance between two key-frames (0 for automatic)
+  public keyIntMax: number;
+}
+
+export class EncoderSettingsVP8 extends EncoderSettings {
+}
+
+export class EncoderSettingsVP9 extends EncoderSettings {
+}
+
+export class Track {
+
+  public type: TrackType;
+
+  public width: number;
+
+  public height: number;
+
+  public framerate: number;
+
+  public settings: EncoderSettingsH264 | EncoderSettingsVP8 | EncoderSettingsVP9;
+}
+
 export class Output {
   passthrough: boolean;
   overlay: Overlay | undefined;
+  tracks: Track[] | undefined;
 }
 
 
@@ -152,20 +214,19 @@ export class StreamService {
       .post<InputEndpoint>(`${API.endpoint()}/inputs`, input);
   }
 
-  output(output: StreamOutput) {
-    return this.httpClient
-      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output);
-  }
-
-  listOutputsByStream(streamId: string) {
-    const params = new HttpParams().set('streamId', streamId);
-    return this.httpClient
-      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, {params: params});
-  }
-
   get(id: string) {
     return this.httpClient
       .get<InputEndpoint>(`${API.endpoint()}/inputs/${id}`);
+  }
+
+  getTranscode(id: string) {
+    return this.httpClient
+      .get<Output>(`${API.endpoint()}/inputs/${id}/output`);
+  }
+
+  updateTranscode(id: string, output: Output) {
+    return this.httpClient
+      .put<Output>(`${API.endpoint()}/inputs/${id}/output`, output);
   }
 
   list() {
@@ -177,6 +238,17 @@ export class StreamService {
     this.httpClient
       .delete(`${API.endpoint()}/inputs/${id}`)
       .subscribe((data) => data, error => console.error(error));
+  }
+
+  output(output: StreamOutput) {
+    return this.httpClient
+      .post<OutputEndpoint>(`${API.endpoint()}/outputs`, output);
+  }
+
+  listOutputsByStream(streamId: string) {
+    const params = new HttpParams().set('streamId', streamId);
+    return this.httpClient
+      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, {params: params});
   }
 
   clearSessions(outputId: string) {

@@ -33,6 +33,7 @@ export class StreamDashboardComponent implements OnInit {
   constructor(private streamService: StreamService, private clipboardService: ClipboardService,
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
+
     const id = activatedRoute.snapshot.params['id'];
     this.streamService.get(id)
       .subscribe(item => {
@@ -157,6 +158,11 @@ export class StreamDashboardComponent implements OnInit {
       this.streamService.delete(this.stream.id);
       this.router.navigateByUrl('/streams');
     }
+  }
+
+  isAdjustableTranscode() {
+    return this.getStreamId()
+      .startsWith('in+');
   }
 
   private getHostname() {

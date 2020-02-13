@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <h4 class="modal-title">Track</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="form-row">
+    <div class="form-group col">
+      <div class="">
+        <label for="width">Width</label>
+        <input [(ngModel)]="track.width"
+               class="form-control" id="width" name="width" placeholder="0" type="number" min="0">
+      </div>
+    </div>
+    <div class="form-group col">
+      <div class="">
+        <label for="height">Height</label>
+        <input [(ngModel)]="track.height"
+               class="form-control" id="height" name="height" placeholder="0" type="number" min="0">
+      </div>
+    </div>
+    <div class="form-group col">
+      <div class="">
+        <label for="framerate">Framerate</label>
+        <input [(ngModel)]="track.framerate"
+               class="form-control" id="framerate" name="framerate" placeholder="0" type="number" min="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown-divider"></div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <select [(ngModel)]="track.settings.codec" class="form-control" id="codec" name="codec">
+        <option [ngValue]="codecType.H264">H264</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="h264-bitrate">Bitrate</label>
+      <input [(ngModel)]="track.settings.bitrate"
+             class="form-control" id="h264-bitrate" name="h264-bitrate" placeholder="0" type="number" min="10">
+    </div>
+    <div class="form-group col">
+      <label for="h264-speed-preset">Speed preset</label>
+      <select [(ngModel)]="track.settings.speedPreset" class="form-control" id="h264-speed-preset" name="h264-speed-preset">
+        <option [ngValue]="seedPresetH264.Ultrafast">Ultrafast</option>
+        <option [ngValue]="seedPresetH264.Superfast">Superfast</option>
+        <option [ngValue]="seedPresetH264.Veryfast">Veryfast</option>
+        <option [ngValue]="seedPresetH264.Faster">Faster</option>
+        <option [ngValue]="seedPresetH264.Fast">Fast</option>
+        <option [ngValue]="seedPresetH264.Medium">Medium</option>
+      </select>
+    </div>
+    <div class="form-group col">
+      <label for="h264-key-int">Key interval</label>
+      <input [(ngModel)]="track.settings.keyIntMax"
+             class="form-control" id="h264-key-int" name="h264-key-int" placeholder="0" type="number" min="2">
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button (click)="activeModal.close(getTrack())" [disabled]="isEnabled()"
+          class="btn btn-outline-dark" type="button">
+    {{ edit ? 'Update' : 'Create'  }}
+  </button>
+</div>

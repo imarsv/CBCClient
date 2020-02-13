@@ -1,0 +1,98 @@
+<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+    <button [routerLink]="['/streams/view', streamId]" class="btn btn-light" type="button">
+      <i class="fas fa-chevron-circle-left"></i>
+    </button>
+
+    <button (click)="save()" class="btn btn-success" type="button">
+      <i class="fa fa-save"></i>
+    </button>
+  </nav>
+
+  <div *ngIf="hasOutput else loading" class="row mt-2">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header">
+          Overlay
+          <button (click)="clearOverlay()" class="btn btn-light btn-sm float-right" type="button">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col">
+              <fieldset class="form-group">
+                <label>Logo</label>
+                <div class="custom-file logo-input-wrap">
+                  <input (change)="overlayChangeEvent($event)"
+                         class="logo-input" type="file">
+                  <div class="img-space">
+                    <ng-container *ngIf="overlay.data.length > 0; else elseTemplate">
+                      <img [src]="overlay.data" alt="Logo"/>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                      <i class="far fa-image fa-4x"></i>
+                    </ng-template>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="col">
+              <div class="mt-1">
+                <label for="offset_x">Offset X</label>
+                <input [(ngModel)]="overlay.offsetX"
+                       class="form-control" id="offset_x" name="offset_x" placeholder="0" type="number">
+              </div>
+              <div class="mt-2">
+                <label for="offset_y">Offset Y</label>
+                <input [(ngModel)]="overlay.offsetY"
+                       class="form-control" id="offset_y" name="offset_y" placeholder="0" type="number">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header">
+          Tracks
+          <button (click)="appendTrack()" class="btn btn-info btn-sm float-right" type="button">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <a (click)="editTrack(track);false" *ngFor="let track of tracks; let i = index"
+             class="list-group-item list-group-item-action" href="">
+            <div class="d-flex w-100 justify-content-between">
+              <div>
+                <span><i class="fas fa-video"></i></span>
+                <span class="ml-1 font-weight-bold">{{ track.settings.codec }}</span>
+              </div>
+              <button (click)="removeTrack(track);false" class="btn btn-light btn-sm float-right" type="button">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
+            <p class="mb-1">Scale: {{ (!!track.width && !!track.height) ? (track.width + 'X' + track.height) : 'passthrough' }}</p>
+            <p class="mb-1">Framerate: {{ !!track.framerate ? track.framerate : 'passthrough' }}</p>
+            <p class="mb-1">Bitrate: {{ track.settings.bitrate }}</p>
+            <small>{{ getEncodingDescription(track) }}</small>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center mt-4">
+      <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
+</div>
