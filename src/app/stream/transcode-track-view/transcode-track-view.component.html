@@ -11,21 +11,21 @@
       <div class="">
         <label for="width">Width</label>
         <input [(ngModel)]="track.width"
-               class="form-control" id="width" name="width" placeholder="0" type="number" min="0">
+               class="form-control" id="width" min="0" name="width" placeholder="0" type="number">
       </div>
     </div>
     <div class="form-group col">
       <div class="">
         <label for="height">Height</label>
         <input [(ngModel)]="track.height"
-               class="form-control" id="height" name="height" placeholder="0" type="number" min="0">
+               class="form-control" id="height" min="0" name="height" placeholder="0" type="number">
       </div>
     </div>
     <div class="form-group col">
       <div class="">
         <label for="framerate">Framerate</label>
         <input [(ngModel)]="track.framerate"
-               class="form-control" id="framerate" name="framerate" placeholder="0" type="number" min="1">
+               class="form-control" id="framerate" min="1" name="framerate" placeholder="0" type="number">
       </div>
     </div>
   </div>
@@ -43,12 +43,13 @@
   <div class="form-row">
     <div class="form-group col">
       <label for="h264-bitrate">Bitrate</label>
-      <input [(ngModel)]="track.settings.bitrate"
-             class="form-control" id="h264-bitrate" name="h264-bitrate" placeholder="0" type="number" min="10">
+      <input [(ngModel)]="asEncoderSettingsH264(track).bitrate"
+             class="form-control" id="h264-bitrate" min="10" name="h264-bitrate" placeholder="0" type="number">
     </div>
     <div class="form-group col">
       <label for="h264-speed-preset">Speed preset</label>
-      <select [(ngModel)]="track.settings.speedPreset" class="form-control" id="h264-speed-preset" name="h264-speed-preset">
+      <select [(ngModel)]="asEncoderSettingsH264(track).speedPreset"
+              class="form-control" id="h264-speed-preset" name="h264-speed-preset">
         <option [ngValue]="seedPresetH264.Ultrafast">Ultrafast</option>
         <option [ngValue]="seedPresetH264.Superfast">Superfast</option>
         <option [ngValue]="seedPresetH264.Veryfast">Veryfast</option>
@@ -59,8 +60,8 @@
     </div>
     <div class="form-group col">
       <label for="h264-key-int">Key interval</label>
-      <input [(ngModel)]="track.settings.keyIntMax"
-             class="form-control" id="h264-key-int" name="h264-key-int" placeholder="0" type="number" min="2">
+      <input [(ngModel)]="asEncoderSettingsH264(track).keyIntMax"
+             class="form-control" id="h264-key-int" min="2" name="h264-key-int" placeholder="0" type="number">
     </div>
   </div>
 </div>

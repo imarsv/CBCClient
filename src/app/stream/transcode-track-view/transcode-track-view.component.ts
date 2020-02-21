@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {CodecType, SpeedPresetH264, Track} from '../../service/stream.service';
+import {CodecType, EncoderSettingsH264, SpeedPresetH264, Track} from '../../service/stream.service';
 
 @Component({
   selector: 'app-transcode-track-view',
@@ -19,6 +19,10 @@ export class TranscodeTrackViewComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  asEncoderSettingsH264(track: Track): EncoderSettingsH264 {
+    return track.settings as EncoderSettingsH264;
   }
 
   isEnabled() {
