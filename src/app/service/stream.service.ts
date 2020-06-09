@@ -100,6 +100,11 @@ export class EncoderSettingsH264 extends EncoderSettings {
 }
 
 export class EncoderSettingsVP8 extends EncoderSettings {
+  // Bitrate in kbit/sec
+  public bitrate: number;
+
+  // Maximum distance between key-frames (number of frames).
+  public keyMaxDist: number;
 }
 
 export class EncoderSettingsVP9 extends EncoderSettings {
