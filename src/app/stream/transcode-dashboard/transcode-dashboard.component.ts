@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {
   CodecType,
-  EncoderSettingsH264, EncoderSettingsVP8,
+  EncoderSettingsH264,
+  EncoderSettingsVP8,
   Output,
   Overlay,
   SpeedPresetH264,

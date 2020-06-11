@@ -1,12 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {
-  CodecType,
-  EncoderSettingsH264,
-  EncoderSettingsVP8,
-  SpeedPresetH264,
-  Track
-} from '../../service/stream.service';
+import {CodecType, EncoderSettingsH264, EncoderSettingsVP8, SpeedPresetH264, Track} from '../../service/stream.service';
 
 @Component({
   selector: 'app-transcode-track-view',
