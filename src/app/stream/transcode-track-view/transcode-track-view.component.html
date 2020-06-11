@@ -46,7 +46,7 @@
       <div class="form-group col">
         <label for="h264-bitrate">Bitrate</label>
         <input [(ngModel)]="asEncoderSettingsH264(track).bitrate"
-               class="form-control" id="h264-bitrate" min="10" name="h264-bitrate" placeholder="0" type="number">
+               class="form-control" id="h264-bitrate" min="100" name="h264-bitrate" placeholder="0" type="number">
       </div>
       <div class="form-group col">
         <label for="h264-speed-preset">Speed preset</label>
@@ -63,19 +63,19 @@
       <div class="form-group col">
         <label for="h264-key-int">Key interval</label>
         <input [(ngModel)]="asEncoderSettingsH264(track).keyIntMax"
-               class="form-control" id="h264-key-int" min="2" name="h264-key-int" placeholder="0" type="number">
+               class="form-control" id="h264-key-int" min="2" name="h264-key-int" value="30" type="number">
       </div>
     </div>
-    <div *ngSwitchCase="codecType.VP8">
+    <div class="form-row" *ngSwitchCase="codecType.VP8">
       <div class="form-group col">
         <label for="vp8-bitrate">Bitrate</label>
         <input [(ngModel)]="asEncoderSettingsVP8(track).bitrate"
-               class="form-control" id="vp8-bitrate" min="10" name="vp8-bitrate" placeholder="0" type="number">
+               class="form-control" id="vp8-bitrate" min="100" name="vp8-bitrate" placeholder="100" type="number">
       </div>
       <div class="form-group col">
         <label for="vp8-key-dist">Maximum key distance</label>
         <input [(ngModel)]="asEncoderSettingsVP8(track).keyMaxDist"
-               class="form-control" id="vp8-key-dist" min="2" name="vp8-key-dist" placeholder="0" type="number">
+               class="form-control" id="vp8-key-dist" min="2" name="vp8-key-dist" value="30" type="number">
       </div>
     </div>
     <div *ngDefaultControl class="form-row">

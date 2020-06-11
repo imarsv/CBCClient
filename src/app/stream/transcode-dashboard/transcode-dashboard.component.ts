@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   CodecType,
-  EncoderSettingsH264,
+  EncoderSettingsH264, EncoderSettingsVP8,
   Output,
   Overlay,
   SpeedPresetH264,
@@ -158,6 +158,9 @@ export class TranscodeDashboardComponent implements OnInit {
     if (track.settings.codec === CodecType.H264) {
       const settings = <EncoderSettingsH264>track.settings;
       return `Preset: ${settings.speedPreset}, Key-int: ${settings.keyIntMax}`;
+    } else if (track.settings.codec === CodecType.VP8) {
+      const settings = <EncoderSettingsVP8>track.settings;
+      return `Key-int: ${settings.keyMaxDist}`;
     }
 
     return '';
