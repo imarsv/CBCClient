@@ -1,7 +1,8 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable, Output, Directive } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from '../API';
 
+// @Directive()
 @Injectable()
 export class AuthService {
 
