@@ -8,7 +8,7 @@ export class AuthService {
   private superuserToken?: string = null;
   private token?: string = null;
 
-  private LS_DOMAIN = ''; // 'lls.rncdn7.com.'
+  private LS_DOMAIN = ''; // 'stackvaults.com' // 'lls.rncdn7.com.'
   private LS_TOKEN_KEY = this.LS_DOMAIN + 'token';
   private LS_SUPERUSER_TOKEN_KEY = this.LS_DOMAIN + 'superuser_token';
 

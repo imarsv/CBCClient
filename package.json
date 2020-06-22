@@ -7,6 +7,8 @@
     "build": "ng build",
     "build prod ceeblue.tv": "ng build --prod --build-optimizer --base-href=/cdndemo/bo/",
     "build prod reflected": "ng build --prod --build-optimizer --base-href=/bo/",
+    "build prod gc": "ng build --prod --build-optimizer --base-href=/bo/",
+    "build prod smartx": "ng build --prod --build-optimizer --base-href=/bo/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
