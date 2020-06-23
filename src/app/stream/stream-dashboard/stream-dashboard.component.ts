@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AccessMode,
   HttpConnection,
@@ -10,11 +10,14 @@ import {
   StreamService,
   WebRTCConnection
 } from '../../service/stream.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {OutputStreamComponent} from '../output-stream/output-stream.component';
-import {OutputStreamConnectionComponent} from '../output-stream-connection/output-stream-connection.component';
-import {ClipboardService} from '../../service/clipboard.service';
-import {Observable} from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OutputStreamComponent } from '../output-stream/output-stream.component';
+import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
+import { ClipboardService } from '../../service/clipboard.service';
+import { Observable } from 'rxjs';
+import { StreamRecordingComponent } from '../stream-recording/stream-recording.component';
+import { Recording, RecordingService, RecordingState } from '../../service/recording.service';
+import { StreamRecordingInfoComponent } from '../stream-recording-info/stream-recording-info.component';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -26,11 +29,15 @@ export class StreamDashboardComponent implements OnInit {
   streamFormat = StreamFormat;
   accessMode = AccessMode;
   inputStatus = InputStatus;
+  recordingState = RecordingState;
 
   stream?: InputEndpoint;
   outputs: Observable<OutputEndpoint[]>;
+  recordings: Observable<Recording[]>;
 
-  constructor(private streamService: StreamService, private clipboardService: ClipboardService,
+  constructor(private streamService: StreamService,
+              private recordingService: RecordingService,
+              private clipboardService: ClipboardService,
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
 
@@ -47,6 +54,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadRecordings();
   }
 
   getHttpConnection(): HttpConnection {
@@ -125,7 +133,7 @@ export class StreamDashboardComponent implements OnInit {
 
           this.loadOutputs(output.streamId);
 
-          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, {size: 'lg'});
+          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
         } catch (e) {
@@ -163,6 +171,44 @@ export class StreamDashboardComponent implements OnInit {
   isAdjustableTranscode() {
     return this.getStreamId()
       .startsWith('in+');
+  }
+
+  async startRecording() {
+    const modal = this.modalService.open(StreamRecordingComponent, { size: 'lg' });
+    modal.componentInstance.streamId = this.stream.id;
+
+    try {
+      const recording = await modal.result;
+      if (recording) {
+        this.recordingService.add(recording).subscribe(
+          item => {
+            console.log('=>', item);
+          },
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong'));
+      }
+    } catch (e) {
+    }
+  }
+
+  deleteRecording(id: string) {
+    this.recordingService.delete(id)
+      .subscribe(
+        () => this.loadRecordings(),
+        error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+      );
+  }
+
+  recordingStop(id: string) {
+    console.log(`StreamDashboardComponent::recordingStop(${id})`);
+  }
+
+  recordingInfo(id: any) {
+    const modal = this.modalService.open(StreamRecordingInfoComponent);
+    modal.componentInstance.streamId = id;
+  }
+
+  private loadRecordings() {
+    this.recordings = this.recordingService.list();
   }
 
   private getHostname() {

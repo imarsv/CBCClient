@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h4 class="modal-title">Recording</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div [formGroup]="form" class="modal-body">
+
+  <div class="form-row">
+    <div class="form-group col-9">
+      <label for="fileName">File name</label>
+      <input class="form-control"
+             formControlName="fileName" id="fileName" name="fileName" placeholder="file name" type="text">
+    </div>
+    <div class="form-group col-3">
+      <label for="fileFormat">File format</label>
+      <select class="form-control" formControlName="fileFormat" id="fileFormat" name="fileFormat">
+        <option [ngValue]="fileFormat.MKV">MKV</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="fileFormat">Storage</label>
+      <select class="form-control" formControlName="storageId" id="storageId" name="storageId">
+        <option *ngFor="let storage of storages | async" [ngValue]="storage.id">{{ storage.name }}</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button (click)="activeModal.close(getOutput())" [disabled]="!form.valid" class="btn btn-outline-dark" type="button">Create</button>
+</div>

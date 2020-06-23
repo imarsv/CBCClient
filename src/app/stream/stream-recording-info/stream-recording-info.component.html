@@ -1,0 +1,56 @@
+<div class="modal-header justify-content-between">
+  <h4 class="modal-title">Recording Info</h4>
+
+  <h4>
+    <span [class.badge-danger]="recording?.state === recordingState.Recording"
+          [class.badge-light]="recording?.state === recordingState.Completed"
+          [class.badge-primary]="recording?.state === recordingState.Uploading"
+          [class.badge-warning]="recording?.state === recordingState.Error"
+          class="badge badge-pill">
+      {{ recording?.state }}
+    </span>
+  </h4>
+</div>
+<div class="modal-body">
+
+  <div class="form-row">
+    <div class="d-inline p-2 bg-light text-black h5">
+      <span><i class="fa fa-clock-o"></i> Duration:</span>
+      <span class="badge badge-dark font-weight-bold ml-1" [title]="recording?.duration + ' seconds'">
+        {{ recording?.duration | amDuration:'seconds' }}
+    </span>
+    </div>
+
+    <div class="d-inline p-2 bg-light text-black h5 ml-2">
+      <span><i class="fa fa-cloud-upload"></i> Size:</span>
+      <span class="badge badge-dark font-weight-bold ml-1" [title]="recording?.size + ' bytes'">
+        {{ recording?.size | filesize }}
+    </span>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="storage">Storage</label>
+      <input [readonly]="true" [value]="storage?.name" class="form-control"
+             id="storage" type="text">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="fileName">File path</label>
+      <input [readonly]="true" [value]="getDestination()" class="form-control"
+             id="fileName" type="text">
+    </div>
+  </div>
+
+<!--  TODO Add errors-->
+
+</div>
+
+<div class="modal-footer justify-content-center">
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">OK</span>
+  </button>
+</div>
