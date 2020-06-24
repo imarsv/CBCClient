@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 
@@ -23,7 +22,7 @@ export class NodeConnection {
 })
 export class NodeService {
 
-  constructor(private auth: AuthService, private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
   get(id: string) {
