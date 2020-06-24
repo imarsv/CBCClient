@@ -59,6 +59,11 @@ export class RecordingService {
       .get<Recording[]>(`${API.endpoint()}/recordings`);
   }
 
+  stop(id: string) {
+    return this.httpClient
+      .put<void>(`${API.endpoint()}/recordings/${id}/stop`, {});
+  }
+
   delete(id: string) {
     return this.httpClient
       .delete(`${API.endpoint()}/recordings/${id}`);

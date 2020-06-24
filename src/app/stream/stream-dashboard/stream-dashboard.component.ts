@@ -173,7 +173,7 @@ export class StreamDashboardComponent implements OnInit {
       .startsWith('in+');
   }
 
-  async startRecording() {
+  async recordingStart() {
     const modal = this.modalService.open(StreamRecordingComponent, { size: 'lg' });
     modal.componentInstance.streamId = this.stream.id;
 
@@ -181,30 +181,30 @@ export class StreamDashboardComponent implements OnInit {
       const recording = await modal.result;
       if (recording) {
         this.recordingService.add(recording).subscribe(
-          item => {
-            console.log('=>', item);
-          },
+          () => this.loadRecordings(),
           error => alert(error?.error?.message ? error.error.message : 'Something wrong'));
       }
     } catch (e) {
     }
   }
 
-  deleteRecording(id: string) {
-    this.recordingService.delete(id)
-      .subscribe(
-        () => this.loadRecordings(),
-        error => alert(error?.error?.message ? error.error.message : 'Something wrong')
-      );
-  }
-
   recordingStop(id: string) {
-    console.log(`StreamDashboardComponent::recordingStop(${id})`);
+    this.recordingService.stop(id).subscribe(
+      () => this.loadRecordings(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+    );
   }
 
   recordingInfo(id: any) {
     const modal = this.modalService.open(StreamRecordingInfoComponent);
     modal.componentInstance.streamId = id;
+  }
+
+  recordingDelete(id: string) {
+    this.recordingService.delete(id).subscribe(
+      () => this.loadRecordings(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+    );
   }
 
   private loadRecordings() {

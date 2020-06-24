@@ -18,7 +18,7 @@
       <i class="fa fa-sitemap"></i>
     </button>
 
-    <button (click)="startRecording()" [disabled]="!stream" class="btn btn-success mr-5" type="button">
+    <button (click)="recordingStart()" [disabled]="!stream" class="btn btn-success mr-5" type="button">
       <i class="fa fa-circle" style="color:#a10202"></i>
     </button>
 
@@ -187,7 +187,7 @@
                       [class.badge-warning]="recording?.state === recordingState.Error"
                       class="badge badge-pill">{{ recording.state }}</span>
 
-                <button (click)="deleteRecording(recording.id)" class="btn" type="button">
+                <button (click)="recordingDelete(recording.id)" class="btn" type="button">
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
