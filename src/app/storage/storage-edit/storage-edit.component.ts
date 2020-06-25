@@ -98,12 +98,20 @@ export class StorageEditComponent implements OnInit {
       this.form.addControl('bucket',
         this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
       this.form.addControl('path',
-        this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
+        this.formBuilder.control(null, [Validators.maxLength(255)]));
     }
 
     if (type === StorageType.AmazonS3Compatible) {
       this.form.addControl('endpoint',
         this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
     }
+  }
+
+  remove() {
+    this.storageService.remove(this.id).subscribe(
+      () => {
+        this.router.navigateByUrl('/storages');
+      },
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong'));
   }
 }

@@ -44,8 +44,8 @@ export class StorageDashboardComponent implements OnInit {
     switch (storage.type) {
       case StorageType.AmazonS3:
       case StorageType.AmazonS3Compatible:
-        const amazonS3Storage = <AmazonS3Storage>storage;
-        return `${amazonS3Storage.bucket}:${amazonS3Storage.path.length > 0 ? amazonS3Storage.path : ''}`;
+        const s3Storage = <AmazonS3Storage>storage;
+        return `${s3Storage.bucket}:${s3Storage.path || ''}`;
       default:
         return '?';
     }

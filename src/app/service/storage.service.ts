@@ -24,7 +24,7 @@ export class AmazonS3Storage extends Storage {
 
   public bucket: string;
 
-  public path: string;
+  public path?: string;
 }
 
 export class AmazonS3CompatibleStorage extends AmazonS3Storage {
@@ -54,5 +54,10 @@ export class StorageService {
   update(id: string, storage: Storage) {
     return this.httpClient
       .put<Storage>(`${API.endpoint()}/storages/${id}`, storage);
+  }
+
+  remove(id: string) {
+    return this.httpClient
+      .delete<void>(`${API.endpoint()}/storages/${id}`);
   }
 }
