@@ -37,6 +37,8 @@ export class Recording {
   public duration: number;
 
   public size: number;
+
+  public messages: string[];
 }
 
 @Injectable()

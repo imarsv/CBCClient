@@ -196,7 +196,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   recordingInfo(id: any) {
-    const modal = this.modalService.open(StreamRecordingInfoComponent);
+    const modal = this.modalService.open(StreamRecordingInfoComponent, { scrollable: true });
     modal.componentInstance.streamId = id;
   }
 

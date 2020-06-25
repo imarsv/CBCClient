@@ -31,7 +31,7 @@ export class StreamRecordingInfoComponent implements OnInit {
   }
 
   getDestination() {
-    return `${this.getStorageDestination()}/${this.recording?.fileName}.${this.recording?.fileFormat.toLowerCase()}`;
+    return `${this.getStorageDestination()}${this.recording?.fileName}.${this.recording?.fileFormat.toLowerCase()}`;
   }
 
   private getStorageDestination() {
@@ -39,7 +39,7 @@ export class StreamRecordingInfoComponent implements OnInit {
       if ((this.storage.type === StorageType.AmazonS3) ||
         (this.storage.type === StorageType.AmazonS3Compatible)) {
         const s3Storage = <AmazonS3Storage>this.storage;
-        return `${s3Storage.bucket}:${s3Storage.path}`;
+        return `${s3Storage.bucket}:${s3Storage.path ? s3Storage.path + '/' : ''}`;
       }
     }
 

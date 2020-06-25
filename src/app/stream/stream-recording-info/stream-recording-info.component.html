@@ -16,14 +16,14 @@
   <div class="form-row">
     <div class="d-inline p-2 bg-light text-black h5">
       <span><i class="fa fa-clock-o"></i> Duration:</span>
-      <span class="badge badge-dark font-weight-bold ml-1" [title]="recording?.duration + ' seconds'">
+      <span [title]="recording?.duration + ' seconds'" class="badge badge-dark font-weight-bold ml-1">
         {{ recording?.duration | amDuration:'seconds' }}
     </span>
     </div>
 
     <div class="d-inline p-2 bg-light text-black h5 ml-2">
       <span><i class="fa fa-cloud-upload"></i> Size:</span>
-      <span class="badge badge-dark font-weight-bold ml-1" [title]="recording?.size + ' bytes'">
+      <span [title]="recording?.size + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
         {{ recording?.size | filesize }}
     </span>
     </div>
@@ -45,7 +45,12 @@
     </div>
   </div>
 
-<!--  TODO Add errors-->
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="messages">Messages:</label>
+      <textarea class="form-control" id="messages" rows="5">{{ recording.messages.join('\n') }}</textarea>
+    </div>
+  </div>
 
 </div>
 
