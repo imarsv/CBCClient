@@ -35,14 +35,16 @@ export class StreamDashboardComponent implements OnInit {
   outputs: Observable<OutputEndpoint[]>;
   recordings: Observable<Recording[]>;
 
+  private readonly id: string;
+
   constructor(private streamService: StreamService,
               private recordingService: RecordingService,
               private clipboardService: ClipboardService,
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
 
-    const id = activatedRoute.snapshot.params['id'];
-    this.streamService.get(id)
+    this.id = activatedRoute.snapshot.params['id'];
+    this.streamService.get(this.id)
       .subscribe(item => {
         if (!this.stream) {
           this.stream = <InputEndpoint>{};
@@ -50,7 +52,7 @@ export class StreamDashboardComponent implements OnInit {
         return Object.assign(this.stream, item);
       });
 
-    this.loadOutputs(id);
+    this.loadOutputs(this.id);
   }
 
   ngOnInit() {
@@ -208,7 +210,8 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   private loadRecordings() {
-    this.recordings = this.recordingService.list();
+    console.log(`listByStream(${this.id})`);
+    this.recordings = this.recordingService.listByStream(this.id);
   }
 
   private getHostname() {

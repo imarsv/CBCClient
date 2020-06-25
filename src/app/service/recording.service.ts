@@ -61,6 +61,11 @@ export class RecordingService {
       .get<Recording[]>(`${API.endpoint()}/recordings`);
   }
 
+  listByStream(streamId: string) {
+    return this.httpClient
+      .get<Recording[]>(`${API.endpoint()}/recordings/stream/${streamId}`);
+  }
+
   stop(id: string) {
     return this.httpClient
       .put<void>(`${API.endpoint()}/recordings/${id}/stop`, {});
