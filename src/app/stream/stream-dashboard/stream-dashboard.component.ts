@@ -139,7 +139,7 @@ export class StreamDashboardComponent implements OnInit {
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
         } catch (e) {
-          console.log('E', e);
+          console.error(e);
         }
       }
     } catch (e) {
@@ -210,7 +210,6 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   private loadRecordings() {
-    console.log(`listByStream(${this.id})`);
     this.recordings = this.recordingService.listByStream(this.id);
   }
 
@@ -225,7 +224,6 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   private loadOutputs(id: string) {
-    console.log(`Loading outputs #${id}`);
     this.outputs = this.streamService.listOutputsByStream(id);
   }
 }

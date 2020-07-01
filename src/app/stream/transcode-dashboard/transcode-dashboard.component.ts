@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CodecType,
   EncoderSettingsH264,
   EncoderSettingsVP8,
+  MediaType,
   Output,
   Overlay,
   SpeedPresetH264,
   StreamService,
-  Track,
-  MediaType
+  Track
 } from '../../service/stream.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranscodeTrackViewComponent} from '../transcode-track-view/transcode-track-view.component';
-import {HttpErrorResponse} from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranscodeTrackViewComponent } from '../transcode-track-view/transcode-track-view.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-transcode-dashboard',
@@ -34,15 +34,12 @@ export class TranscodeDashboardComponent implements OnInit {
               private router: Router, private activatedRoute: ActivatedRoute) {
 
     this.streamId = activatedRoute.snapshot.params['id'];
-    console.log(`::TranscodeDashboardComponent(${this.streamId})`);
 
     this.streamService.getTranscode(this.streamId)
       .subscribe(item => this.loadOutput(item));
   }
 
   loadOutput(output: Output) {
-    console.log(`Loading [${this.streamId}]::output => ${JSON.stringify(output, null, 2)}`);
-
     this.overlay = this.emptyOverlay();
     if (output.overlay) {
       this.overlay = output.overlay;
@@ -108,50 +105,41 @@ export class TranscodeDashboardComponent implements OnInit {
   }
 
   clearOverlay() {
-    console.log(`::clearOverlay()`);
     this.overlay = new Overlay('', 0, 0);
   }
 
   async appendTrack() {
-    console.log(`::appendTrack()`);
-
-    const ngbModal = this.modalService.open(TranscodeTrackViewComponent, {backdrop: 'static'});
+    const ngbModal = this.modalService.open(TranscodeTrackViewComponent, { backdrop: 'static' });
     ngbModal.componentInstance.track = this.emptyTrack();
     ngbModal.componentInstance.edit = false;
 
     try {
       const track = await ngbModal.result;
       if (track) {
-        console.log(`::appendTrack => ${JSON.stringify(track, null, 2)}`);
-
         this.tracks.push(track);
       }
     } catch (e) {
-      console.log('::appendTrack()', e);
+      console.error(e);
     }
   }
 
   async editTrack(track: Track) {
-    console.log(`::editTrack(${JSON.stringify(track, null, 2)})`);
-
-    const ngbModal = this.modalService.open(TranscodeTrackViewComponent, {backdrop: 'static'});
+    const ngbModal = this.modalService.open(TranscodeTrackViewComponent, { backdrop: 'static' });
     ngbModal.componentInstance.track = JSON.parse(JSON.stringify(track));
     ngbModal.componentInstance.edit = true;
 
     try {
       const updatedTrack = await ngbModal.result;
       if (updatedTrack) {
-        console.log(`::editTrack => ${JSON.stringify(updatedTrack, null, 2)}`);
         const trackIndex = this.tracks.indexOf(track);
         this.tracks[trackIndex] = updatedTrack;
       }
     } catch (e) {
-      console.log('::editTrack()', e);
+      console.error(e);
     }
   }
 
   removeTrack(track: Track) {
-    console.log(`::removeTrack(${track})`);
     this.tracks.splice(this.tracks.indexOf(track), 1);
   }
 
@@ -168,8 +156,6 @@ export class TranscodeDashboardComponent implements OnInit {
   }
 
   save() {
-    console.log(`::save()`);
-
     const output = new Output();
     output.passthrough = false;
     if (this.overlay.data.length > 0) {
@@ -177,7 +163,6 @@ export class TranscodeDashboardComponent implements OnInit {
     }
     output.tracks = this.tracks;
 
-    console.log(`Saving [${this.streamId}]::output => ${JSON.stringify(output, null, 2)}`);
     this.streamService.updateTranscode(this.streamId, output)
       .subscribe(
         item => this.loadOutput(item),

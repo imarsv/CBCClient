@@ -74,8 +74,6 @@ export class StreamRecordingComponent implements OnInit {
   }
 
   getOutput() {
-    console.log(this.form.value);
-
     if (this.form.valid) {
       return this.form.value as Recording;
     }
