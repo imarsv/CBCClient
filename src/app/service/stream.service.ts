@@ -56,7 +56,7 @@ export class Overlay {
   }
 }
 
-export enum TrackType {
+export enum MediaType {
   Video = 'Video',
   Audio = 'Audio',
 }
@@ -111,7 +111,7 @@ export class EncoderSettingsVP9 extends EncoderSettings {
 
 export class Track {
 
-  public type: TrackType;
+  public type: MediaType;
 
   public width: number;
 
@@ -207,6 +207,20 @@ export interface InputEndpoint {
   accessToken: string | undefined;
 }
 
+export interface TrackInfo {
+
+  idx: number;
+  type: MediaType;
+  codec: string;
+  bps: number;
+
+  height: number | undefined;
+  width: number | undefined;
+
+  channels: number | undefined;
+  rate: number | undefined;
+}
+
 @Injectable()
 export class StreamService {
 
@@ -263,5 +277,15 @@ export class StreamService {
   deleteOutput(outputId: string) {
     return this.httpClient
       .delete(`${API.endpoint()}/outputs/${outputId}`);
+  }
+
+  getIncomingTracksByStream(streamId: string) {
+    return this.httpClient
+      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/incoming`);
+  }
+
+  getOutgoingTracksByStream(streamId: string) {
+    return this.httpClient
+      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/outgoing`);
   }
 }

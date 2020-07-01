@@ -29,6 +29,40 @@
     </div>
   </div>
 
+  <div formGroupName="capture">
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="captureSource">Source</label>
+        <select class="form-control" formControlName="source" id="captureSource" name="captureSource">
+          <option [ngValue]="sourceType.Incoming">Incoming</option>
+          <option [ngValue]="sourceType.Outgoing">Outgoing</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col">
+        <label>Video</label>
+        <div *ngFor="let track of getTracksByType(mediaType.Video); let i = index" class="form-check">
+          <label class="form-check-label">
+            <input (change)="onTrackCheckboxChange($event)" [checked]="true" [value]="track.idx"
+                   class="form-check-input" type="checkbox"/>{{getTrackCaption(track)}}
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label>Audio</label>
+        <div *ngFor="let track of getTracksByType(mediaType.Audio); let i = index" class="form-check">
+          <label class="form-check-label">
+            <input (change)="onTrackCheckboxChange($event)" [checked]="true" [value]="track.idx"
+                   class="form-check-input" type="checkbox"/>{{getTrackCaption(track)}}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 <div class="modal-footer">
   <button (click)="activeModal.close(getOutput())" [disabled]="!form.valid" class="btn btn-outline-dark" type="button">Create</button>

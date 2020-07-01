@@ -8,7 +8,7 @@ import {
   SpeedPresetH264,
   StreamService,
   Track,
-  TrackType
+  MediaType
 } from '../../service/stream.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -202,7 +202,7 @@ export class TranscodeDashboardComponent implements OnInit {
     settings.keyIntMax = 0;
 
     const track = new Track();
-    track.type = TrackType.Video;
+    track.type = MediaType.Video;
     track.settings = settings;
 
     return track;

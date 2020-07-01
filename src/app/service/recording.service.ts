@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
+import { MediaType } from './stream.service';
 
 export enum FileFormat {
   MKV = 'MKV',
 }
 
 export enum SourceType {
-  Input = 'Input',
-  Output = 'Output',
+  Incoming = 'Incoming',
+  Outgoing = 'Outgoing',
 }
 
 export enum RecordingState {
@@ -16,6 +17,20 @@ export enum RecordingState {
   Uploading = 'Uploading',
   Completed = 'Completed',
   Error = 'Error',
+}
+
+export class TrackSelector {
+
+  public idx: number | undefined;
+
+  public type: MediaType;
+}
+
+export class StreamCapture {
+
+  public source: SourceType;
+
+  public tracks: TrackSelector[] | undefined;
 }
 
 export class Recording {
@@ -28,7 +43,7 @@ export class Recording {
 
   public fileFormat: FileFormat;
 
-  public sourceType: SourceType;
+  public capture: StreamCapture;
 
   public storageId: string;
 
