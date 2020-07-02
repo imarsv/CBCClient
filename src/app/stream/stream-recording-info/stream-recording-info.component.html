@@ -14,18 +14,25 @@
 <div class="modal-body">
 
   <div class="form-row">
-    <div class="d-inline p-2 bg-light text-black h5">
+    <div class="d-inline p-2 bg-light text-black h6">
       <span><i class="fa fa-clock-o"></i> Duration:</span>
       <span [title]="recording?.duration + ' seconds'" class="badge badge-dark font-weight-bold ml-1">
         {{ recording?.duration | amDuration:'seconds' }}
-    </span>
+      </span>
     </div>
 
-    <div class="d-inline p-2 bg-light text-black h5 ml-2">
+    <div class="d-inline p-2 bg-light text-black h6 ml-2">
       <span><i class="fa fa-cloud-upload"></i> Size:</span>
       <span [title]="recording?.size + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
         {{ recording?.size | filesize }}
-    </span>
+      </span>
+    </div>
+
+    <div class="d-inline p-2 bg-light text-black h6 ml-2">
+      <span><i class="fa fa-cloud-upload"></i> Uploaded:</span>
+      <span [title]="recording?.size + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
+        {{ recording?.uploaded | filesize }}
+      </span>
     </div>
   </div>
 

@@ -53,6 +53,8 @@ export class Recording {
 
   public size: number;
 
+  public uploaded: number;
+
   public messages: string[];
 }
 
