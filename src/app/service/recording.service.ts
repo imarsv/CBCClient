@@ -51,7 +51,7 @@ export class Recording {
 
   public duration: number;
 
-  public size: number;
+  public length: number;
 
   public uploaded: number;
 
