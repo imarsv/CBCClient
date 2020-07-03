@@ -10,6 +10,9 @@
       <li class="nav-item" routerLinkActive="active" *ngIf="account">
         <a class="nav-link" routerLink="streams">Stream</a>
       </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="account">
+        <a class="nav-link" routerLink="storages">Storages</a>
+      </li>
       <li class="nav-item" routerLinkActive="active" *ngIf="account?.role === role.ADMIN">
         <a class="nav-link" routerLink="nodes">Nodes</a>
       </li>

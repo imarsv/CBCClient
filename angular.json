@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cbcclinet": {
+    "cbcclient": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cbcclinet",
+            "aot": true,
+            "outputPath": "dist/cbcclient",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -29,6 +30,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -50,18 +57,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "cbcclinet:build"
+            "browserTarget": "cbcclient:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "cbcclinet:build:production"
+              "browserTarget": "cbcclient:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cbcclinet:build"
+            "browserTarget": "cbcclient:build"
           }
         },
         "test": {
@@ -95,7 +102,7 @@
         }
       }
     },
-    "cbcclinet-e2e": {
+    "cbcclient-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -103,7 +110,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "cbcclinet:serve"
+            "devServerTarget": "cbcclient:serve"
           }
         },
         "lint": {
@@ -118,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "cbcclinet"
+  "defaultProject": "cbcclient",
+  "cli": {
+    "analytics": "93e39dbb-7049-429a-ab77-40fe9ffe6937"
+  }
 }

@@ -2,21 +2,28 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from '../API';
 
+// @Directive()
 @Injectable()
 export class AuthService {
 
+  @Output() change: EventEmitter<any> = new EventEmitter();
   private superuserToken?: string = null;
   private token?: string = null;
-
   private LS_DOMAIN = ''; // 'lls.rncdn7.com.'
   private LS_TOKEN_KEY = this.LS_DOMAIN + 'token';
   private LS_SUPERUSER_TOKEN_KEY = this.LS_DOMAIN + 'superuser_token';
 
-  @Output() change: EventEmitter<any> = new EventEmitter();
-
   constructor(private httpClient: HttpClient) {
     this.token = localStorage.getItem(this.LS_TOKEN_KEY);
     this.superuserToken = localStorage.getItem(this.LS_SUPERUSER_TOKEN_KEY);
+  }
+
+  get authenticated(): boolean {
+    return this.token != null;
+  }
+
+  get impersonated(): boolean {
+    return this.superuserToken != null;
   }
 
   async authenticate(username: string, password: string): Promise<boolean> {
@@ -35,26 +42,18 @@ export class AuthService {
         return true;
       }
     } catch (e) {
-      console.log('AuthService authenticate error: ', e);
+      console.error('AuthService authenticate error: ', e);
     }
 
     return false;
-  }
-
-  get authenticated(): boolean {
-    return this.token != null;
-  }
-
-  getToken() {
-    return this.token;
   }
 
   // authorizationHeader() {
   //   return { 'Authorization': `Bearer ${this.token}` };
   // }
 
-  get impersonated(): boolean {
-    return this.superuserToken != null;
+  getToken() {
+    return this.token;
   }
 
   async impersonate(id: string) {
@@ -75,7 +74,7 @@ export class AuthService {
         return true;
       }
     } catch (e) {
-      console.log('AuthService impersonate error: ', e);
+      console.error('AuthService impersonate error: ', e);
     }
 
     return false;

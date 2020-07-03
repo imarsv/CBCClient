@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AccessMode,
   HttpConnection,
@@ -10,11 +10,14 @@ import {
   StreamService,
   WebRTCConnection
 } from '../../service/stream.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {OutputStreamComponent} from '../output-stream/output-stream.component';
-import {OutputStreamConnectionComponent} from '../output-stream-connection/output-stream-connection.component';
-import {ClipboardService} from '../../service/clipboard.service';
-import {Observable} from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OutputStreamComponent } from '../output-stream/output-stream.component';
+import { OutputStreamConnectionComponent } from '../output-stream-connection/output-stream-connection.component';
+import { ClipboardService } from '../../service/clipboard.service';
+import { Observable } from 'rxjs';
+import { StreamRecordingComponent } from '../stream-recording/stream-recording.component';
+import { Recording, RecordingService, RecordingState } from '../../service/recording.service';
+import { StreamRecordingInfoComponent } from '../stream-recording-info/stream-recording-info.component';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -26,16 +29,22 @@ export class StreamDashboardComponent implements OnInit {
   streamFormat = StreamFormat;
   accessMode = AccessMode;
   inputStatus = InputStatus;
+  recordingState = RecordingState;
 
   stream?: InputEndpoint;
   outputs: Observable<OutputEndpoint[]>;
+  recordings: Observable<Recording[]>;
 
-  constructor(private streamService: StreamService, private clipboardService: ClipboardService,
+  private readonly id: string;
+
+  constructor(private streamService: StreamService,
+              private recordingService: RecordingService,
+              private clipboardService: ClipboardService,
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
 
-    const id = activatedRoute.snapshot.params['id'];
-    this.streamService.get(id)
+    this.id = activatedRoute.snapshot.params['id'];
+    this.streamService.get(this.id)
       .subscribe(item => {
         if (!this.stream) {
           this.stream = <InputEndpoint>{};
@@ -43,10 +52,11 @@ export class StreamDashboardComponent implements OnInit {
         return Object.assign(this.stream, item);
       });
 
-    this.loadOutputs(id);
+    this.loadOutputs(this.id);
   }
 
   ngOnInit() {
+    this.loadRecordings();
   }
 
   getHttpConnection(): HttpConnection {
@@ -125,11 +135,11 @@ export class StreamDashboardComponent implements OnInit {
 
           this.loadOutputs(output.streamId);
 
-          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, {size: 'lg'});
+          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
           outputStreamConnectionModal.componentInstance.format = output.format;
           outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
         } catch (e) {
-          console.log('E', e);
+          console.error(e);
         }
       }
     } catch (e) {
@@ -165,6 +175,44 @@ export class StreamDashboardComponent implements OnInit {
       .startsWith('in+');
   }
 
+  async recordingStart() {
+    const modal = this.modalService.open(StreamRecordingComponent, { size: 'lg' });
+    modal.componentInstance.streamId = this.stream.id;
+
+    try {
+      const recording = await modal.result;
+      if (recording) {
+        this.recordingService.add(recording).subscribe(
+          () => this.loadRecordings(),
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong'));
+      }
+    } catch (e) {
+    }
+  }
+
+  recordingStop(id: string) {
+    this.recordingService.stop(id).subscribe(
+      () => this.loadRecordings(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+    );
+  }
+
+  recordingInfo(id: any) {
+    const modal = this.modalService.open(StreamRecordingInfoComponent, { scrollable: true });
+    modal.componentInstance.streamId = id;
+  }
+
+  recordingDelete(id: string) {
+    this.recordingService.delete(id).subscribe(
+      () => this.loadRecordings(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+    );
+  }
+
+  private loadRecordings() {
+    this.recordings = this.recordingService.listByStream(this.id);
+  }
+
   private getHostname() {
     const uri = this.getConnectionURI();
     if (uri) {
@@ -176,7 +224,6 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   private loadOutputs(id: string) {
-    console.log(`Loading outputs #${id}`);
     this.outputs = this.streamService.listOutputsByStream(id);
   }
 }

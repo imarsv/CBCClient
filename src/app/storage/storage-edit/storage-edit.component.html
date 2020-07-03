@@ -1,0 +1,83 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+  <button (click)="remove()" class="btn btn-danger" type="button">
+    <i class="fa fa-trash"></i>
+  </button>
+</nav>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="name">Name</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="name" id="name" placeholder="storage name" type="text">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="type">Type</label>
+      <div class="col-sm-9">
+        <select class="custom-select" formControlName="type" id="type" required>
+          <option disabled selected value="">Choose...</option>
+          <option *ngFor="let item of storageType | keyvalue" [ngValue]="item.value">{{ getUserFriendlyStorageTypeName(item.value) }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="(form.controls['type'].value === storageType.AmazonS3) || (form.controls['type'].value === storageType.AmazonS3Compatible)"
+         class="form-group row">
+      <label class="col-sm-3 col-form-label" for="accessKeyId">Access key ID</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="accessKeyId" id="accessKeyId"
+               placeholder="an access key ID (for example, AKIAIOSFODNN7EXAMPLE)"
+               type="text">
+      </div>
+    </div>
+
+    <div *ngIf="(form.controls['type'].value === storageType.AmazonS3) || (form.controls['type'].value === storageType.AmazonS3Compatible)"
+         class="form-group row">
+      <label class="col-sm-3 col-form-label" for="secretAccessKey">Secret access key</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="secretAccessKey" id="secretAccessKey"
+               placeholder="a secret access key (for example, wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY)"
+               type="text">
+      </div>
+    </div>
+
+    <div *ngIf="(form.controls['type'].value === storageType.AmazonS3Compatible)" class="form-group row">
+      <label class="col-sm-3 col-form-label" for="endpoint">Endpoint</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="endpoint" id="endpoint"
+               placeholder="a URL that is the entry point for a web service"
+               type="text">
+      </div>
+    </div>
+
+    <div *ngIf="(form.controls['type'].value === storageType.AmazonS3) || (form.controls['type'].value === storageType.AmazonS3Compatible)"
+         class="form-group row">
+      <label class="col-sm-3 col-form-label" for="bucket">Bucket</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="bucket" id="bucket"
+               placeholder="destination bucket"
+               type="text">
+      </div>
+    </div>
+
+    <div *ngIf="(form.controls['type'].value === storageType.AmazonS3) || (form.controls['type'].value === storageType.AmazonS3Compatible)"
+         class="form-group row">
+      <label class="col-sm-3 col-form-label" for="path">Path</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="path" id="path"
+               placeholder="destination path inside bucket"
+               type="text">
+      </div>
+    </div>
+
+      <div class="modal-footer float-">
+      <button [disabled]="!form.valid"
+              class="btn btn-outline-dark" type="submit">
+        {{ edit ? 'Update' : 'Create' }}
+      </button>
+
+    </div>
+  </div>
+</form>

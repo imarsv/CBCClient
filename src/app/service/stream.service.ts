@@ -1,8 +1,7 @@
-import {Injectable} from '@angular/core';
-import {AuthService} from './auth/auth.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {InputEndpoint} from './stream.service';
-import {API} from './API';
+import { Injectable } from '@angular/core';
+import { AuthService } from './auth/auth.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { API } from './API';
 
 export enum StreamFormat {
   RTMP = 'RTMP',
@@ -57,7 +56,7 @@ export class Overlay {
   }
 }
 
-export enum TrackType {
+export enum MediaType {
   Video = 'Video',
   Audio = 'Audio',
 }
@@ -112,7 +111,7 @@ export class EncoderSettingsVP9 extends EncoderSettings {
 
 export class Track {
 
-  public type: TrackType;
+  public type: MediaType;
 
   public width: number;
 
@@ -208,6 +207,20 @@ export interface InputEndpoint {
   accessToken: string | undefined;
 }
 
+export interface TrackInfo {
+
+  idx: number;
+  type: MediaType;
+  codec: string;
+  bps: number;
+
+  height: number | undefined;
+  width: number | undefined;
+
+  channels: number | undefined;
+  rate: number | undefined;
+}
+
 @Injectable()
 export class StreamService {
 
@@ -253,7 +266,7 @@ export class StreamService {
   listOutputsByStream(streamId: string) {
     const params = new HttpParams().set('streamId', streamId);
     return this.httpClient
-      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, {params: params});
+      .get<OutputEndpoint[]>(`${API.endpoint()}/outputs`, { params: params });
   }
 
   clearSessions(outputId: string) {
@@ -264,5 +277,15 @@ export class StreamService {
   deleteOutput(outputId: string) {
     return this.httpClient
       .delete(`${API.endpoint()}/outputs/${outputId}`);
+  }
+
+  getIncomingTracksByStream(streamId: string) {
+    return this.httpClient
+      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/incoming`);
+  }
+
+  getOutgoingTracksByStream(streamId: string) {
+    return this.httpClient
+      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/outgoing`);
   }
 }
