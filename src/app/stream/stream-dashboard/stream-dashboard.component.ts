@@ -27,8 +27,8 @@ import { StreamRecordingInfoComponent } from '../stream-recording-info/stream-re
 export class StreamDashboardComponent implements OnInit, OnDestroy {
   // Enums
   streamFormat = StreamFormat;
-  accessMode = AccessMode;
   inputStatus = InputStatus;
+  accessMode = AccessMode;
   recordingState = RecordingState;
 
   // Data

@@ -54,6 +54,7 @@ export class StreamRecordingComponent implements OnInit {
       fileFormat: [FileFormat.MKV, [Validators.required]],
       capture: capture,
       storageId: [null, [Validators.required]],
+      callbackUri: [null, [Validators.maxLength(255)]]
     });
 
     const compareString = (a: string, b: string) => {

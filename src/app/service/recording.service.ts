@@ -56,6 +56,8 @@ export class Recording {
   public uploaded: number;
 
   public messages: string[];
+
+  public callbackUri?: string;
 }
 
 @Injectable()
