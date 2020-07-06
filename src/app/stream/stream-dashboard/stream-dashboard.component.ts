@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AccessMode,
@@ -24,16 +24,19 @@ import { StreamRecordingInfoComponent } from '../stream-recording-info/stream-re
   templateUrl: './stream-dashboard.component.html',
   styleUrls: ['./stream-dashboard.component.css']
 })
-export class StreamDashboardComponent implements OnInit {
-  viewing = false;
+export class StreamDashboardComponent implements OnInit, OnDestroy {
+  // Enums
   streamFormat = StreamFormat;
   accessMode = AccessMode;
   inputStatus = InputStatus;
   recordingState = RecordingState;
 
+  // Data
   stream?: InputEndpoint;
   outputs: Observable<OutputEndpoint[]>;
   recordings: Observable<Recording[]>;
+
+  private refreshTimer = null;
 
   private readonly id: string;
 
@@ -43,28 +46,19 @@ export class StreamDashboardComponent implements OnInit {
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
 
-    this.id = activatedRoute.snapshot.params['id'];
-    this.streamService.get(this.id)
-      .subscribe(item => {
-        if (!this.stream) {
-          this.stream = <InputEndpoint>{};
-        }
-        return Object.assign(this.stream, item);
-      });
-
-    this.loadOutputs(this.id);
+    this.id = activatedRoute.snapshot.params['id'] || 'none';
   }
 
   ngOnInit() {
+    this.loadStream();
+    this.loadOutputs();
     this.loadRecordings();
   }
 
-  getHttpConnection(): HttpConnection {
-    return (this.stream.connection as HttpConnection);
-  }
-
-  getWebRTCConnection(): WebRTCConnection {
-    return (this.stream.connection as WebRTCConnection);
+  ngOnDestroy(): void {
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+    }
   }
 
   getConnectionURI() {
@@ -133,7 +127,7 @@ export class StreamDashboardComponent implements OnInit {
         try {
           const outputEndpoint = await this.streamService.output(output).toPromise();
 
-          this.loadOutputs(output.streamId);
+          this.loadOutputs();
 
           const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
           outputStreamConnectionModal.componentInstance.format = output.format;
@@ -146,21 +140,16 @@ export class StreamDashboardComponent implements OnInit {
     }
   }
 
-  clearSessions(id: string) {
-    this.streamService.clearSessions(id).subscribe(item => {
-      if (this.stream) {
-        this.loadOutputs(this.stream.id);
-      }
-    });
+  clearSessions(outputId: string) {
+    this.streamService.clearSessions(outputId).subscribe(
+      () => this.loadOutputs(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with sessions cleanup'));
   }
 
-  deleteOutput(id: string) {
-    this.streamService.deleteOutput(id).subscribe(item => {
-      if (this.stream) {
-        this.loadOutputs(this.stream.id);
-      }
-    });
-
+  deleteOutput(outputId: string) {
+    this.streamService.deleteOutput(outputId).subscribe(
+      () => this.loadOutputs(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with output delete'));
   }
 
   delete() {
@@ -184,7 +173,7 @@ export class StreamDashboardComponent implements OnInit {
       if (recording) {
         this.recordingService.add(recording).subscribe(
           () => this.loadRecordings(),
-          error => alert(error?.error?.message ? error.error.message : 'Something wrong'));
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong with recording start'));
       }
     } catch (e) {
     }
@@ -193,7 +182,7 @@ export class StreamDashboardComponent implements OnInit {
   recordingStop(id: string) {
     this.recordingService.stop(id).subscribe(
       () => this.loadRecordings(),
-      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with recording stop')
     );
   }
 
@@ -205,12 +194,35 @@ export class StreamDashboardComponent implements OnInit {
   recordingDelete(id: string) {
     this.recordingService.delete(id).subscribe(
       () => this.loadRecordings(),
-      error => alert(error?.error?.message ? error.error.message : 'Something wrong')
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with recording delete')
     );
+  }
+
+  private loadStream() {
+    this.streamService.get(this.id)
+      .subscribe(item => {
+          this.stream = item;
+
+          this.refreshTimer = setTimeout(() => {
+            this.loadAll();
+          }, 5000);
+        },
+        error => alert(error?.error?.message ? error.error.message : 'Something wrong with stream loading')
+      );
+  }
+
+  private loadOutputs() {
+    this.outputs = this.streamService.listOutputsByStream(this.id);
   }
 
   private loadRecordings() {
     this.recordings = this.recordingService.listByStream(this.id);
+  }
+
+  private loadAll() {
+    this.loadStream();
+    this.loadOutputs();
+    this.loadRecordings();
   }
 
   private getHostname() {
@@ -221,9 +233,5 @@ export class StreamDashboardComponent implements OnInit {
         return match[2];
       }
     }
-  }
-
-  private loadOutputs(id: string) {
-    this.outputs = this.streamService.listOutputsByStream(id);
   }
 }
