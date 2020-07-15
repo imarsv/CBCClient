@@ -24,7 +24,7 @@ export class AmazonS3Storage extends Storage {
 
   public bucket: string;
 
-  public path?: string;
+  public path: string | undefined;
 }
 
 export class AmazonS3CompatibleStorage extends AmazonS3Storage {
