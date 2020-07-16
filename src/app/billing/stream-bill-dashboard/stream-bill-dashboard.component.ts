@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { StatisticsService, StreamStatistics } from '../../service/statistics.service';
+import { StreamStatistic, StreamStatisticalService } from '../../service/stream-statistical.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-stream-statistics-dashboard',
-  templateUrl: './stream-statistics-dashboard.component.html',
-  styleUrls: ['./stream-statistics-dashboard.component.css']
+  selector: 'app-stream-bill-dashboard',
+  templateUrl: './stream-bill-dashboard.component.html',
+  styleUrls: ['./stream-bill-dashboard.component.css']
 })
-export class StreamStatisticsDashboardComponent implements OnInit {
+export class StreamBillDashboardComponent implements OnInit {
 
   id: string;
   from: NgbDateStruct;
   to: NgbDateStruct;
 
-  statistics?: StreamStatistics;
+  statistics?: StreamStatistic;
+  statisticsList: StreamStatistic[] = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-              protected statisticsService: StatisticsService) {
+              protected statisticsService: StreamStatisticalService) {
     this.id = activatedRoute.snapshot.params['id'];
 
     const now = new Date();
@@ -36,12 +37,20 @@ export class StreamStatisticsDashboardComponent implements OnInit {
       new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999)))
       .subscribe(data => {
         if (!this.statistics) {
-          this.statistics = <StreamStatistics>{};
+          this.statistics = <StreamStatistic>{};
         }
         Object.assign(this.statistics, data);
+
+
+        this.statisticsList.push(data);
       });
   }
 
   ngOnInit() {
   }
+
+  print() {
+    window.print();
+  }
+
 }

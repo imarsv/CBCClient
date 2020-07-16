@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { StatisticsService } from './statistics.service';
+import { StreamStatisticalService } from './stream-statistical.service';
 
 describe('StatisticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StatisticsService]
+      providers: [StreamStatisticalService]
     });
   });
 
-  it('should be created', inject([StatisticsService], (service: StatisticsService) => {
+  it('should be created', inject([StreamStatisticalService], (service: StreamStatisticalService) => {
     expect(service).toBeTruthy();
   }));
 });

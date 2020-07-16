@@ -14,22 +14,22 @@ import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
 import { NodeEditComponent } from './node/node-edit/node-edit.component';
 import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
-import { StreamStatisticsDashboardComponent } from './statistics/stream-statistics-dashboard/stream-statistics-dashboard.component';
-import { StatisticsModule } from './statistics/statistics.module';
 import { AccountModule } from './account/account.module';
 import { AccountsViewComponent } from './account/accounts-view/accounts-view.component';
-import { AccountStatisticsDashboardComponent } from './statistics/account-statistics-dashboard/account-statistics-dashboard.component';
 import { AuthGuardService } from './service/auth/auth-guard.service';
 import { TokenInterceptor } from './service/auth/token-interceptor';
 import { TranscodeDashboardComponent } from './stream/transcode-dashboard/transcode-dashboard.component';
 import { StorageDashboardComponent } from './storage/storage-dashboard/storage-dashboard.component';
 import { StorageModule } from './storage/storage.module';
 import { StorageEditComponent } from './storage/storage-edit/storage-edit.component';
+import { AccountBillDashboardComponent } from './billing/account-bill-dashboard/account-bill-dashboard.component';
+import { StreamBillDashboardComponent } from './billing/stream-bill-dashboard/stream-bill-dashboard.component';
+import { BillingModule } from './billing/billing.module';
 
 @NgModule({
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule,
-    AccountModule, NodeModule, StreamModule, StatisticsModule, StorageModule,
+    AccountModule, NodeModule, StreamModule, BillingModule, StorageModule,
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
@@ -48,15 +48,15 @@ import { StorageEditComponent } from './storage/storage-edit/storage-edit.compon
           canActivate: [AuthGuardService]
         },
         {
-          path: 'statistics/stream/:id', component: StreamStatisticsDashboardComponent,
+          path: 'billing/stream/:id', component: StreamBillDashboardComponent,
           canActivate: [AuthGuardService]
         },
         {
-          path: 'statistics/account/:id', component: AccountStatisticsDashboardComponent,
+          path: 'billing/account/:id', component: AccountBillDashboardComponent,
           canActivate: [AuthGuardService]
         },
         {
-          path: 'statistics/account', component: AccountStatisticsDashboardComponent,
+          path: 'billing/account', component: AccountBillDashboardComponent,
           canActivate: [AuthGuardService]
         },
         {

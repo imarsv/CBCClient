@@ -1,0 +1,21 @@
+:host {
+  display: none;
+}
+
+@media print {
+  :host {
+    display: block;
+  }
+
+  html {
+    font-family: Lato;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+
+  p {
+    font-size: 12pt;
+  }
+}

@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { StatisticsService, StreamStatistics } from '../../service/statistics.service';
+import { StreamStatistic, StreamStatisticalService } from '../../service/stream-statistical.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-account-statistics-dashboard',
-  templateUrl: './account-statistics-dashboard.component.html',
-  styleUrls: ['./account-statistics-dashboard.component.css']
+  selector: 'app-account-bill-dashboard',
+  templateUrl: './account-bill-dashboard.component.html',
+  styleUrls: ['./account-bill-dashboard.component.css']
 })
-export class AccountStatisticsDashboardComponent implements OnInit {
+export class AccountBillDashboardComponent implements OnInit {
 
   id?: string;
   from: NgbDateStruct;
   to: NgbDateStruct;
 
-  statistics: StreamStatistics[] = [];
+  statistics: StreamStatistic[] = [];
 
   durationTotal = 0;
   uploadTotal = 0;
   downloadTotal = 0;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-              protected statisticsService: StatisticsService) {
+              protected statisticsService: StreamStatisticalService) {
     this.id = activatedRoute.snapshot.params['id'];
 
     const now = new Date();
@@ -52,7 +52,7 @@ export class AccountStatisticsDashboardComponent implements OnInit {
       // TODO investigate how to copy array
       this.statistics.splice(0, this.statistics.length);
       data
-        .map(item => Object.assign(<StreamStatistics>{}, item))
+        .map(item => Object.assign(<StreamStatistic>{}, item))
         .forEach(item => this.statistics.push(item));
 
       this.durationTotal = this.statistics
@@ -69,5 +69,4 @@ export class AccountStatisticsDashboardComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

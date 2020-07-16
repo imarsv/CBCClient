@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <form class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <label class="font-weight-bold" for="fromDatepicker">From:</label>
+        <input #fromDatepicker="ngbDatepicker" [(ngModel)]="from" class="form-control" id="fromDatepicker"
+               name="fromDatepicker" ngbDatepicker placeholder="yyyy-mm-dd">
+        <div class="input-group-append">
+          <button (click)="fromDatepicker.toggle()" class="btn btn-outline-secondary" type="button">
+            <i aria-hidden="true" class="fa fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="form-inline ml-3">
+    <div class="form-group">
+      <div class="input-group">
+        <label class="font-weight-bold" for="toDatepicker">To:</label>
+        <input #toDatepicker="ngbDatepicker" [(ngModel)]="to" class="form-control" id="toDatepicker"
+               name="toDatepicker" ngbDatepicker placeholder="yyyy-mm-dd">
+        <div class="input-group-append">
+          <button (click)="toDatepicker.toggle()" class="btn btn-outline-secondary" type="button">
+            <i aria-hidden="true" class="fa fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <button (click)="load()" class="btn ml-5">
+    <i class="fa fa-search"></i>
+  </button>
+
+  <button (click)="print()" class="btn ml-5">
+    <i class="fa fa-print"></i>
+  </button>
+</nav>
+
+<app-stream-usage-details
+    *ngIf="statistics" [statistic]="statistics"
+    id="stream-bill-dashboard">
+</app-stream-usage-details>
+<app-invoice-print
+    *ngIf="statistics" [statistic]="statistics">
+</app-invoice-print>
