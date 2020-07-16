@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StreamStatistic, StreamStatisticalService } from '../../service/stream-statistical.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Account, AccountService } from '../../service/account.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-stream-bill-dashboard',
@@ -14,11 +16,13 @@ export class StreamBillDashboardComponent implements OnInit {
   from: NgbDateStruct;
   to: NgbDateStruct;
 
-  statistics?: StreamStatistic;
-  statisticsList: StreamStatistic[] = [];
+  statistic: StreamStatistic[] = [];
+
+  account: Observable<Account>;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-              protected statisticsService: StreamStatisticalService) {
+              private statisticalService: StreamStatisticalService,
+              private accountService: AccountService) {
     this.id = activatedRoute.snapshot.params['id'];
 
     const now = new Date();
@@ -32,18 +36,18 @@ export class StreamBillDashboardComponent implements OnInit {
   }
 
   load() {
-    this.statisticsService.getByStream(this.id,
-      new Date(Date.UTC(this.from.year, this.from.month - 1, this.from.day, 0, 0, 0, 0)),
-      new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999)))
-      .subscribe(data => {
-        if (!this.statistics) {
-          this.statistics = <StreamStatistic>{};
-        }
-        Object.assign(this.statistics, data);
+    this.statisticalService.getByStream(this.id, this.getFromTimestamp(), this.getToTimestamp())
+      .subscribe(data => this.statistic.push(data));
 
+    this.account = this.accountService.getMyAccount();
+  }
 
-        this.statisticsList.push(data);
-      });
+  getFromTimestamp() {
+    return new Date(Date.UTC(this.from.year, this.from.month - 1, this.from.day, 0, 0, 0, 0));
+  }
+
+  getToTimestamp() {
+    return new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999));
   }
 
   ngOnInit() {

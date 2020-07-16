@@ -9,12 +9,13 @@ import { InvoicePrintComponent } from './invoice-print/invoice-print.component';
 import { AccountBillDashboardComponent } from './account-bill-dashboard/account-bill-dashboard.component';
 import { StreamBillDashboardComponent } from './stream-bill-dashboard/stream-bill-dashboard.component';
 import { StreamUsageDetailsComponent } from './stream-usage-details/stream-usage-details.component';
+import { AccountService } from '../service/account.service';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, NgbModule, MomentModule, NgxFilesizeModule,
   ],
-  providers: [StreamStatisticalService],
+  providers: [StreamStatisticalService, AccountService],
   declarations: [InvoicePrintComponent, AccountBillDashboardComponent, StreamBillDashboardComponent, StreamUsageDetailsComponent],
   exports: [AccountBillDashboardComponent, StreamBillDashboardComponent]
 })

@@ -1,2 +1,27 @@
-<h1>Invoice Title</h1>
-<app-stream-usage-details [statistic]="statistic"></app-stream-usage-details>
+<img src="assets/image0-1.png"/>
+<hr>
+<table>
+  <tbody>
+  <td class="w-50">
+    <tr>Billing Statement: {{ from | amDateFormat:'MM-DD-YYYY' }} to {{ to | amDateFormat:'MM-DD-YYYY' }}</tr>
+    <tr>Date Printed: {{ now | amDateFormat:'MM-DD-YYYY' }}</tr>
+  </td>
+  <td class="w-50">
+    <tr>Name: {{ accountName }}</tr>
+    <tr>Account Number: {{ accountNumber }}</tr>
+  </td>
+  </tbody>
+</table>
+
+<hr class="mt-4" style="border-top: 3px solid gray;">
+<div class="d-flex justify-content-between">
+  <h4>Total</h4>
+  <div class="h4">
+    <span class="badge badge-dark font-weight-bold">{{ (getDownloadTotal() + getUploadTotal()) | filesize }}</span>
+  </div>
+</div>
+<hr style="border-top: 3px solid gray;">
+
+<h4 class="mt-5">Details</h4>
+<hr>
+<app-stream-usage-details *ngFor="let item of statistic" [statistic]="item"></app-stream-usage-details>

@@ -1,0 +1,5 @@
+@media print {
+  #account-bill-dashboard {
+    display: none;
+  }
+}

@@ -38,10 +38,15 @@
   </button>
 </nav>
 
-<app-stream-usage-details
-    *ngIf="statistics" [statistic]="statistics"
-    id="stream-bill-dashboard">
-</app-stream-usage-details>
+<div id="stream-bill-dashboard">
+  <app-stream-usage-details *ngFor="let item of statistic" [statistic]="item">
+  </app-stream-usage-details>
+</div>
 <app-invoice-print
-    *ngIf="statistics" [statistic]="statistics">
+    [accountName]="(account | async)?.username"
+    [accountNumber]="(account | async)?.id"
+    [from]="this.getFromTimestamp()"
+    [statistic]="statistic"
+    [to]="this.getToTimestamp()"
+>
 </app-invoice-print>

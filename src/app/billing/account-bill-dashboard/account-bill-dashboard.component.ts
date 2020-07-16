@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StreamStatistic, StreamStatisticalService } from '../../service/stream-statistical.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Account, AccountService } from '../../service/account.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-account-bill-dashboard',
@@ -14,14 +16,16 @@ export class AccountBillDashboardComponent implements OnInit {
   from: NgbDateStruct;
   to: NgbDateStruct;
 
-  statistics: StreamStatistic[] = [];
+  statistic: StreamStatistic[] = [];
+  account: Observable<Account>;
 
   durationTotal = 0;
   uploadTotal = 0;
   downloadTotal = 0;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-              protected statisticsService: StreamStatisticalService) {
+              protected statisticsService: StreamStatisticalService,
+              private accountService: AccountService) {
     this.id = activatedRoute.snapshot.params['id'];
 
     const now = new Date();
@@ -35,38 +39,45 @@ export class AccountBillDashboardComponent implements OnInit {
   }
 
   load() {
-    let statisticsRequest;
+    let request;
 
     if (this.id) {
-      statisticsRequest = this.statisticsService.list(
-        new Date(Date.UTC(this.from.year, this.from.month - 1, this.from.day, 0, 0, 0, 0)),
-        new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999)),
-        this.id);
+      request = this.statisticsService.list(this.getFromTimestamp(), this.getToTimestamp(), this.id);
+      this.account = this.accountService.get(this.id);
     } else {
-      statisticsRequest = this.statisticsService.list(
-        new Date(Date.UTC(this.from.year, this.from.month - 1, this.from.day, 0, 0, 0, 0)),
-        new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999)));
+      request = this.statisticsService.list(this.getFromTimestamp(), this.getToTimestamp());
+      this.account = this.accountService.getMyAccount();
     }
 
-    statisticsRequest.subscribe(data => {
-      // TODO investigate how to copy array
-      this.statistics.splice(0, this.statistics.length);
-      data
-        .map(item => Object.assign(<StreamStatistic>{}, item))
-        .forEach(item => this.statistics.push(item));
+    request.subscribe(data => {
+      this.statistic = data;
 
-      this.durationTotal = this.statistics
-        .map(item => item.duration)
-        .reduce((x, y) => x + y, 0);
-      this.uploadTotal = this.statistics
-        .map(item => item.upload)
-        .reduce((x, y) => x + y, 0);
-      this.downloadTotal = this.statistics
-        .map(item => item.download)
-        .reduce((x, y) => x + y, 0);
+      const { duration, upload, download } = this.statistic
+        .reduce((acc, item) => {
+          acc.duration += item.duration;
+          acc.upload += item.upload;
+          acc.download += item.download;
+          return acc;
+        }, { duration: 0, upload: 0, download: 0 });
+
+      this.durationTotal = duration;
+      this.uploadTotal = upload;
+      this.downloadTotal = download;
     });
   }
 
+  getFromTimestamp() {
+    return new Date(Date.UTC(this.from.year, this.from.month - 1, this.from.day, 0, 0, 0, 0));
+  }
+
+  getToTimestamp() {
+    return new Date(Date.UTC(this.to.year, this.to.month - 1, this.to.day, 23, 59, 59, 999));
+  }
+
   ngOnInit() {
+  }
+
+  print() {
+    window.print();
   }
 }
