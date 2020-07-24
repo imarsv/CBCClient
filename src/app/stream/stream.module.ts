@@ -17,12 +17,14 @@ import { RecordingService } from '../service/recording.service';
 import { MomentModule } from 'ngx-moment';
 import { StreamRecordingInfoComponent } from './stream-recording-info/stream-recording-info.component';
 import { NgxFilesizeModule } from 'ngx-filesize';
+import { SnapshotService } from '../service/snapshot.service';
+import { StreamSnapshotComponent } from './stream-snapshot/stream-snapshot.component';
 
 @NgModule({
   imports: [
     CommonModule, RouterModule, FormsModule, ReactiveFormsModule, NgbModule, MomentModule, NgxFilesizeModule,
   ],
-  providers: [RecordingService, StreamService, ClipboardService],
+  providers: [RecordingService, SnapshotService, StreamService, ClipboardService],
   entryComponents: [InputStreamComponent, OutputStreamComponent, OutputStreamConnectionComponent, TranscodeTrackViewComponent],
   declarations: [
     InputStreamComponent,
@@ -33,7 +35,8 @@ import { NgxFilesizeModule } from 'ngx-filesize';
     TranscodeDashboardComponent,
     TranscodeTrackViewComponent,
     StreamRecordingComponent,
-    StreamRecordingInfoComponent
+    StreamRecordingInfoComponent,
+    StreamSnapshotComponent
   ],
   exports: [StreamDashboardComponent, TranscodeDashboardComponent]
 })

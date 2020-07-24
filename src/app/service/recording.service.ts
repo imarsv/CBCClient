@@ -2,14 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 import { MediaType } from './stream.service';
+import { SourceType } from './common/source-type.enum';
 
 export enum FileFormat {
   MKV = 'MKV',
-}
-
-export enum SourceType {
-  Incoming = 'Incoming',
-  Outgoing = 'Outgoing',
 }
 
 export enum RecordingState {

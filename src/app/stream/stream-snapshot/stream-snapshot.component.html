@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h4 class="modal-title">Snapshot settings</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="close" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div [formGroup]="form" class="modal-body">
+
+  <div class="row">
+    <div class="col-lg mb-2">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <div>
+            <span>Incoming</span>
+          </div>
+          <div>
+            <input formControlName="incomingEnabled" id="incomingEnabled" name="enabled" data-toggle="enabled" type="checkbox">
+          </div>
+        </div>
+
+        <div class="card-body" formGroupName="incoming">
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="incomingFormat">Format</label>
+            <select class="form-control col-9" formControlName="format" id="incomingFormat" name="format">
+              <option [ngValue]="snapshotFormat.JPEG">JPEG</option>
+              <option [ngValue]="snapshotFormat.PNG">PNG</option>
+            </select>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="incomingQuality">Quality</label>
+            <select class="form-control col-9" formControlName="quality" id="incomingQuality" name="quality">
+              <option [ngValue]="snapshotQuality.Low">Low</option>
+              <option [ngValue]="snapshotQuality.Medium">Medium</option>
+              <option [ngValue]="snapshotQuality.High">High</option>
+            </select>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="incomingInterval">Interval</label>
+            <input class="form-control col-9" formControlName="interval" id="incomingInterval"
+                   max="30" min="1" name="interval" type="number"/>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <div>
+            <span>Outgoing</span>
+          </div>
+          <div>
+            <input formControlName="outgoingEnabled" data-toggle="toggle" type="checkbox">
+          </div>
+        </div>
+        <div class="card-body" formGroupName="outgoing">
+
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="outgoingFormat">Format</label>
+            <select class="form-control col-9" formControlName="format" id="outgoingFormat" name="format">
+              <option [ngValue]="snapshotFormat.JPEG">JPEG</option>
+              <option [ngValue]="snapshotFormat.PNG">PNG</option>
+            </select>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="outgoingQuality">Quality</label>
+            <select class="form-control col-9" formControlName="quality" id="outgoingQuality" name="quality">
+              <option [ngValue]="snapshotQuality.Low">Low</option>
+              <option [ngValue]="snapshotQuality.Medium">Medium</option>
+              <option [ngValue]="snapshotQuality.High">High</option>
+            </select>
+          </div>
+
+          <div class="form-group row mr-1">
+            <label class="col-form-label col-3" for="outgoingInterval">Interval</label>
+            <input class="form-control col-9" formControlName="interval"
+                   id="outgoingInterval" max="30" min="1" name="interval" type="number"/>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button (click)="activeModal.close(getSettings())" [disabled]="!form.valid" class="btn btn-outline-dark" type="button">Ok</button>
+</div>

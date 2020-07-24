@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FileFormat, Recording, SourceType } from '../../service/recording.service';
+import { FileFormat, Recording } from '../../service/recording.service';
 import { Storage, StorageService } from '../../service/storage.service';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MediaType, StreamService, TrackInfo } from '../../service/stream.service';
+import { SourceType } from '../../service/common/source-type.enum';
 
 @Component({
   selector: 'app-stream-recording',

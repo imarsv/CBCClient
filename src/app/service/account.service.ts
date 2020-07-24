@@ -22,21 +22,21 @@ export class AccountService {
 
   add(account: Account) {
     return this.httpClient
-      .post<Account>(`${API.endpoint()}/account`, account);
+      .post<Account>(`${API.endpoint()}/accounts`, account);
   }
 
   get(id: string) {
     return this.httpClient
-      .get<Account>(`${API.endpoint()}/account/${id}`);
+      .get<Account>(`${API.endpoint()}/accounts/${id}`);
   }
 
   getMyAccount() {
     return this.httpClient
-      .get<Account>(`${API.endpoint()}/account/whoami`);
+      .get<Account>(`${API.endpoint()}/accounts/whoami`);
   }
 
   list() {
     return this.httpClient
-      .get<Account[]>(`${API.endpoint()}/account`);
+      .get<Account[]>(`${API.endpoint()}/accounts`);
   }
 }

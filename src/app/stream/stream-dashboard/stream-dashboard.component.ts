@@ -18,6 +18,9 @@ import { Observable } from 'rxjs';
 import { StreamRecordingComponent } from '../stream-recording/stream-recording.component';
 import { Recording, RecordingService, RecordingState } from '../../service/recording.service';
 import { StreamRecordingInfoComponent } from '../stream-recording-info/stream-recording-info.component';
+import { SnapshotService, StreamSnapshot } from '../../service/snapshot.service';
+import { SourceType } from '../../service/common/source-type.enum';
+import { StreamSnapshotComponent } from '../stream-snapshot/stream-snapshot.component';
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -36,12 +39,20 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
   outputs: Observable<OutputEndpoint[]>;
   recordings: Observable<Recording[]>;
 
+  incomingSnapshotSettings: StreamSnapshot = null;
+  incomingSnapshotSrc: string;
+  incomingSnapshotRefreshTimer = null;
+  outgoingSnapshotSettings: StreamSnapshot = null;
+  outgoingSnapshotSrc: string;
+  outgoingSnapshotRefreshTimer = null;
+
   private refreshTimer = null;
 
   private readonly id: string;
 
   constructor(private streamService: StreamService,
               private recordingService: RecordingService,
+              private snapshotService: SnapshotService,
               private clipboardService: ClipboardService,
               private modalService: NgbModal,
               private router: Router, private activatedRoute: ActivatedRoute) {
@@ -53,12 +64,16 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
     this.loadStream();
     this.loadOutputs();
     this.loadRecordings();
+    this.loadSnapshotSettings();
   }
 
   ngOnDestroy(): void {
     if (this.refreshTimer) {
       clearTimeout(this.refreshTimer);
     }
+
+    this.stopIncomingSnapshotPreviewMonitoring();
+    this.stopOutgoingSnapshotPreviewMonitoring();
   }
 
   getConnectionURI() {
@@ -198,10 +213,44 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
+  async updateSnapshotSettings() {
+    const modal = this.modalService.open(StreamSnapshotComponent, { size: 'lg' });
+    modal.componentInstance.incoming = this.incomingSnapshotSettings;
+    modal.componentInstance.outgoing = this.outgoingSnapshotSettings;
+
+    try {
+      const settings = await modal.result;
+      if (settings) {
+        if (settings.incoming) {
+          this.snapshotService.updateSettings(this.id, SourceType.Incoming, settings.incoming).subscribe(
+            data => this.updateIncomingSnapshotSettings(data),
+            error => alert(error?.error?.message ? error.error.message : 'Something wrong with incoming snapshot settings update')
+          );
+        } else {
+          this.snapshotService.clearSettings(this.id, SourceType.Incoming).subscribe(() => {
+            this.updateIncomingSnapshotSettings(null);
+          });
+        }
+
+        if (settings.outgoing) {
+          this.snapshotService.updateSettings(this.id, SourceType.Outgoing, settings.outgoing).subscribe(
+            data => this.updateOutgoingSnapshotSettings(data),
+            error => alert(error?.error?.message ? error.error.message : 'Something wrong with outgoing snapshot settings update')
+          );
+        } else {
+          this.snapshotService.clearSettings(this.id, SourceType.Outgoing).subscribe(() => {
+            this.updateOutgoingSnapshotSettings(null);
+          });
+        }
+      }
+    } catch (e) {
+    }
+  }
+
   private loadStream() {
     this.streamService.get(this.id)
-      .subscribe(item => {
-          this.stream = item;
+      .subscribe(data => {
+          this.stream = data;
 
           this.refreshTimer = setTimeout(() => {
             this.loadAll();
@@ -219,11 +268,85 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
     this.recordings = this.recordingService.listByStream(this.id);
   }
 
+  private loadSnapshotSettings() {
+    this.snapshotService.getSettings(this.id, SourceType.Incoming)
+      .subscribe(data => this.updateIncomingSnapshotSettings(data), () => {});
+
+    this.snapshotService.getSettings(this.id, SourceType.Outgoing)
+      .subscribe(data => this.updateOutgoingSnapshotSettings(data), () => {});
+  }
+
+  private updateIncomingSnapshotSettings(data: StreamSnapshot) {
+    this.incomingSnapshotSettings = data;
+    this.refreshIncomingSnapshotPreviewMonitoring();
+  }
+
+  private updateOutgoingSnapshotSettings(data: StreamSnapshot) {
+    this.outgoingSnapshotSettings = data;
+    this.refreshOutgoingSnapshotPreviewMonitoring();
+  }
+
   private loadAll() {
     this.loadStream();
     this.loadOutputs();
     this.loadRecordings();
   }
+
+  private refreshIncomingSnapshotPreviewMonitoring() {
+    this.stopIncomingSnapshotPreviewMonitoring();
+
+    if (this.incomingSnapshotSettings) {
+      this.incomingSnapshotRefreshTimer = setInterval(() => {
+        if (this.stream && this.stream.status === InputStatus.Ingestion) {
+          this.loadSnapshot(SourceType.Incoming, (src) => this.incomingSnapshotSrc = src);
+        } else {
+          if (this.incomingSnapshotSrc) {
+            this.incomingSnapshotSrc = null;
+          }
+        }
+      }, this.incomingSnapshotSettings.interval * 1000);
+    }
+  }
+
+  private stopIncomingSnapshotPreviewMonitoring() {
+    if (this.incomingSnapshotRefreshTimer) {
+      clearInterval(this.incomingSnapshotRefreshTimer);
+    }
+    this.incomingSnapshotSrc = null;
+  }
+
+  private refreshOutgoingSnapshotPreviewMonitoring() {
+    this.stopOutgoingSnapshotPreviewMonitoring();
+
+    if (this.outgoingSnapshotSettings) {
+      this.outgoingSnapshotRefreshTimer = setInterval(() => {
+        if (this.stream && this.stream.status === InputStatus.Ingestion) {
+          this.loadSnapshot(SourceType.Outgoing, (src) => this.outgoingSnapshotSrc = src);
+        } else {
+          if (this.outgoingSnapshotSrc) {
+            this.outgoingSnapshotSrc = null;
+          }
+        }
+      }, this.outgoingSnapshotSettings.interval * 1000);
+    }
+  }
+
+  private stopOutgoingSnapshotPreviewMonitoring() {
+    if (this.outgoingSnapshotRefreshTimer) {
+      clearInterval(this.outgoingSnapshotRefreshTimer);
+    }
+    this.outgoingSnapshotSrc = null;
+  }
+
+  private loadSnapshot(source: SourceType, src: any) {
+    this.snapshotService.resource(this.id, source)
+      .subscribe(data => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => src(fileReader.result as string);
+        fileReader.readAsDataURL(data);
+      });
+  }
+
 
   private getHostname() {
     const uri = this.getConnectionURI();
