@@ -9,15 +9,15 @@
   <div class="form-row">
     <div class="form-group col">
       <select [(ngModel)]="format" class="form-control" id="format" name="format">
-        <option [ngValue]="streamFormat.RTMP">RTMP</option>
         <option [ngValue]="streamFormat.WebRTC">WebRTC</option>
+        <option [ngValue]="streamFormat.RTMP">RTMP</option>
+        <option [ngValue]="streamFormat.RTSP">RTSP</option>
       </select>
     </div>
 
     <div class="form-group col">
       <select [(ngModel)]="output" class="form-control" id="output" name="output">
         <option [ngValue]="outputMode.Passthrough">Passthrough</option>
-        <option [ngValue]="outputMode.StaticTranscode">Transcoding</option>
         <option [ngValue]="outputMode.AdjustableTranscode">Adjustable transcoding</option>
       </select>
     </div>

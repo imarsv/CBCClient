@@ -9,8 +9,9 @@
   <div class="form-row">
     <div class="form-group col">
       <select [(ngModel)]="format" class="form-control" id="format" name="format">
-        <option [ngValue]="streamFormat.RTMP">RTMP</option>
         <option [ngValue]="streamFormat.WebRTC">WebRTC</option>
+        <option [ngValue]="streamFormat.RTMP">RTMP</option>
+        <option [ngValue]="streamFormat.RTSP">RTSP</option>
         <option [ngValue]="streamFormat.HLS">HLS</option>
         <option [ngValue]="streamFormat.CMAF">DASH (CMAF)</option>
       </select>

@@ -4,7 +4,7 @@ import {AccessMode, GeoLocation, Input, InputStreamer, Output, StreamFormat} fro
 
 export enum OutputMode {
   Passthrough = 'Passthrough',
-  StaticTranscode = 'StaticTranscode',
+  // StaticTranscode = 'StaticTranscode', // Deprecated
   AdjustableTranscode = 'AdjustableTranscode',
 }
 
@@ -19,7 +19,7 @@ export class InputStreamComponent implements OnInit {
   accessMode = AccessMode;
   outputMode = OutputMode;
 
-  format: StreamFormat = StreamFormat.RTMP;
+  format: StreamFormat = StreamFormat.WebRTC;
   output = OutputMode.Passthrough;
 
   ipAddress?: string;
@@ -44,8 +44,6 @@ export class InputStreamComponent implements OnInit {
     const output = new Output();
     if (this.output === OutputMode.Passthrough) {
       output.passthrough = true;
-    } else if (this.output === OutputMode.StaticTranscode) {
-      output.passthrough = false;
     } else if (this.output === OutputMode.AdjustableTranscode) {
       output.passthrough = false;
       output.tracks = [];
