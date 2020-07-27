@@ -63,7 +63,7 @@ export class AuthService {
       }
 
       const response = await this.httpClient
-        .get<Token>(`${API.endpoint()}/account/${id}/impersonate`)
+        .get<Token>(`${API.endpoint()}/accounts/${id}/impersonate`)
         .toPromise();
 
       if (response && response.token) {
