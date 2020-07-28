@@ -282,11 +282,11 @@ export class StreamService {
 
   getIncomingTracksByStream(streamId: string) {
     return this.httpClient
-      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/incoming`);
+      .get<TrackInfo[]>(`${API.endpoint()}/info/stream/${streamId}/incoming`);
   }
 
   getOutgoingTracksByStream(streamId: string) {
     return this.httpClient
-      .get<TrackInfo[]>(`${API.endpoint()}/tracks/${streamId}/outgoing`);
+      .get<TrackInfo[]>(`${API.endpoint()}/info/stream/${streamId}/outgoing`);
   }
 }
