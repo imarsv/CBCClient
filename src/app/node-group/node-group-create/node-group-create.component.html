@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title">New node group</h4>
+</div>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="name">Name</label>
+      <div class="col-sm-9">
+        <input class="form-control" formControlName="name" id="name" placeholder="storage name" type="text">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="description">Description</label>
+        <textarea class="form-control" formControlName="description" id="description" rows="5"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer justify-content-center">
+    <button [disabled]="!form.valid" class="btn btn-outline-dark" type="submit">Create</button>
+  </div>
+</form>

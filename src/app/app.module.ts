@@ -25,11 +25,13 @@ import { StorageEditComponent } from './storage/storage-edit/storage-edit.compon
 import { AccountBillDashboardComponent } from './billing/account-bill-dashboard/account-bill-dashboard.component';
 import { StreamBillDashboardComponent } from './billing/stream-bill-dashboard/stream-bill-dashboard.component';
 import { BillingModule } from './billing/billing.module';
+import { NodeGroupsListComponent } from './node-group/node-groups-list/node-groups-list.component';
+import { NodeGroupModule } from './node-group/node-group.module';
 
 @NgModule({
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule,
-    AccountModule, NodeModule, StreamModule, BillingModule, StorageModule,
+    AccountModule, NodeModule, NodeGroupModule, StreamModule, BillingModule, StorageModule,
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
@@ -69,6 +71,10 @@ import { BillingModule } from './billing/billing.module';
         },
         {
           path: 'nodes/:mode/:id', component: NodeEditComponent,
+          canActivate: [AuthGuardService]
+        },
+        {
+          path: 'node-groups', component: NodeGroupsListComponent,
           canActivate: [AuthGuardService]
         },
         {

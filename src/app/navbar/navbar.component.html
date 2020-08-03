@@ -17,6 +17,9 @@
         <a class="nav-link" routerLink="nodes">Nodes</a>
       </li>
       <li class="nav-item" routerLinkActive="active" *ngIf="account?.role === role.ADMIN">
+        <a class="nav-link" routerLink="node-groups">Node groups</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="account?.role === role.ADMIN">
         <a class="nav-link" routerLink="accounts">Accounts</a>
       </li>
     </ul>
