@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Account } from '../../service/account.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeGroup } from '../../service/node-group.service';
 
 @Component({
@@ -11,15 +10,19 @@ import { NodeGroup } from '../../service/node-group.service';
 })
 export class NodeGroupCreateComponent implements OnInit {
 
+  @Input() group: NodeGroup | undefined = undefined;
+  @Input() update: boolean = false;
+
   form: FormGroup;
 
   constructor(public activeModal: NgbActiveModal,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(255)]],
-      description: ['', [Validators.maxLength(16384)]],
+      name: [this.group?.name || '', [Validators.required, Validators.maxLength(255)]],
+      description: [this.group?.description || '', [Validators.maxLength(16384)]],
     });
   }
 

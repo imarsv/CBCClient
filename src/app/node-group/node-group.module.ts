@@ -1,14 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NodeGroupService } from '../service/node-group.service';
-import { NodeGroupsListComponent } from './node-groups-list/node-groups-list.component';
-import { NodeGroupCreateComponent } from './node-group-create/node-group-create.component';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from "@angular/router";
+import { NgToggleModule } from '@nth-cloud/ng-toggle';
+import { NodeGroupService } from '../service/node-group.service';
+import { NodeGroupCreateComponent } from './node-group-create/node-group-create.component';
+import { NodeGroupDashboardComponent } from './node-group-dashboard/node-group-dashboard.component';
+import { NodeGroupsListComponent } from './node-groups-list/node-groups-list.component';
 
 @NgModule({
-  declarations: [NodeGroupsListComponent, NodeGroupCreateComponent],
+  declarations: [NodeGroupsListComponent, NodeGroupCreateComponent, NodeGroupDashboardComponent],
   providers: [NodeGroupService],
-  imports: [CommonModule, ReactiveFormsModule],
-  exports: [NodeGroupsListComponent]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgToggleModule],
+  exports: [NodeGroupsListComponent, NodeGroupDashboardComponent]
 })
 export class NodeGroupModule {}

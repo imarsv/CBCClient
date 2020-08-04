@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+import { NodeGroupDashboardComponent } from "./node-group/node-group-dashboard/node-group-dashboard.component";
 import { StreamModule } from './stream/stream.module';
 import { AuthComponent } from './security/auth/auth.component';
 import { FormsModule } from '@angular/forms';
@@ -75,6 +76,10 @@ import { NodeGroupModule } from './node-group/node-group.module';
         },
         {
           path: 'node-groups', component: NodeGroupsListComponent,
+          canActivate: [AuthGuardService]
+        },
+        {
+          path: 'node-groups/:id', component: NodeGroupDashboardComponent,
           canActivate: [AuthGuardService]
         },
         {

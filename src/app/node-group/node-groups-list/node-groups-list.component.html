@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
-  <button class="btn btn-danger" type="button" (click)="createNewGroup()">
+  <button (click)="createNewGroup()" class="btn btn-danger" type="button">
     <i class="fa fa-plus"></i>
   </button>
 </nav>
 
 <div class="row mt-1 mr-1 ml-1">
   <div class="list-group list-group-flush w-100">
-    <div *ngFor="let group of groups | async"
+    <div *ngFor="let group of groups | async" [routerLink]="['/node-groups', group.id]"
          class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{ group.name }}</h5>
