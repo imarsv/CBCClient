@@ -35,8 +35,9 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <span class="h5">Scaling</span>
-          <button type="button" class="btn btn-primary btn-sm" (click)="appendScalingRule()"><i
-            class="fas fa-plus-circle"></i></button>
+          <button (click)="appendScalingRule()" class="btn btn-primary btn-sm" type="button">
+            <i class="fas fa-plus-circle"></i>
+          </button>
         </div>
         <div class="card-body">
 
@@ -45,15 +46,15 @@
                  class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <div class="pr-3">
-                  <ng-toggle [value]="rule.enabled"
-                             (valueChange)="updateScalingRuleEnablement($event, rule)"></ng-toggle>
+                  <ng-toggle (valueChange)="updateScalingRuleEnablement($event, rule)"
+                             [value]="rule.enabled"></ng-toggle>
                 </div>
-                <div class="flex-grow-1" (click)="editScalingRule(rule)">
+                <div (click)="editScalingRule(rule)" class="flex-grow-1">
                   <h6 class="mb-1">{{ getUserFriendlyScalingRuleCondition(rule) }}</h6>
                   <h6 class="mb-1">{{ getUserFriendlyScalingRuleAction(rule) }}</h6>
                 </div>
                 <div>
-                  <button type="button" class="btn btn-sm btn-danger" (click)="removeScalingRule(rule)">
+                  <button (click)="removeScalingRule(rule)" class="btn btn-sm btn-danger" type="button">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>

@@ -21,10 +21,6 @@ export class NodeGroupsListComponent implements OnInit {
     this.load();
   }
 
-  private load() {
-    this.groups = this.nodeGroupService.list();
-  }
-
   async createNewGroup() {
     const createNodeGroupModal = this.modalService.open(NodeGroupCreateComponent);
 
@@ -33,9 +29,13 @@ export class NodeGroupsListComponent implements OnInit {
       if (group) {
         this.nodeGroupService.add(group).subscribe(
           () => this.load(),
-        error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading'));
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading'));
       }
     } catch (e) {
     }
+  }
+
+  private load() {
+    this.groups = this.nodeGroupService.list();
   }
 }

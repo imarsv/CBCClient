@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   ComputingProvider,
   NodeGroup,
@@ -10,9 +10,9 @@ import {
   ScalingConditionMetricType,
   ScalingConditionType,
   ScalingRule
-} from "../../service/node-group.service";
-import { NodeGroupCreateComponent } from "../node-group-create/node-group-create.component";
-import { ScalingRuleViewComponent } from "../scaling-rule-view/scaling-rule-view.component";
+} from '../../service/node-group.service';
+import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
+import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view.component';
 
 @Component({
   selector: 'app-node-group-dashboard',
@@ -34,13 +34,6 @@ export class NodeGroupDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  private load() {
-    this.nodeGroupService.get(this.id).subscribe(
-      group => this.group = group,
-      error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')
-    )
   }
 
   async editGroup() {
@@ -124,7 +117,7 @@ export class NodeGroupDashboardComponent implements OnInit {
     description += ' node(s) in ';
 
     if (rule.action.resource.provider === ComputingProvider.AWS) {
-      description += ' AWS '
+      description += ' AWS ';
     }
 
     return description;
@@ -156,6 +149,13 @@ export class NodeGroupDashboardComponent implements OnInit {
     this.nodeGroupService.removeScalingRule(this.id, rule.id).subscribe(
       () => this.load(),
       error => alert(error?.error?.message ? error.error.message : 'Something wrong on deleting scaling rule')
+    );
+  }
+
+  private load() {
+    this.nodeGroupService.get(this.id).subscribe(
+      group => this.group = group,
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')
     );
   }
 }

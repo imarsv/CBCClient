@@ -4,7 +4,7 @@ import { API } from './API';
 
 export enum ScalingConditionMetricType {
   CPUGroupAvg = 'CPUGroupAvg',
-  BWGroupAvg  = 'BWGroupAvg',
+  BWGroupAvg = 'BWGroupAvg',
 }
 
 export enum ScalingConditionType {
@@ -53,7 +53,7 @@ export class ComputingResource {
 
 export enum ScalingActionType {
   Increase = 'Increase',
-  Reduce   = 'Reduce',
+  Reduce = 'Reduce',
 }
 
 export class ScalingAction {
@@ -73,7 +73,7 @@ export class NodeGroup {
   id: string;
   name: string;
   description: string;
-  scalingRules: ScalingRule[]
+  scalingRules: ScalingRule[];
   scalable: boolean;
 }
 

@@ -11,7 +11,7 @@ import { NodeGroup } from '../../service/node-group.service';
 export class NodeGroupCreateComponent implements OnInit {
 
   @Input() group: NodeGroup | undefined = undefined;
-  @Input() editing: boolean = false;
+  @Input() editing = false;
 
   form: FormGroup;
 
