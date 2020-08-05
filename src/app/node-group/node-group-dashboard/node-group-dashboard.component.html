@@ -17,7 +17,7 @@
     <div class="col-lg mt-3">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-          <span class="h5">Settings</span>
+          <span class="h5 pr-2">Settings</span>
         </div>
         <div class="card-body">
           <div>
@@ -35,8 +35,33 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <span class="h5">Scaling</span>
+          <button type="button" class="btn btn-primary btn-sm" (click)="appendScalingRule()"><i
+            class="fas fa-plus-circle"></i></button>
         </div>
         <div class="card-body">
+
+          <div class="list-group list-group-flush w-100">
+            <div *ngFor="let rule of group.scalingRules; trackBy: trackByRule"
+                 class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="pr-3">
+                  <ng-toggle [value]="rule.enabled"
+                             (valueChange)="updateScalingRuleEnablement($event, rule)"></ng-toggle>
+                </div>
+                <div class="flex-grow-1" (click)="editScalingRule(rule)">
+                  <h6 class="mb-1">{{ getUserFriendlyScalingRuleCondition(rule) }}</h6>
+                  <h6 class="mb-1">{{ getUserFriendlyScalingRuleAction(rule) }}</h6>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeScalingRule(rule)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="mb-1"></p>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
