@@ -27,6 +27,7 @@ export class NodeGroupsListComponent implements OnInit {
     try {
       const group = await createNodeGroupModal.result;
       if (group) {
+        group.scalable = false;
         this.nodeGroupService.add(group).subscribe(
           () => this.load(),
           error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading'));

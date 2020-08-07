@@ -7,6 +7,7 @@ import {
   ScalingComparisonType,
   ScalingConditionMetricType,
   ScalingConditionType,
+  ScalingRule,
 } from '../../service/node-group.service';
 
 @Component({
@@ -24,6 +25,7 @@ export class ScalingRuleViewComponent implements OnInit {
   computingProvider = ComputingProvider;
 
   @Input() editing = false;
+  @Input() rule: ScalingRule;
 
   constructor(public activeModal: NgbActiveModal,
               private fb: FormBuilder) {
@@ -56,6 +58,10 @@ export class ScalingRuleViewComponent implements OnInit {
       action: action,
       actionTimeout: [0, [Validators.required, Validators.min(0), Validators.max(3600)]],
     });
+
+    if (this.editing && this.rule) {
+      this.form.patchValue(this.rule);
+    }
   }
 
   onSubmit() {

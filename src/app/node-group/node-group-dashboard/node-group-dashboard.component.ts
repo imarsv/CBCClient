@@ -44,7 +44,9 @@ export class NodeGroupDashboardComponent implements OnInit {
     try {
       const group = await createNodeGroupModal.result;
       if (group) {
-        this.nodeGroupService.update(this.id, group).subscribe(
+        this.group.name = group.name;
+        this.group.description = group.description;
+        this.nodeGroupService.update(this.id, this.group).subscribe(
           () => this.load(),
           error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on update'));
       }
@@ -52,13 +54,19 @@ export class NodeGroupDashboardComponent implements OnInit {
     }
   }
 
+  updateGroupScalable(enabled: boolean) {
+    this.group.scalable = enabled;
+    this.nodeGroupService.update(this.id, this.group).subscribe(
+      () => this.load(),
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on update'));
+  }
+
   async appendScalingRule() {
     try {
       const scalingRuleViewComponentModal = this.modalService.open(ScalingRuleViewComponent);
 
       try {
-        let value = await scalingRuleViewComponentModal.result;
-        console.log(value);
+        const value = await scalingRuleViewComponentModal.result;
         this.nodeGroupService.addScalingRule(this.id, value).subscribe(
           () => this.load(),
           error => alert(error?.error?.message ? error.error.message : 'Something wrong on appending scale group')
@@ -123,12 +131,30 @@ export class NodeGroupDashboardComponent implements OnInit {
     return description;
   }
 
-  editScalingRule(rule: ScalingRule) {
-    console.log('Edit scaling rule!');
+  async editScalingRule(rule: ScalingRule) {
+    try {
+      const nodal = this.modalService.open(ScalingRuleViewComponent);
+      nodal.componentInstance.editing = true;
+      nodal.componentInstance.rule = rule;
+
+      try {
+        const value = await nodal.result;
+        rule.condition = value.condition;
+        rule.action = value.action;
+        rule.actionTimeout = value.actionTimeout;
+        this.nodeGroupService.updateScalingRule(this.id, rule.id, rule).subscribe(
+          () => this.load(),
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong on updating scale rule')
+        );
+      } catch (e) {}
+
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   updateScalingRuleEnablement(value, rule: ScalingRule) {
-    if (value != rule.enabled) {
+    if (value !== rule.enabled) {
       rule.enabled = value;
       this.updateScalingRule(rule);
     }
@@ -150,6 +176,10 @@ export class NodeGroupDashboardComponent implements OnInit {
       () => this.load(),
       error => alert(error?.error?.message ? error.error.message : 'Something wrong on deleting scaling rule')
     );
+  }
+
+  appendNode() {
+
   }
 
   private load() {

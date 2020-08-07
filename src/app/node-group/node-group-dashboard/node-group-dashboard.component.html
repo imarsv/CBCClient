@@ -22,7 +22,8 @@
         <div class="card-body">
           <div>
             <span>Scaling </span>
-            <ng-toggle offText="Disabled" onText="Enabled"></ng-toggle>
+            <ng-toggle (valueChange)="updateGroupScalable($event)" [value]="group.scalable"
+                       offText="Disabled" onText="Enabled"></ng-toggle>
           </div>
         </div>
       </div>
@@ -50,8 +51,12 @@
                              [value]="rule.enabled"></ng-toggle>
                 </div>
                 <div (click)="editScalingRule(rule)" class="flex-grow-1">
-                  <h6 class="mb-1">{{ getUserFriendlyScalingRuleCondition(rule) }}</h6>
-                  <h6 class="mb-1">{{ getUserFriendlyScalingRuleAction(rule) }}</h6>
+                  <div>
+                    <span class="mb-1">{{ getUserFriendlyScalingRuleCondition(rule) }}</span>
+                  </div>
+                  <div>
+                    <samp class="mb-1">{{ getUserFriendlyScalingRuleAction(rule) }}</samp>
+                  </div>
                 </div>
                 <div>
                   <button (click)="removeScalingRule(rule)" class="btn btn-sm btn-danger" type="button">
@@ -69,8 +74,11 @@
 
     <div class="col-lg mt-3">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between">
           <span class="h5">Nodes</span>
+          <button (click)="appendNode()" class="btn btn-primary btn-sm" type="button">
+            <i class="fas fa-plus-circle"></i>
+          </button>
         </div>
         <div class="card-body">
         </div>
