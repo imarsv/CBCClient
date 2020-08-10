@@ -89,6 +89,7 @@ export enum ResourceType {
 }
 
 export class ComputingResourceNodeModel {
+  public id: string;
   public name: string;
   public hostname: string;
   public enabled: boolean;
@@ -136,6 +137,11 @@ export class NodeGroupService {
       .get<NodeGroup[]>(`${API.endpoint()}/node-groups`);
   }
 
+  listPersistentNodes() {
+    return this.httpClient
+      .get<ComputingResourceNodeModel[]>(`${API.endpoint()}/node-groups/persistent/node`);
+  }
+
   addScalingRule(id: string, rule: ScalingRule) {
     return this.httpClient
       .post<ScalingRule>(`${API.endpoint()}/node-groups/${id}/scaling-rule`, rule);
@@ -149,5 +155,15 @@ export class NodeGroupService {
   removeScalingRule(groupId: string, ruleId: string) {
     return this.httpClient
       .delete(`${API.endpoint()}/node-groups/${groupId}/scaling-rule/${ruleId}`);
+  }
+
+  appendPersistentNode(groupId: string, nodeId: string) {
+    return this.httpClient
+      .put<NodeGroup>(`${API.endpoint()}/node-groups/${groupId}/node/${nodeId}`, {});
+  }
+
+  detachPersistentNode(groupId: string, nodeId: string) {
+    return this.httpClient
+      .delete(`${API.endpoint()}/node-groups/${groupId}/node/${nodeId}`);
   }
 }

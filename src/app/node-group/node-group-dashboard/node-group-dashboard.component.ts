@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  ComputingProvider,
+  ComputingProvider, ComputingResourceNodeModel,
   NodeGroup,
   NodeGroupResource,
   NodeGroupService,
-  ResourceType, ScalingActionIncreaseSettings,
+  ResourceType,
+  ScalingActionIncreaseSettings,
   ScalingActionType,
   ScalingComparisonType,
   ScalingConditionMetricType,
@@ -15,6 +16,7 @@ import {
 } from '../../service/node-group.service';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
 import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view.component';
+import { NodeListViewComponent } from '../node-list-view/node-list-view.component';
 
 @Component({
   selector: 'app-node-group-dashboard',
@@ -181,10 +183,6 @@ export class NodeGroupDashboardComponent implements OnInit {
     );
   }
 
-  appendNode() {
-
-  }
-
   getGroupResources(type: ResourceType) {
     return this.group.resources.filter(item => item.type === type);
   }
@@ -202,5 +200,44 @@ export class NodeGroupDashboardComponent implements OnInit {
 
   groupResourceTypesViewOrder() {
     return [ ResourceType.Persistent, ResourceType.Allocated ];
+  }
+
+  async updatePersistentNodes() {
+    const persistentNodes = await this.nodeGroupService.listPersistentNodes().toPromise();
+    const groupNodes = this.group.resources
+      .filter(item => item.type === ResourceType.Persistent)
+      .map(item => item.node);
+
+    try {
+      const modal = this.modalService.open(NodeListViewComponent);
+      modal.componentInstance.persistentNodes = [...persistentNodes];
+      modal.componentInstance.groupNodes = [...groupNodes];
+
+      try {
+        const nodeList = <ComputingResourceNodeModel[]>(await modal.result);
+
+        for (const node of groupNodes) {
+          const index = nodeList.findIndex(item => item.id === node.id);
+          if (index === -1) {
+            await this.nodeGroupService.detachPersistentNode(this.group.id, node.id).toPromise();
+          }
+        }
+
+        for (const node of nodeList) {
+          const index = groupNodes.findIndex(item => item.id === node.id);
+          if (index === -1) {
+            await this.nodeGroupService.appendPersistentNode(this.group.id, node.id).toPromise();
+          }
+        }
+
+        this.load();
+      } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  allocateNode() {
+
   }
 }
