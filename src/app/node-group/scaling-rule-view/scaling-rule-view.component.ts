@@ -43,14 +43,14 @@ export class ScalingRuleViewComponent implements OnInit {
       settings: conditionSettings,
     });
 
-    const actionResource = this.fb.group({
+    const actionSettings = this.fb.group({
       provider: [ComputingProvider.AWS, [Validators.required]],
       value: ['', []],
       amount: [1, [Validators.required, Validators.min(1), Validators.max(32)]]
     });
     const action = this.fb.group({
       type: [ScalingActionType.Increase, [Validators.required]],
-      resource: actionResource,
+      settings: actionSettings,
     });
 
     this.form = this.fb.group({

@@ -81,6 +81,26 @@
           </button>
         </div>
         <div class="card-body">
+
+          <div *ngFor="let type of groupResourceTypesViewOrder()">
+            <div class="align-content-center">
+              <p class="h6 text-center">{{ type }}</p>
+            </div>
+            <div class="list-group list-group-flush w-100">
+              <div *ngFor="let item of getGroupResources(type); trackBy: trackByGroupResource"
+                   class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ item.node.name }}</h5>
+                  <small>[state]</small>
+                </div>
+                <p class="mb-1">{{ item.node.hostname }}</p>
+                <small>[Geo location details]</small>
+              </div>
+            </div>
+
+            <p class="mb-4"></p>
+          </div>
+
         </div>
       </div>
     </div>

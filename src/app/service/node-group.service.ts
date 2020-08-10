@@ -40,9 +40,23 @@ export class ScalingConditionBWGroupAvg extends ScalingCondition {
   duration: number;
 }
 
+export class ScalingActionSettings {
+  public type: ScalingActionType;
+}
+
 export enum ComputingProvider {
   AWS = 'AWS',
   GCP = 'GCP',
+}
+
+export class ScalingActionIncreaseSettings extends ScalingActionSettings {
+  public provider: ComputingProvider;
+  public value: string;
+  public amount: number;
+}
+
+export class ScalingActionReduceSettings extends ScalingActionSettings {
+  public amount: number;
 }
 
 export class ComputingResource {
@@ -58,7 +72,7 @@ export enum ScalingActionType {
 
 export class ScalingAction {
   type: ScalingActionType;
-  resource: ComputingResource;
+  settings: ScalingActionIncreaseSettings | ScalingActionReduceSettings;
 }
 
 export class ScalingRule {
@@ -69,11 +83,30 @@ export class ScalingRule {
   enabled: boolean;
 }
 
+export enum ResourceType {
+  Persistent = 'Persistent',
+  Allocated = 'Allocated',
+}
+
+export class ComputingResourceNodeModel {
+  public name: string;
+  public hostname: string;
+  public enabled: boolean;
+}
+
+export class NodeGroupResource {
+  public id: string;
+  public type: ResourceType;
+  public node: ComputingResourceNodeModel;
+  public containerId: string;
+}
+
 export class NodeGroup {
   id: string;
   name: string;
   description: string;
   scalingRules: ScalingRule[];
+  resources: NodeGroupResource[];
   scalable: boolean;
 }
 

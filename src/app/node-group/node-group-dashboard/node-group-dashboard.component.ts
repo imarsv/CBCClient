@@ -4,7 +4,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   ComputingProvider,
   NodeGroup,
+  NodeGroupResource,
   NodeGroupService,
+  ResourceType, ScalingActionIncreaseSettings,
   ScalingActionType,
   ScalingComparisonType,
   ScalingConditionMetricType,
@@ -22,7 +24,7 @@ import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view
 export class NodeGroupDashboardComponent implements OnInit {
 
   group: NodeGroup | undefined = undefined;
-
+  resourceType = ResourceType;
   private id: string;
 
   constructor(private nodeGroupService: NodeGroupService,
@@ -116,15 +118,16 @@ export class NodeGroupDashboardComponent implements OnInit {
       description += ' reduce';
     }
 
-    description += ' ' + rule.action.resource.amount;
+    const settings = <ScalingActionIncreaseSettings>rule.action.settings;
+    description += ' ' + rule.action.settings.amount;
 
-    if (rule.action.resource.value && rule.action.resource.value.length > 0) {
-      description += ' (' + rule.action.resource.value + ')';
+    if (settings.value && settings.value.length > 0) {
+      description += ' (' + settings.value + ')';
     }
 
     description += ' node(s) in ';
 
-    if (rule.action.resource.provider === ComputingProvider.AWS) {
+    if (settings.provider === ComputingProvider.AWS) {
       description += ' AWS ';
     }
 
@@ -182,10 +185,22 @@ export class NodeGroupDashboardComponent implements OnInit {
 
   }
 
+  getGroupResources(type: ResourceType) {
+    return this.group.resources.filter(item => item.type === type);
+  }
+
+  trackByGroupResource(index: any, resource: NodeGroupResource) {
+    return resource.id;
+  }
+
   private load() {
     this.nodeGroupService.get(this.id).subscribe(
       group => this.group = group,
       error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')
     );
+  }
+
+  groupResourceTypesViewOrder() {
+    return [ ResourceType.Persistent, ResourceType.Allocated ];
   }
 }
