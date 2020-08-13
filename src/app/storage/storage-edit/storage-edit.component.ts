@@ -17,7 +17,7 @@ export class StorageEditComponent implements OnInit {
   private readonly id: string;
 
   constructor(private storageService: StorageService,
-              private formBuilder: FormBuilder,
+              private fb: FormBuilder,
               private router: Router, private activatedRoute: ActivatedRoute) {
     this.edit = activatedRoute.snapshot.params['mode'] === 'edit';
     if (this.edit) {
@@ -32,10 +32,10 @@ export class StorageEditComponent implements OnInit {
       });
     }
 
-    const storageType = this.formBuilder.control(null, Validators.required);
+    const storageType = this.fb.control(null, Validators.required);
     storageType.valueChanges.subscribe((type => this.updateForm(type)));
 
-    this.form = this.formBuilder.group({
+    this.form = this.fb.group({
       name: [null, [Validators.required, Validators.maxLength(255)]],
       type: storageType,
     });
@@ -92,18 +92,18 @@ export class StorageEditComponent implements OnInit {
   private appendStorageFields(type: StorageType) {
     if ((type === StorageType.AmazonS3) || (type === StorageType.AmazonS3Compatible)) {
       this.form.addControl('accessKeyId',
-        this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
+        this.fb.control(null, [Validators.required, Validators.maxLength(255)]));
       this.form.addControl('secretAccessKey',
-        this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
+        this.fb.control(null, [Validators.required, Validators.maxLength(255)]));
       this.form.addControl('bucket',
-        this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
+        this.fb.control(null, [Validators.required, Validators.maxLength(255)]));
       this.form.addControl('path',
-        this.formBuilder.control(null, [Validators.maxLength(255)]));
+        this.fb.control(null, [Validators.maxLength(255)]));
     }
 
     if (type === StorageType.AmazonS3Compatible) {
       this.form.addControl('endpoint',
-        this.formBuilder.control(null, [Validators.required, Validators.maxLength(255)]));
+        this.fb.control(null, [Validators.required, Validators.maxLength(255)]));
     }
   }
 
