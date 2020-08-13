@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Node, NodeConnection, NodeService } from '../../service/node.service';
-import { NgForm } from '@angular/forms';
+import { NodeService, ProtocolType } from '../../service/node.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-node-edit',
@@ -9,37 +9,56 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./node-edit.component.css']
 })
 export class NodeEditComponent implements OnInit {
+  form: FormGroup;
   viewing = false;
-  node: Node = new Node(null, null, new NodeConnection(), true);
+  protocolType = ProtocolType;
+  private readonly id: string;
 
-  constructor(private nodeService: NodeService, private router: Router, activatedRoute: ActivatedRoute) {
+  constructor(private nodeService: NodeService,
+              private fb: FormBuilder,
+              private router: Router, private activatedRoute: ActivatedRoute) {
     this.viewing = activatedRoute.snapshot.params['mode'] === 'view';
     if (this.viewing) {
-      const id = activatedRoute.snapshot.params['id'];
-      this.nodeService.get(id)
-        .subscribe(item => Object.assign(this.node, item));
+      this.id = activatedRoute.snapshot.params['id'];
     }
   }
 
   ngOnInit() {
-  }
+    const connection = this.fb.group({
+      protocol: [ProtocolType.HTTP, [Validators.required, Validators.maxLength(16)]],
+      hostname: ['', [Validators.required, Validators.maxLength(255)]],
+      port: [4242, [Validators.required, Validators.min(0)]],
+    });
 
-  save(form: NgForm) {
-    if (form.valid) {
-      if (this.viewing) {
-        this.nodeService.update(this.node.id, this.node)
-          .subscribe(() => this.router.navigateByUrl('/nodes'));
-      } else {
-        this.nodeService.add(this.node)
-          .subscribe(() => this.router.navigateByUrl('/nodes'));
-      }
+    this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.maxLength(255)]],
+      connection: connection,
+      opened: [false, [Validators.required]],
+      enabled: [false, [Validators.required]],
+    });
+
+    if (this.viewing) {
+      this.nodeService.get(this.id)
+        .subscribe(item => this.form.patchValue(item));
     }
   }
 
   delete() {
-    if (this.node.id) {
-      this.nodeService.delete(this.node.id);
+    if (this.id) {
+      this.nodeService.delete(this.id);
       this.router.navigateByUrl('/nodes');
+    }
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      if (this.viewing) {
+        this.nodeService.update(this.id, this.form.value)
+          .subscribe(() => this.router.navigateByUrl('/nodes'));
+      } else {
+        this.nodeService.add(this.form.value)
+          .subscribe(() => this.router.navigateByUrl('/nodes'));
+      }
     }
   }
 }

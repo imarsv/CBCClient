@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { NodeGroupDashboardComponent } from "./node-group/node-group-dashboard/node-group-dashboard.component";
+import { NodeGroupDashboardComponent } from './node-group/node-group-dashboard/node-group-dashboard.component';
 import { StreamModule } from './stream/stream.module';
 import { AuthComponent } from './security/auth/auth.component';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StreamsViewComponent } from './stream/streams-view/streams-view.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NodeViewComponent } from './node/node-view/node-view.component';
 import { NodeModule } from './node/node.module';
 import { NodeEditComponent } from './node/node-edit/node-edit.component';
 import { StreamDashboardComponent } from './stream/stream-dashboard/stream-dashboard.component';
@@ -28,6 +27,7 @@ import { StreamBillDashboardComponent } from './billing/stream-bill-dashboard/st
 import { BillingModule } from './billing/billing.module';
 import { NodeGroupsListComponent } from './node-group/node-groups-list/node-groups-list.component';
 import { NodeGroupModule } from './node-group/node-group.module';
+import { NodeListComponent } from './node/node-list/node-list.component';
 
 @NgModule({
   imports: [
@@ -63,7 +63,7 @@ import { NodeGroupModule } from './node-group/node-group.module';
           canActivate: [AuthGuardService]
         },
         {
-          path: 'nodes', component: NodeViewComponent,
+          path: 'nodes', component: NodeListComponent,
           canActivate: [AuthGuardService]
         },
         {

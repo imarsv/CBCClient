@@ -2,18 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from './API';
 
+export enum ProtocolType {
+  HTTP = 'http',
+  HTTPS = 'https',
+}
+
 export class Node {
-  constructor(public id?: string,
-              public name?: string,
-              public connection?: NodeConnection,
-              public enabled?: boolean) {
+  constructor(public id: string,
+              public name: string,
+              public connection: NodeConnection,
+              public opened: boolean,
+              public enabled: boolean) {
   }
 }
 
 export class NodeConnection {
-  constructor(public protocol?: string,
-              public hostname?: string,
-              public port?: number) {
+  constructor(public protocol: ProtocolType,
+              public hostname: string,
+              public port: number) {
   }
 }
 
@@ -31,6 +37,7 @@ export class NodeService {
   }
 
   list() {
+    console.log('NodeService::list');
     return this.httpClient
       .get<Node[]>(`${API.endpoint()}/nodes`);
   }

@@ -1,51 +1,62 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
-  <button type="button" class="btn btn-danger btn-circle"
-          [disabled]="!viewing" (click)="delete()">
+  <button (click)="delete()" [disabled]="!viewing"
+          class="btn btn-danger btn-circle" type="button">
     <i class="fa fa-trash"></i>
   </button>
 </nav>
 
-<form class="mt-4" novalidate #form="ngForm" (submit)="save(form)">
+<form (ngSubmit)="onSubmit()" [formGroup]="form" class="mt-4" novalidate>
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input id="name" name="name" type="text" class="form-control"
-           [readonly]="viewing" [(ngModel)]="node.name"/>
+    <input class="form-control" formControlName="name" id="name" name="name" type="text"/>
   </div>
 
-  <div class="form-group">
-    <label for="protocol">Protocol</label>
-    <select id="protocol" name="protocol" class="form-control"
-            [disabled]="viewing" [(ngModel)]="node.connection.protocol">
-      <option [ngValue]="'http'">HTTP</option>
-      <option [ngValue]="'https'">HTTPS</option>
-    </select>
-  </div>
+  <div class="form-row" formGroupName="connection">
+    <div class="form-group col-md-3">
+      <label for="protocol">Protocol</label>
+      <select [attr.disabled]="viewing ? '' : null" class="form-control custom-select" formControlName="protocol"
+              id="protocol" name="protocol">
+        <option [ngValue]="protocolType.HTTP">HTTP</option>
+        <option [ngValue]="protocolType.HTTPS">HTTPS</option>
+      </select>
+    </div>
 
-  <div class="form-group">
-    <label for="hostname">Hostname</label>
-    <input id="hostname" name="hostname" type="text" class="form-control"
-           [readonly]="viewing" [(ngModel)]="node.connection.hostname"/>
-  </div>
+    <div class="form-group col-md-6">
+      <label for="hostname">Hostname</label>
+      <input [readonly]="viewing" class="form-control" formControlName="hostname" id="hostname"
+             name="hostname" type="text"/>
+    </div>
 
-  <div class="form-group">
-    <label for="port">Port</label>
-    <input id="port" name="port" type="number" min="0" class="form-control"
-           [readonly]="viewing" [(ngModel)]="node.connection.port"/>
+    <div class="form-group col-md-3 ">
+      <label for="port">Port</label>
+      <input [readonly]="viewing" class="form-control" formControlName="port" id="port" min="0"
+             name="port" type="number"/>
+    </div>
   </div>
 
   <div class="form-group">
     <div class="form-check">
-      <input id="enabled" name="enabled" type="checkbox" class="form-check-input"
-             [(ngModel)]="node.enabled">
-      <label for="enabled" class="form-check-label">
-        Enable
+      <input class="form-check-input" formControlName="opened" id="opened" name="opened"
+             type="checkbox">
+      <label class="form-check-label" for="opened">
+        Opened (Available for new connections)
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" formControlName="enabled" id="enabled" name="enabled"
+             type="checkbox">
+      <label class="form-check-label" for="enabled">
+        Enabled (Available for usage)
       </label>
     </div>
   </div>
 
   <div class="container">
-    <button type="submit" class="btn btn-primary">{{ viewing ? "Save" : "Create"}}</button>
-    <button routerLink="/nodes" class="btn btn-light float-right">Cancel</button>
+    <button class="btn btn-primary" type="submit">{{ viewing ? "Save" : "Create"}}</button>
+    <button class="btn btn-light float-right" routerLink="/nodes">Cancel</button>
   </div>
 </form>
