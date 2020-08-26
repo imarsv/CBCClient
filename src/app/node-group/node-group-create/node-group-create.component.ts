@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { NodeGroup } from '../../service/node-group.service';
+import { AssignmentType, NodeGroup } from '../../service/node-group.service';
 
 @Component({
   selector: 'app-node-group-create',
@@ -15,6 +15,8 @@ export class NodeGroupCreateComponent implements OnInit {
 
   form: FormGroup;
 
+  assignmentType = AssignmentType;
+
   constructor(public activeModal: NgbActiveModal,
               private fb: FormBuilder) {
   }
@@ -23,6 +25,7 @@ export class NodeGroupCreateComponent implements OnInit {
     this.form = this.fb.group({
       name: [this.group?.name || '', [Validators.required, Validators.maxLength(255)]],
       description: [this.group?.description || '', [Validators.maxLength(16384)]],
+      assignment: [AssignmentType.Common, [Validators.required]],
     });
   }
 

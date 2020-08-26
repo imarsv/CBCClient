@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-  <div class="d-inline">
-    <span *ngIf="group" class="navbar-brand mb-0 h1 font-weight-bold">{{ group.name }}</span>
+  <div *ngIf="group" class="d-inline">
+    <span class="navbar-brand mb-0 mr-4 h1 font-weight-bold">{{ group.assignment }}</span>
+    <span class="navbar-brand mb-0 h2 ">{{ '\'' + group.name + '\''}}</span>
   </div>
 
   <div>
@@ -77,11 +78,11 @@
         <div class="card-header d-flex justify-content-between">
           <span class="h5">Nodes</span>
 
-          <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-            <button class="btn btn-outline-primary mr-2" id="nodeActionDropDown" ngbDropdownAnchor (focus)="myDrop.open()">Actions</button>
-            <div ngbDropdownMenu aria-labelledby="nodeActionDropDown">
-              <button ngbDropdownItem (click)="updatePersistentNodes()">Persistent nodes</button>
-              <button ngbDropdownItem (click)="allocateNode()">Allocate node</button>
+          <div #myDrop="ngbDropdown" class="d-inline-block" ngbDropdown>
+            <button (focus)="myDrop.open()" class="btn btn-outline-primary mr-2" id="nodeActionDropDown" ngbDropdownAnchor>Actions</button>
+            <div aria-labelledby="nodeActionDropDown" ngbDropdownMenu>
+              <button (click)="updatePersistentNodes()" ngbDropdownItem>Persistent nodes</button>
+              <button (click)="allocateNode()" ngbDropdownItem>Allocate node</button>
             </div>
           </div>
         </div>

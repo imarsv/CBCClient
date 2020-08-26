@@ -102,10 +102,18 @@ export class NodeGroupResource {
   public containerId: string;
 }
 
+export enum AssignmentType {
+  Common = 'Common',
+  Ingestion = 'Ingestion',
+  Outgoing = 'Outgoing',
+  Transcoding = 'Transcoding',
+}
+
 export class NodeGroup {
   id: string;
   name: string;
   description: string;
+  assignment: AssignmentType;
   scalingRules: ScalingRule[];
   resources: NodeGroupResource[];
   scalable: boolean;

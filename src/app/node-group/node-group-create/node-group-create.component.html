@@ -14,6 +14,17 @@
       </div>
     </div>
 
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="assignment">Assignment</label>
+      <div class="col-sm-9">
+        <select class="custom-select" formControlName="assignment" id="assignment" required>
+          <option [ngValue]="assignmentType.Common">Common</option>
+          <option [ngValue]="assignmentType.Ingestion">Ingestion</option>
+          <option [ngValue]="assignmentType.Outgoing">Outgoing</option>
+        </select>
+      </div>
+    </div>
+
     <div class="form-row">
       <div class="form-group col">
         <label for="description">Description</label>

@@ -43,12 +43,13 @@ export class NodeGroupDashboardComponent implements OnInit {
   async editGroup() {
     const createNodeGroupModal = this.modalService.open(NodeGroupCreateComponent);
     createNodeGroupModal.componentInstance.group = this.group;
-    createNodeGroupModal.componentInstance.update = true;
+    createNodeGroupModal.componentInstance.editing = true;
 
     try {
       const group = await createNodeGroupModal.result;
       if (group) {
         this.group.name = group.name;
+        this.group.assignment = group.assignment;
         this.group.description = group.description;
         this.nodeGroupService.update(this.id, this.group).subscribe(
           () => this.load(),
