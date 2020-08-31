@@ -1,4 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+  <button (click)="refresh()" [disabled]="!viewing"
+          class="btn btn-primary btn-circle mr-2" type="button">
+    <i class="fa fa-sync-alt"></i>
+  </button>
+
   <button (click)="delete()" [disabled]="!viewing"
           class="btn btn-danger btn-circle" type="button">
     <i class="fa fa-trash"></i>

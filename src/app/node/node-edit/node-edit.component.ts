@@ -43,13 +43,6 @@ export class NodeEditComponent implements OnInit {
     }
   }
 
-  delete() {
-    if (this.id) {
-      this.nodeService.delete(this.id);
-      this.router.navigateByUrl('/nodes');
-    }
-  }
-
   onSubmit() {
     if (this.form.valid) {
       if (this.viewing) {
@@ -59,6 +52,20 @@ export class NodeEditComponent implements OnInit {
         this.nodeService.add(this.form.value)
           .subscribe(() => this.router.navigateByUrl('/nodes'));
       }
+    }
+  }
+
+  refresh() {
+    if (this.id) {
+      this.nodeService.refresh(this.id)
+        .subscribe(() => alert('OK'), error => console.error(error));
+    }
+  }
+
+  delete() {
+    if (this.id) {
+      this.nodeService.delete(this.id);
+      this.router.navigateByUrl('/nodes');
     }
   }
 }

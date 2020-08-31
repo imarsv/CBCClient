@@ -52,6 +52,11 @@ export class NodeService {
       .put<Node>(`${API.endpoint()}/nodes/${id}`, node);
   }
 
+  refresh(id: string) {
+    return this.httpClient
+      .post(`${API.endpoint()}/nodes/${id}/refresh`, {});
+  }
+
   delete(id: string) {
     this.httpClient
       .delete(`${API.endpoint()}/nodes/${id}`)
