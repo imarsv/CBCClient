@@ -92,7 +92,9 @@ export class ComputingResourceNodeModel {
   public id: string;
   public name: string;
   public hostname: string;
+  public opened: boolean;
   public enabled: boolean;
+  public location: string;
 }
 
 export class NodeGroupResource {

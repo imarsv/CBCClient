@@ -15,14 +15,14 @@
         <ng-toggle (valueChange)="updateSelectedNode($event, item)" [value]="selected(item.id)"></ng-toggle>
       </div>
       <p class="mb-1">{{ item.hostname }}</p>
-      <small>[Geo location details]</small>
+      <small>{{ item.location }}</small>
     </div>
   </div>
 
 </div>
 
 <div class="modal-footer justify-content-center">
-  <button class="btn btn-outline-dark"
-          type="submit" (click)="update()">Update
+  <button (click)="update()"
+          class="btn btn-outline-dark" type="submit">Update
   </button>
 </div>

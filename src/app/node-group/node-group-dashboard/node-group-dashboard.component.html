@@ -97,10 +97,17 @@
                    class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ item.node.name }}</h5>
-                  <small>[state]</small>
+                  <div>
+                    <small [class.badge-danger]="!item.node.opened"
+                           [class.badge-success]="item.node.opened"
+                           class="badge badge-success mr-1">Opened</small>
+                    <small [class.badge-danger]="!item.node.enabled"
+                           [class.badge-success]="item.node.enabled"
+                           class="badge badge-success">Enabled</small>
+                  </div>
                 </div>
                 <p class="mb-1">{{ item.node.hostname }}</p>
-                <small>[Geo location details]</small>
+                <small>{{ item.node.location }}</small>
               </div>
             </div>
 
