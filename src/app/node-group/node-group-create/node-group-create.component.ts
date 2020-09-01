@@ -25,7 +25,7 @@ export class NodeGroupCreateComponent implements OnInit {
     this.form = this.fb.group({
       name: [this.group?.name || '', [Validators.required, Validators.maxLength(255)]],
       description: [this.group?.description || '', [Validators.maxLength(16384)]],
-      assignment: [AssignmentType.Common, [Validators.required]],
+      assignment: [this.group?.assignment, [Validators.required]],
     });
   }
 

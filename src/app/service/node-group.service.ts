@@ -105,10 +105,8 @@ export class NodeGroupResource {
 }
 
 export enum AssignmentType {
-  Common = 'Common',
   Ingestion = 'Ingestion',
   Outgoing = 'Outgoing',
-  Transcoding = 'Transcoding',
 }
 
 export class NodeGroup {
