@@ -2,7 +2,11 @@ export const environment = {
   production: true,
   api: {
     endpoint: 'https://ceeblue.tv/bo',
-    // endpoint: 'https://ceeblue-api.stackvaults.com/api',
+
+    // domain: 'beta.ceeblue.tv',
+    // endpoint: 'https://beta.ceeblue.tv/api',
+
+    // endpoint: 'https://ceeblue-api.stackvaults.com/api',// 'stackvaults.com'
     // endpoint: 'https://eu3.lls.rncdn7.com/api'
   }
 };

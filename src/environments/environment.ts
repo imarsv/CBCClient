@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   api: {
+    domain: '',
     endpoint: 'http://localhost:3000'
   }
 };
