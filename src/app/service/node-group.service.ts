@@ -46,7 +46,7 @@ export class ScalingActionSettings {
 
 export enum ComputingProvider {
   AWS = 'AWS',
-  GCP = 'GCP',
+  DigitalOcean = 'DigitalOcean',
 }
 
 export class ScalingActionIncreaseSettings extends ScalingActionSettings {

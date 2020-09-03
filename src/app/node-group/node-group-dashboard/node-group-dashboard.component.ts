@@ -130,9 +130,7 @@ export class NodeGroupDashboardComponent implements OnInit {
 
     description += ' node(s) in ';
 
-    if (settings.provider === ComputingProvider.AWS) {
-      description += ' AWS ';
-    }
+    description += ` ${settings.provider} `;
 
     return description;
   }
