@@ -3,6 +3,7 @@ import { NodeGroup, NodeGroupService } from '../../service/node-group.service';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-node-groups-list',
@@ -37,6 +38,13 @@ export class NodeGroupsListComponent implements OnInit {
   }
 
   private load() {
-    this.groups = this.nodeGroupService.list();
+    this.groups = this.nodeGroupService.list()
+      .pipe(map(arr => arr.sort((a, b) => {
+        let cmp = a.name.localeCompare(b.name);
+        if (cmp === 0) {
+          cmp = a.assignment.localeCompare(b.assignment);
+        }
+        return cmp;
+      })));
   }
 }
