@@ -113,6 +113,7 @@ export class NodeGroup {
   id: string;
   name: string;
   description: string;
+  ownerId: string | undefined;
   assignment: AssignmentType;
   scalingRules: ScalingRule[];
   resources: NodeGroupResource[];

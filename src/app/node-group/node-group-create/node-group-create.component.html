@@ -24,6 +24,16 @@
       </div>
     </div>
 
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="owner">Owner</label>
+      <div class="col-sm-9">
+        <select class="custom-select" formControlName="ownerId" id="owner">
+          <option selected [ngValue]="null">NONE</option>
+          <option *ngFor="let account of accounts | async" [ngValue]="account.id">{{ account.username }}</option>
+        </select>
+      </div>
+    </div>
+
     <div class="form-row">
       <div class="form-group col">
         <label for="description">Description</label>
@@ -33,6 +43,6 @@
   </div>
 
   <div class="modal-footer justify-content-center">
-    <button [disabled]="!form.valid" class="btn btn-outline-dark" type="submit">{{ this.editing ? 'Update' : 'Create' }}</button>
+    <button  class="btn btn-outline-dark" type="submit">{{ this.editing ? 'Update' : 'Create' }}</button>
   </div>
 </form>

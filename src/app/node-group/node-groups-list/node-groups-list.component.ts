@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
 import { map } from 'rxjs/operators';
+import { AccountService } from '../../service/account.service';
 
 @Component({
   selector: 'app-node-groups-list',
@@ -15,6 +16,7 @@ export class NodeGroupsListComponent implements OnInit {
   groups: Observable<NodeGroup[]>;
 
   constructor(private nodeGroupService: NodeGroupService,
+              private accountService: AccountService,
               private modalService: NgbModal,
   ) { }
 
@@ -24,6 +26,7 @@ export class NodeGroupsListComponent implements OnInit {
 
   async createNewGroup() {
     const createNodeGroupModal = this.modalService.open(NodeGroupCreateComponent);
+    createNodeGroupModal.componentInstance.accounts = this.accountService.list();
 
     try {
       const group = await createNodeGroupModal.result;

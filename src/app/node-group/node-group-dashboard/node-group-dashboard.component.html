@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
   <div *ngIf="group" class="d-inline">
     <span class="navbar-brand mb-0 mr-4 h1 font-weight-bold">{{ group.assignment }}</span>
-    <span class="navbar-brand mb-0 h2 ">{{ '\'' + group.name + '\''}}</span>
+    <span class="navbar-brand mb-0 h2 ">{{ '\'' + group.name + '\'' }}</span>
+    <span *ngIf="(owner | async)" class="navbar-brand mb-0 ">{{ 'owner: \'' + (owner | async)?.username + '\'' }}</span>
   </div>
 
   <div>

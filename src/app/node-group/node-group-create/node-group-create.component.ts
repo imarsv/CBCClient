@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AssignmentType, NodeGroup } from '../../service/node-group.service';
+import { Observable } from 'rxjs';
+import { Account } from '../../service/account.service';
 
 @Component({
   selector: 'app-node-group-create',
@@ -11,6 +13,7 @@ import { AssignmentType, NodeGroup } from '../../service/node-group.service';
 export class NodeGroupCreateComponent implements OnInit {
 
   @Input() group: NodeGroup | undefined = undefined;
+  @Input() accounts: Observable<Account[]>;
   @Input() editing = false;
 
   form: FormGroup;
@@ -26,6 +29,7 @@ export class NodeGroupCreateComponent implements OnInit {
       name: [this.group?.name || '', [Validators.required, Validators.maxLength(255)]],
       description: [this.group?.description || '', [Validators.maxLength(16384)]],
       assignment: [this.group?.assignment, [Validators.required]],
+      ownerId: [this.group?.ownerId]
     });
   }
 

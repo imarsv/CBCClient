@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  ComputingProvider, ComputingResourceNodeModel,
+  ComputingResourceNodeModel,
   NodeGroup,
   NodeGroupResource,
   NodeGroupService,
@@ -17,6 +17,8 @@ import {
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
 import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view.component';
 import { NodeListViewComponent } from '../node-list-view/node-list-view.component';
+import { Account, AccountService } from '../../service/account.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-node-group-dashboard',
@@ -26,10 +28,12 @@ import { NodeListViewComponent } from '../node-list-view/node-list-view.componen
 export class NodeGroupDashboardComponent implements OnInit {
 
   group: NodeGroup | undefined = undefined;
+  owner: Observable<Account>;
   resourceType = ResourceType;
   private id: string;
 
   constructor(private nodeGroupService: NodeGroupService,
+              private accountService: AccountService,
               private modalService: NgbModal,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
@@ -43,6 +47,7 @@ export class NodeGroupDashboardComponent implements OnInit {
   async editGroup() {
     const createNodeGroupModal = this.modalService.open(NodeGroupCreateComponent);
     createNodeGroupModal.componentInstance.group = this.group;
+    createNodeGroupModal.componentInstance.accounts = this.accountService.list();
     createNodeGroupModal.componentInstance.editing = true;
 
     try {
@@ -51,6 +56,7 @@ export class NodeGroupDashboardComponent implements OnInit {
         this.group.name = group.name;
         this.group.assignment = group.assignment;
         this.group.description = group.description;
+        this.group.ownerId = group.ownerId;
         this.nodeGroupService.update(this.id, this.group).subscribe(
           () => this.load(),
           error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on update'));
@@ -190,15 +196,8 @@ export class NodeGroupDashboardComponent implements OnInit {
     return resource.id;
   }
 
-  private load() {
-    this.nodeGroupService.get(this.id).subscribe(
-      group => this.group = group,
-      error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')
-    );
-  }
-
   groupResourceTypesViewOrder() {
-    return [ ResourceType.Persistent, ResourceType.Allocated ];
+    return [ResourceType.Persistent, ResourceType.Allocated];
   }
 
   async updatePersistentNodes() {
@@ -238,5 +237,21 @@ export class NodeGroupDashboardComponent implements OnInit {
 
   allocateNode() {
 
+  }
+
+  private load() {
+    this.nodeGroupService.get(this.id).subscribe(
+      group => {
+        this.group = group;
+        if (this.group.ownerId) {
+          this.loadOwnerDetails();
+        }
+      },
+      error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')
+    );
+  }
+
+  private loadOwnerDetails() {
+    this.owner = this.accountService.get(this.group.ownerId);
   }
 }
