@@ -86,7 +86,7 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
 
   getPushPageURI() {
     const hostname = this.getHostname();
-    const streamId = this.getStreamId();
+    const streamId = this.getStreamName();
 
     let uri = `https://${hostname}/push.html?stream=${streamId}`;
     if (this.stream.accessToken) {
@@ -98,18 +98,18 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
 
   getPlaybackPageURI(token?: string) {
     const hostname = this.getHostname();
-    let streamId = this.getStreamId();
+    let streamName = this.getStreamName();
 
-    const streamIdParts = streamId.split('+');
+    const streamIdParts = streamName.split('+');
     if (streamIdParts.length === 2) {
       let prefix = streamIdParts[0];
       if (prefix === 'in') {
         prefix = 'out';
       }
-      streamId = `${prefix}+${streamIdParts[1]}`;
+      streamName = `${prefix}+${streamIdParts[1]}`;
     }
 
-    let uri = `https://${hostname}/play.html?stream=${streamId}`;
+    let uri = `https://${hostname}/play.html?stream=${streamName}`;
     if (token) {
       uri += `&token=${token}`;
     }
@@ -117,7 +117,7 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
     return uri;
   }
 
-  getStreamId() {
+  getStreamName() {
     const uri = this.getConnectionURI();
     if (uri) {
       const index = uri.lastIndexOf('/');
@@ -175,8 +175,12 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
   }
 
   isAdjustableTranscode() {
-    return this.getStreamId()
+    return this.getStreamName()
       .startsWith('in+');
+  }
+
+  isErrorState() {
+    return this.stream?.status === InputStatus.Error;
   }
 
   async recordingStart() {
