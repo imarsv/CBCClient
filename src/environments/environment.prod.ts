@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   api: {
+    domain: '',
     endpoint: 'https://ceeblue.tv/bo',
 
     // domain: 'beta.ceeblue.tv',
