@@ -15,9 +15,15 @@
 
 <hr class="mt-4" style="border-top: 3px solid gray;">
 <div class="d-flex justify-content-between">
-  <h4>Total</h4>
+  <h4>Concurrent streams</h4>
   <div class="h4">
-    <span class="badge badge-dark font-weight-bold">{{ (getDownloadTotal() + getUploadTotal()) | filesize }}</span>
+    <span class="badge badge-dark font-weight-bold">{{ concurrentSessions }}</span>
+  </div>
+</div>
+<div class="d-flex justify-content-between">
+  <h4>Egress</h4>
+  <div class="h4">
+    <span class="badge badge-dark font-weight-bold">{{ getEgress() | filesize }}</span>
   </div>
 </div>
 <hr style="border-top: 3px solid gray;">

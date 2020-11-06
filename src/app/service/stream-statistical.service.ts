@@ -24,6 +24,11 @@ export interface StreamStatistic {
   outgoing: StreamOutgoingStatistic[];
 }
 
+export interface StatisticsReport {
+  streams: StreamStatistic[];
+  concurrentSessions: number;
+}
+
 @Injectable()
 export class StreamStatisticalService {
 
@@ -35,11 +40,11 @@ export class StreamStatisticalService {
       url += `?account=${accountId}`;
     }
 
-    return this.httpClient.get<StreamStatistic>(url);
+    return this.httpClient.get<StatisticsReport>(url);
   }
 
   getByStream(streamId: string, from: Date, to: Date) {
     const url = `${API.endpoint()}/statistics/stream/${streamId}/from/${from.toISOString()}/to/${to.toISOString()}`;
-    return this.httpClient.get<StreamStatistic>(url);
+    return this.httpClient.get<StatisticsReport>(url);
   }
 }

@@ -44,34 +44,42 @@
       <span><i class="fa fa-clock-o"></i> Duration:</span>
       <span [title]="durationTotal + ' seconds'" class="badge badge-dark font-weight-bold ml-1">
         {{ durationTotal | amDuration:'seconds' }}
-    </span>
+      </span>
     </div>
 
     <div class="d-inline p-2 bg-light text-black h5 ml-2">
       <span><i class="fa fa-cloud-upload"></i> Upload:</span>
       <span [title]="uploadTotal + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
         {{ uploadTotal | filesize }}
-    </span>
+      </span>
     </div>
 
     <div class="d-inline p-2 bg-light text-black h5 ml-2">
       <span><i class="fa fa-cloud-download"></i> Download:</span>
       <span [title]="downloadTotal + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
         {{ downloadTotal | filesize }}
-    </span>
+      </span>
+    </div>
+
+    <div class="d-inline p-2 bg-light text-black h5 ml-2">
+      <span><i class="fa fa-cloud-download"></i> Concurrent streams:</span>
+      <span [title]="concurrentSessions + ' concurrent streams'" class="badge badge-dark font-weight-bold ml-1">
+        {{ concurrentSessions }}
+      </span>
     </div>
   </div>
 
   <app-stream-usage-details
-      *ngFor="let item of statistic"
-      [statistic]="item">
+    *ngFor="let item of statistic"
+    [statistic]="item">
   </app-stream-usage-details>
 </div>
 <app-invoice-print
-    [accountName]="(account | async)?.username"
-    [accountNumber]="(account | async)?.id"
-    [from]="this.getFromTimestamp()"
-    [statistic]="statistic"
-    [to]="this.getToTimestamp()"
+  [accountName]="(account | async)?.username"
+  [accountNumber]="(account | async)?.id"
+  [from]="this.getFromTimestamp()"
+  [statistic]="statistic"
+  [concurrentSessions]="concurrentSessions"
+  [to]="this.getToTimestamp()"
 >
 </app-invoice-print>

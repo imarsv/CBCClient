@@ -22,6 +22,7 @@ export class AccountBillDashboardComponent implements OnInit {
   durationTotal = 0;
   uploadTotal = 0;
   downloadTotal = 0;
+  concurrentSessions = 0;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
               protected statisticsService: StreamStatisticalService,
@@ -50,7 +51,8 @@ export class AccountBillDashboardComponent implements OnInit {
     }
 
     request.subscribe(data => {
-      this.statistic = data;
+      this.statistic = data.streams;
+      this.concurrentSessions = data.concurrentSessions;
 
       const { duration, upload, download } = this.statistic
         .reduce((acc, item) => {

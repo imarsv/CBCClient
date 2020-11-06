@@ -37,7 +37,7 @@ export class StreamBillDashboardComponent implements OnInit {
 
   load() {
     this.statisticalService.getByStream(this.id, this.getFromTimestamp(), this.getToTimestamp())
-      .subscribe(data => this.statistic.push(data));
+      .subscribe(data => this.statistic.push(...data.streams));
 
     this.account = this.accountService.getMyAccount();
   }

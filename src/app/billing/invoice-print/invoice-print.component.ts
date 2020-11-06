@@ -17,22 +17,17 @@ export class InvoicePrintComponent implements OnInit {
   @Input() accountNumber: string;
 
   @Input() statistic: StreamStatistic[];
+  @Input() concurrentSessions: number;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  getUploadTotal() {
+  getEgress() {
     return this.statistic
-      .map(item => item.upload)
-      .reduce((acc, val) => acc + val, 0);
+      .map(item => item.outgoing
+        .reduce((acc, outgoing) => acc + (outgoing.upload + outgoing.download), 0))
+      .reduce((acc, item) => acc + item, 0);
   }
-
-  getDownloadTotal() {
-    return this.statistic
-      .map(item => item.download)
-      .reduce((acc, val) => acc + val, 0);
-  }
-
 }
