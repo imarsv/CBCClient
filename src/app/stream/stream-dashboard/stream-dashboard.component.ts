@@ -25,7 +25,7 @@ import { StreamSnapshotComponent } from '../stream-snapshot/stream-snapshot.comp
 @Component({
   selector: 'app-stream-dashboard',
   templateUrl: './stream-dashboard.component.html',
-  styleUrls: ['./stream-dashboard.component.css']
+  styleUrls: [ './stream-dashboard.component.css' ]
 })
 export class StreamDashboardComponent implements OnInit, OnDestroy {
   // Enums
@@ -139,17 +139,16 @@ export class StreamDashboardComponent implements OnInit, OnDestroy {
       const output = await outputStreamModal.result;
       if (output) {
         output.streamId = this.stream.id;
-        try {
-          const outputEndpoint = await this.streamService.output(output).toPromise();
+        this.streamService.output(output).subscribe(
+          (endpoint) => {
+            this.loadOutputs();
 
-          this.loadOutputs();
-
-          const outputStreamConnectionModal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
-          outputStreamConnectionModal.componentInstance.format = output.format;
-          outputStreamConnectionModal.componentInstance.endpoint = outputEndpoint;
-        } catch (e) {
-          console.error(e);
-        }
+            const modal = this.modalService.open(OutputStreamConnectionComponent, { size: 'lg' });
+            modal.componentInstance.format = output.format;
+            modal.componentInstance.endpoint = endpoint;
+          },
+          error => alert(error?.error?.message ? error.error.message : 'Something wrong with output creation')
+        );
       }
     } catch (e) {
     }
