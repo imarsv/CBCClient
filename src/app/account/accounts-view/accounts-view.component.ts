@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountEditComponent } from '../account-edit/account-edit.component';
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-accounts-view',
@@ -12,7 +14,7 @@ import { AccountEditComponent } from '../account-edit/account-edit.component';
 })
 export class AccountsViewComponent implements OnInit {
 
-  accounts?: Account[];
+  accounts: Observable<Account[]>;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
               private authService: AuthService, private accountService: AccountService,
@@ -24,7 +26,8 @@ export class AccountsViewComponent implements OnInit {
   }
 
   load() {
-    this.accountService.list().subscribe(data => this.accounts = data);
+    this.accounts = this.accountService.list()
+      .pipe(map(list => list.sort((a, b) => a.username.localeCompare(b.username))))
   }
 
   async impersonate(id: string) {

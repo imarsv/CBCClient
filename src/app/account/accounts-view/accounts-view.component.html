@@ -5,7 +5,7 @@
 </nav>
 
 <div class="table-responsive-lg">
-  <table class="table" *ngIf="accounts">
+  <table class="table">
     <thead>
     <tr class="d-flex">
       <th scope="col" class="col-4">Username</th>
@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="d-flex" *ngFor="let account of accounts">
+    <tr class="d-flex" *ngFor="let account of accounts | async">
       <td scope="row" class="col-4">{{ account.username }}</td>
       <td scope="row" class="col-4">{{ account.email }}</td>
       <td scope="row" class="col-1">{{ account.role }}</td>
