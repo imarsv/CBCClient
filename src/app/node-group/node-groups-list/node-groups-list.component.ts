@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
 import { map } from 'rxjs/operators';
-import { AccountService } from '../../service/account.service';
+import { AccountService, Role } from '../../service/account.service';
+import { AccountHolderService } from "../../service/account-holder.service";
 
 @Component({
   selector: 'app-node-groups-list',
@@ -14,13 +15,19 @@ import { AccountService } from '../../service/account.service';
 export class NodeGroupsListComponent implements OnInit {
 
   groups: Observable<NodeGroup[]>;
+  adminRole: boolean = false;
 
   constructor(private nodeGroupService: NodeGroupService,
               private accountService: AccountService,
+              private accountHolderService: AccountHolderService,
               private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
+    this.accountHolderService.getAccount().subscribe(account => {
+      this.adminRole = account.role === Role.ADMIN;
+    });
+
     this.load();
   }
 

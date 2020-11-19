@@ -10,11 +10,12 @@ import { NodeGroupDashboardComponent } from './node-group-dashboard/node-group-d
 import { NodeGroupsListComponent } from './node-groups-list/node-groups-list.component';
 import { ScalingRuleViewComponent } from './scaling-rule-view/scaling-rule-view.component';
 import { NodeListViewComponent } from './node-list-view/node-list-view.component';
+import { AccountHolderService } from "../service/account-holder.service";
 
 @NgModule({
   declarations: [NodeGroupsListComponent, NodeGroupCreateComponent, NodeGroupDashboardComponent, ScalingRuleViewComponent,
     NodeListViewComponent],
-  providers: [NodeGroupService],
+  providers: [NodeGroupService, AccountHolderService],
   imports: [CommonModule, ReactiveFormsModule, RouterModule, NgToggleModule, NgbButtonsModule, FormsModule, NgbDropdownModule],
   exports: [NodeGroupsListComponent, NodeGroupDashboardComponent]
 })

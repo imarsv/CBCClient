@@ -24,7 +24,7 @@
         <div class="card-body">
           <div>
             <span>Scaling </span>
-            <ng-toggle (valueChange)="updateGroupScalable($event)" [value]="group.scalable"
+            <ng-toggle [disabled]="!adminRole" (valueChange)="updateGroupScalable($event)" [value]="group.scalable"
                        offText="Disabled" onText="Enabled"></ng-toggle>
           </div>
         </div>
@@ -38,7 +38,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <span class="h5">Scaling</span>
-          <button (click)="appendScalingRule()" class="btn btn-primary btn-sm" type="button">
+          <button *ngIf="adminRole" (click)="appendScalingRule()" class="btn btn-primary btn-sm" type="button">
             <i class="fas fa-plus-circle"></i>
           </button>
         </div>
@@ -79,7 +79,7 @@
         <div class="card-header d-flex justify-content-between">
           <span class="h5">Nodes</span>
 
-          <div #myDrop="ngbDropdown" class="d-inline-block" ngbDropdown>
+          <div *ngIf="adminRole" #myDrop="ngbDropdown" class="d-inline-block" ngbDropdown>
             <button (focus)="myDrop.open()" class="btn btn-outline-primary mr-2" id="nodeActionDropDown" ngbDropdownAnchor>Actions</button>
             <div aria-labelledby="nodeActionDropDown" ngbDropdownMenu>
               <button (click)="updatePersistentNodes()" ngbDropdownItem>Persistent nodes</button>

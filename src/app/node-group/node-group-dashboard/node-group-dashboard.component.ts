@@ -10,15 +10,16 @@ import {
   ScalingActionIncreaseSettings,
   ScalingActionType,
   ScalingComparisonType,
-  ScalingConditionType,
   ScalingConditionSettingsType,
+  ScalingConditionType,
   ScalingRule
 } from '../../service/node-group.service';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
 import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view.component';
 import { NodeListViewComponent } from '../node-list-view/node-list-view.component';
-import { Account, AccountService } from '../../service/account.service';
+import { Account, AccountService, Role } from '../../service/account.service';
 import { Observable } from 'rxjs';
+import { AccountHolderService } from "../../service/account-holder.service";
 
 @Component({
   selector: 'app-node-group-dashboard',
@@ -31,9 +32,12 @@ export class NodeGroupDashboardComponent implements OnInit {
   owner: Observable<Account>;
   resourceType = ResourceType;
   private id: string;
+  private account: Account;
+  adminRole: boolean = false;
 
   constructor(private nodeGroupService: NodeGroupService,
               private accountService: AccountService,
+              private accountHolderService: AccountHolderService,
               private modalService: NgbModal,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
@@ -41,14 +45,30 @@ export class NodeGroupDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountHolderService.getAccount().subscribe(account => {
+      this.account = account;
+      this.adminRole = account.role === Role.ADMIN;
+    });
+
+
     this.load();
   }
 
   async editGroup() {
+    let accounts;
+    if (this.adminRole) {
+      accounts = this.accountService.list();
+    } else {
+      if (this.account) {
+        accounts = new Observable(observer => observer.next([ this.account ]));
+      }
+    }
+
     const createNodeGroupModal = this.modalService.open(NodeGroupCreateComponent);
     createNodeGroupModal.componentInstance.group = this.group;
-    createNodeGroupModal.componentInstance.accounts = this.accountService.list();
+    createNodeGroupModal.componentInstance.accounts = accounts;
     createNodeGroupModal.componentInstance.editing = true;
+    createNodeGroupModal.componentInstance.readonly = !this.adminRole;
 
     try {
       const group = await createNodeGroupModal.result;
@@ -248,7 +268,9 @@ export class NodeGroupDashboardComponent implements OnInit {
       group => {
         this.group = group;
         if (this.group.ownerId) {
-          this.loadOwnerDetails();
+          if (this.adminRole) {
+            this.loadOwnerDetails();
+          }
         }
       },
       error => alert(error?.error?.message ? error.error.message : 'Something wrong with node group loading on dashboard')

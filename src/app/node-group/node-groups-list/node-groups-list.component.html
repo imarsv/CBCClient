@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
-  <button (click)="createNewGroup()" class="btn btn-danger" type="button">
+<nav *ngIf="adminRole" class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
+  <button  (click)="createNewGroup()" class="btn btn-danger" type="button">
     <i class="fa fa-plus"></i>
   </button>
 </nav>

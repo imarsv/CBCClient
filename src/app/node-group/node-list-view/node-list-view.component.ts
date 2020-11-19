@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ComputingResourceNodeModel } from '../../service/node-group.service';
+import { Role } from "../../service/account.service";
 
 @Component({
   selector: 'app-node-list-view',

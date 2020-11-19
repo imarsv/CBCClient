@@ -15,6 +15,7 @@ export class NodeGroupCreateComponent implements OnInit {
   @Input() group: NodeGroup | undefined = undefined;
   @Input() accounts: Observable<Account[]>;
   @Input() editing = false;
+  @Input() readonly = false;
 
   form: FormGroup;
 
