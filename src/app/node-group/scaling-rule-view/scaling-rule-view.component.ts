@@ -5,7 +5,7 @@ import {
   ComputingProvider,
   ScalingActionType,
   ScalingComparisonType,
-  ScalingConditionMetricType,
+  ScalingConditionSettingsType,
   ScalingConditionType,
   ScalingRule,
 } from '../../service/node-group.service';
@@ -13,14 +13,15 @@ import {
 @Component({
   selector: 'app-scaling-rule-view',
   templateUrl: './scaling-rule-view.component.html',
-  styleUrls: ['./scaling-rule-view.component.css']
+  styleUrls: [ './scaling-rule-view.component.css' ]
 })
 export class ScalingRuleViewComponent implements OnInit {
 
   form: FormGroup;
+  condition: FormGroup;
 
   scalingComparisonType = ScalingComparisonType;
-  scalingConditionMetricType = ScalingConditionMetricType;
+  scalingConditionType = ScalingConditionType;
   scalingActionType = ScalingActionType;
   computingProvider = ComputingProvider;
 
@@ -32,36 +33,59 @@ export class ScalingRuleViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const conditionSettings = this.fb.group({
-      type: [ScalingConditionType.Liner],
-      comparison: [ScalingComparisonType.More, [Validators.required]],
-      value: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
-      duration: [0, [Validators.required, Validators.min(0), Validators.max(300)]]
-    });
-    const condition = this.fb.group({
-      metric: [ScalingConditionMetricType.CPUGroupAvg, [Validators.required]],
-      settings: conditionSettings,
+    const conditionType = this.fb.control(ScalingConditionType.CPUGroupAvg, Validators.required);
+    conditionType.valueChanges.subscribe(type => this.updateConditionSettingsForm(type));
+    this.condition = this.fb.group({
+      type: conditionType,
+      settings: this.getLinerConditionSettingsForm(),
     });
 
     const actionSettings = this.fb.group({
-      provider: [ComputingProvider.AWS, [Validators.required]],
-      value: ['', []],
-      amount: [1, [Validators.required, Validators.min(1), Validators.max(32)]]
+      provider: [ ComputingProvider.AWS, [ Validators.required ] ],
+      value: [ '', [] ],
+      amount: [ 1, [ Validators.required, Validators.min(1), Validators.max(32) ] ]
     });
     const action = this.fb.group({
-      type: [ScalingActionType.Increase, [Validators.required]],
+      type: [ ScalingActionType.Increase, [ Validators.required ] ],
       settings: actionSettings,
     });
 
     this.form = this.fb.group({
-      condition: condition,
+      condition: this.condition,
       action: action,
-      actionTimeout: [0, [Validators.required, Validators.min(0), Validators.max(3600)]],
+      actionTimeout: [ 0, [ Validators.required, Validators.min(0), Validators.max(3600) ] ],
     });
 
     if (this.editing && this.rule) {
       this.form.patchValue(this.rule);
     }
+  }
+
+  private updateConditionSettingsForm(type: ScalingConditionType) {
+    console.log('conditionType: ', type);
+
+    if (type === ScalingConditionType.GroupFull) {
+      this.condition.setControl('settings', this.getNoneConditionSettingsForm());
+    }
+
+    if (type === ScalingConditionType.CPUGroupAvg) {
+      this.condition.setControl('settings', this.getLinerConditionSettingsForm());
+    }
+  }
+
+  private getNoneConditionSettingsForm() {
+    return this.fb.group({
+      type: [ ScalingConditionSettingsType.None ],
+    });
+  }
+
+  private getLinerConditionSettingsForm() {
+    return this.fb.group({
+      type: [ ScalingConditionSettingsType.Liner ],
+      comparison: [ ScalingComparisonType.More, [ Validators.required ] ],
+      value: [ 0, [ Validators.required, Validators.min(0), Validators.max(100) ] ],
+      duration: [ 0, [ Validators.required, Validators.min(0), Validators.max(300) ] ]
+    });
   }
 
   onSubmit() {

@@ -2,24 +2,26 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API } from './API';
 
-export enum ScalingConditionMetricType {
+export enum ScalingConditionType {
   CPUGroupAvg = 'CPUGroupAvg',
   BWGroupAvg = 'BWGroupAvg',
+  GroupFull = 'GroupFull',
 }
 
-export enum ScalingConditionType {
+export enum ScalingConditionSettingsType {
+  None= 'None',
   Liner = 'Liner'
 }
 
 export class ScalingConditionLinerSettings {
-  type: ScalingConditionType;
+  type: ScalingConditionSettingsType;
   comparison: ScalingComparisonType;
   value: number;
   duration: number;
 }
 
 export class ScalingCondition {
-  metric: ScalingConditionMetricType;
+  type: ScalingConditionType;
   settings: ScalingConditionLinerSettings;
 }
 

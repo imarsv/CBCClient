@@ -15,16 +15,16 @@
       <div class="card-body" formGroupName="condition">
 
         <div class="form-group row">
-          <label class="col-sm-6 col-form-label" for="conditionMetric">Metric</label>
+          <label class="col-sm-6 col-form-label" for="conditionType">Metric</label>
           <div class="col-sm-6">
-            <select class="custom-select" formControlName="metric" id="conditionMetric" required>
-              <option [ngValue]="scalingConditionMetricType.CPUGroupAvg">Average CPU (geo group)</option>
-              <option [ngValue]="scalingConditionMetricType.BWGroupAvg">Average BW (geo group)</option>
+            <select class="custom-select" formControlName="type" id="conditionType" required>
+              <option [ngValue]="scalingConditionType.CPUGroupAvg">Average CPU (geo group)</option>
+              <option [ngValue]="scalingConditionType.GroupFull">Group is full</option>
             </select>
           </div>
         </div>
 
-        <div formGroupName="settings">
+        <div *ngIf="form.get('condition').get('type').value === scalingConditionType.CPUGroupAvg" formGroupName="settings">
           <div class="form-group row">
             <label class="col-sm-6 col-form-label" for="conditionSettingsComparison">Comparison</label>
             <div class="col-sm-6">
@@ -80,10 +80,120 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div *ngIf="form.get('action').get('type').value === scalingActionType.Increase" class="form-group row">
             <label class="col-sm-6 col-form-label" for="computingValue">Value</label>
             <div class="col-sm-6">
-              <input class="form-control" formControlName="value" id="computingValue" type="text">
+              <input list="computingValueList" class="form-control" formControlName="value" id="computingValue" type="text">
+              <datalist *ngIf="form.get('action').get('settings').get('provider').value === computingProvider.AWS" id="computingValueList">
+                <option value="c5.large">2VCpus 1Cores 3.4Ghz 4GiB Bandwidth in 650Mbps Throughput in 81.25Mbps </option>
+                <option value="c5.xlarge">4VCpus 2Cores 3.4Ghz 8GiB Bandwidth in 1150Mbps Throughput in 143.75Mbps </option>
+                <option value="c5.2xlarge">8VCpus 4Cores 3.4Ghz 16GiB Bandwidth in 2300Mbps Throughput in 287.5Mbps </option>
+                <option value="c5.4xlarge">16VCpus 8Cores 3.4Ghz 32GiB Bandwidth in 4750Mbps Throughput in 593.75Mbps </option>
+                <option value="c5.9xlarge">36VCpus 18Cores 3.4Ghz 72GiB Bandwidth in 9500Mbps Throughput in 1187.5Mbps </option>
+                <option value="c5.12xlarge">48VCpus 24Cores 3.6Ghz 96GiB Bandwidth in 9500Mbps Throughput in 1187.5Mbps </option>
+                <option value="c5.18xlarge">72VCpus 36Cores 3.4Ghz 144GiB Bandwidth in 19000Mbps Throughput in 2375.0Mbps </option>
+                <option value="c5.24xlarge">96VCpus 48Cores 3.6Ghz 192GiB Bandwidth in 19000Mbps Throughput in 2375.0Mbps </option>
+                <option value="c5.metal">BareMetal 96VCpus 3.6Ghz 192GiB Bandwidth in 19000Mbps Throughput in 2375.0Mbps </option>
+                <option value="c5a.large">2VCpus 1Cores 3.3Ghz 4GiB Bandwidth in 200Mbps Throughput in 25.0Mbps </option>
+                <option value="c5a.xlarge">4VCpus 2Cores 3.3Ghz 8GiB Bandwidth in 400Mbps Throughput in 50.0Mbps </option>
+                <option value="c5a.2xlarge">8VCpus 4Cores 3.3Ghz 16GiB Bandwidth in 800Mbps Throughput in 100.0Mbps </option>
+                <option value="c5a.4xlarge">16VCpus 8Cores 3.3Ghz 32GiB Bandwidth in 1580Mbps Throughput in 197.5Mbps </option>
+                <option value="c5a.8xlarge">32VCpus 16Cores 3.3Ghz 64GiB Bandwidth in 3170Mbps Throughput in 396.25Mbps </option>
+                <option value="c5a.12xlarge">48VCpus 24Cores 3.3Ghz 96GiB Bandwidth in 4750Mbps Throughput in 593.75Mbps </option>
+                <option value="c5a.16xlarge">64VCpus 32Cores 3.3Ghz 128GiB Bandwidth in 6300Mbps Throughput in 787.5Mbps </option>
+                <option value="c5a.24xlarge">96VCpus 48Cores 3.3Ghz 192GiB Bandwidth in 9500Mbps Throughput in 1187.5Mbps </option>
+                <option value="c5n.large">2VCpus 1Cores 3.4Ghz 5GiB Bandwidth in 650Mbps Throughput in 81.25Mbps </option>
+                <option value="c5n.xlarge">4VCpus 2Cores 3.4Ghz 10GiB Bandwidth in 1150Mbps Throughput in 143.75Mbps </option>
+                <option value="c5n.2xlarge">8VCpus 4Cores 3.4Ghz 21GiB Bandwidth in 2300Mbps Throughput in 287.5Mbps </option>
+                <option value="c5n.4xlarge">16VCpus 8Cores 3.4Ghz 42GiB Bandwidth in 4750Mbps Throughput in 593.75Mbps </option>
+                <option value="c5n.9xlarge">36VCpus 18Cores 3.4Ghz 96GiB Bandwidth in 9500Mbps Throughput in 1187.5Mbps </option>
+                <option value="c5n.18xlarge">72VCpus 36Cores 3.4Ghz 192GiB Bandwidth in 19000Mbps Throughput in 2375.0Mbps </option>
+                <option value="c5n.metal">BareMetal 72VCpus 3.4Ghz 192GiB Bandwidth in 19000Mbps Throughput in 2375.0Mbps </option>
+              </datalist>
+              <datalist *ngIf="form.get('action').get('settings').get('provider').value === computingProvider.DigitalOcean" id="computingValueList">
+                <option value="512mb">1 vCPU  512 Mb  1TB  20GB  (512mb)</option>
+                <option value="1gb">1 vCPU  1024 Mb  2TB  30GB  (1gb)</option>
+                <option value="2gb">2 vCPU  2048 Mb  3TB  40GB  (2gb)</option>
+                <option value="4gb">2 vCPU  4096 Mb  4TB  60GB  (4gb)</option>
+                <option value="8gb">4 vCPU  8192 Mb  5TB  80GB  (8gb)</option>
+                <option value="16gb">8 vCPU  16384 Mb  6TB  160GB  (16gb)</option>
+                <option value="32gb">12 vCPU  32768 Mb  7TB  320GB  (32gb)</option>
+                <option value="48gb">16 vCPU  49152 Mb  8TB  480GB  (48gb)</option>
+                <option value="64gb">20 vCPU  65536 Mb  9TB  640GB  (64gb)</option>
+                <option value="c-2">2 vCPU  4096 Mb  4TB  25GB  (c-2)</option>
+                <option value="c-4">4 vCPU  8192 Mb  5TB  50GB  (c-4)</option>
+                <option value="c-8">8 vCPU  16384 Mb  6TB  100GB  (c-8)</option>
+                <option value="c-16">16 vCPU  32768 Mb  7TB  200GB  (c-16)</option>
+                <option value="c-32">32 vCPU  65536 Mb  9TB  400GB  (c-32)</option>
+                <option value="c2-2vcpu-4gb">2 vCPU  4096 Mb  4TB  50GB  (c2-2vcpu-4gb)</option>
+                <option value="c2-4vpcu-8gb">4 vCPU  8192 Mb  5TB  100GB  (c2-4vpcu-8gb)</option>
+                <option value="c2-8vpcu-16gb">8 vCPU  16384 Mb  6TB  200GB  (c2-8vpcu-16gb)</option>
+                <option value="c2-16vcpu-32gb">16 vCPU  32768 Mb  7TB  400GB  (c2-16vcpu-32gb)</option>
+                <option value="c2-32vpcu-64gb">32 vCPU  65536 Mb  9TB  800GB  (c2-32vpcu-64gb)</option>
+                <option value="g-2vcpu-8gb">2 vCPU  8192 Mb  4TB  25GB  (g-2vcpu-8gb)</option>
+                <option value="g-4vcpu-16gb">4 vCPU  16384 Mb  5TB  50GB  (g-4vcpu-16gb)</option>
+                <option value="g-8vcpu-32gb">8 vCPU  32768 Mb  6TB  100GB  (g-8vcpu-32gb)</option>
+                <option value="g-16vcpu-64gb">16 vCPU  65536 Mb  7TB  200GB  (g-16vcpu-64gb)</option>
+                <option value="g-32vcpu-128gb">32 vCPU  131072 Mb  8TB  400GB  (g-32vcpu-128gb)</option>
+                <option value="g-40vcpu-160gb">40 vCPU  163840 Mb  9TB  500GB  (g-40vcpu-160gb)</option>
+                <option value="gd-2vcpu-8gb">2 vCPU  8192 Mb  4TB  50GB  (gd-2vcpu-8gb)</option>
+                <option value="gd-4vcpu-16gb">4 vCPU  16384 Mb  5TB  100GB  (gd-4vcpu-16gb)</option>
+                <option value="gd-8vcpu-32gb">8 vCPU  32768 Mb  6TB  200GB  (gd-8vcpu-32gb)</option>
+                <option value="gd-16vcpu-64gb">16 vCPU  65536 Mb  7TB  400GB  (gd-16vcpu-64gb)</option>
+                <option value="gd-32vcpu-128gb">32 vCPU  131072 Mb  8TB  800GB  (gd-32vcpu-128gb)</option>
+                <option value="gd-40vcpu-160gb">40 vCPU  163840 Mb  9TB  1000GB  (gd-40vcpu-160gb)</option>
+                <option value="m-1vcpu-8gb">1 vCPU  8192 Mb  5TB  40GB  (m-1vcpu-8gb)</option>
+                <option value="m-2vcpu-16gb">2 vCPU  16384 Mb  4TB  50GB  (m-2vcpu-16gb)</option>
+                <option value="m-16gb">2 vCPU  16384 Mb  5TB  60GB  (m-16gb)</option>
+                <option value="m-32gb">4 vCPU  32768 Mb  5TB  90GB  (m-32gb)</option>
+                <option value="m-4vcpu-32gb">4 vCPU  32768 Mb  6TB  100GB  (m-4vcpu-32gb)</option>
+                <option value="m-64gb">8 vCPU  65536 Mb  5TB  200GB  (m-64gb)</option>
+                <option value="m-8vcpu-64gb">8 vCPU  65536 Mb  7TB  200GB  (m-8vcpu-64gb)</option>
+                <option value="m-128gb">16 vCPU  131072 Mb  5TB  340GB  (m-128gb)</option>
+                <option value="m-16vcpu-128gb">16 vCPU  131072 Mb  8TB  400GB  (m-16vcpu-128gb)</option>
+                <option value="m-24vcpu-192gb">24 vCPU  196608 Mb  9TB  600GB  (m-24vcpu-192gb)</option>
+                <option value="m-224gb">32 vCPU  229376 Mb  5TB  500GB  (m-224gb)</option>
+                <option value="m-32vcpu-256gb">32 vCPU  262144 Mb  10TB  800GB  (m-32vcpu-256gb)</option>
+                <option value="m3-2vcpu-16gb">2 vCPU  16384 Mb  4TB  150GB  (m3-2vcpu-16gb)</option>
+                <option value="m3-4vcpu-32gb">4 vCPU  32768 Mb  6TB  300GB  (m3-4vcpu-32gb)</option>
+                <option value="m3-8vcpu-64gb">8 vCPU  65536 Mb  7TB  600GB  (m3-8vcpu-64gb)</option>
+                <option value="m3-16vcpu-128gb">16 vCPU  131072 Mb  8TB  1200GB  (m3-16vcpu-128gb)</option>
+                <option value="m3-24vcpu-192gb">24 vCPU  196608 Mb  9TB  1800GB  (m3-24vcpu-192gb)</option>
+                <option value="m3-32vcpu-256gb">32 vCPU  262144 Mb  10TB  2400GB  (m3-32vcpu-256gb)</option>
+                <option value="m6-2vcpu-16gb">2 vCPU  16384 Mb  4TB  300GB  (m6-2vcpu-16gb)</option>
+                <option value="m6-4vcpu-32gb">4 vCPU  32768 Mb  6TB  600GB  (m6-4vcpu-32gb)</option>
+                <option value="m6-8vcpu-64gb">8 vCPU  65536 Mb  7TB  1200GB  (m6-8vcpu-64gb)</option>
+                <option value="m6-16vcpu-128gb">16 vCPU  131072 Mb  8TB  2400GB  (m6-16vcpu-128gb)</option>
+                <option value="m6-24vcpu-192gb">24 vCPU  196608 Mb  9TB  3600GB  (m6-24vcpu-192gb)</option>
+                <option value="m6-32vcpu-256gb">32 vCPU  262144 Mb  10TB  4800GB  (m6-32vcpu-256gb)</option>
+                <option value="s-1vcpu-1gb">1 vCPU  1024 Mb  1TB  25GB  (s-1vcpu-1gb)</option>
+                <option value="s-1vcpu-2gb">1 vCPU  2048 Mb  2TB  50GB  (s-1vcpu-2gb)</option>
+                <option value="s-1vcpu-3gb">1 vCPU  3072 Mb  3TB  60GB  (s-1vcpu-3gb)</option>
+                <option value="s-2vcpu-2gb">2 vCPU  2048 Mb  3TB  60GB  (s-2vcpu-2gb)</option>
+                <option value="s-2vcpu-4gb">2 vCPU  4096 Mb  4TB  80GB  (s-2vcpu-4gb)</option>
+                <option value="s-3vcpu-1gb">3 vCPU  1024 Mb  3TB  60GB  (s-3vcpu-1gb)</option>
+                <option value="s-4vcpu-8gb">4 vCPU  8192 Mb  5TB  160GB  (s-4vcpu-8gb)</option>
+                <option value="s-6vcpu-16gb">6 vCPU  16384 Mb  6TB  320GB  (s-6vcpu-16gb)</option>
+                <option value="s-8vcpu-16gb">8 vCPU  16384 Mb  6TB  320GB  (s-8vcpu-16gb)</option>
+                <option value="s-8vcpu-32gb">8 vCPU  32768 Mb  7TB  640GB  (s-8vcpu-32gb)</option>
+                <option value="s-12vcpu-48gb">12 vCPU  49152 Mb  8TB  960GB  (s-12vcpu-48gb)</option>
+                <option value="s-16vcpu-64gb">16 vCPU  65536 Mb  9TB  1280GB  (s-16vcpu-64gb)</option>
+                <option value="s-20vcpu-96gb">20 vCPU  98304 Mb  10TB  1920GB  (s-20vcpu-96gb)</option>
+                <option value="s-24vcpu-128gb">24 vCPU  131072 Mb  11TB  2560GB  (s-24vcpu-128gb)</option>
+                <option value="s-32vcpu-192gb">32 vCPU  196608 Mb  12TB  3840GB  (s-32vcpu-192gb)</option>
+                <option value="so-2vcpu-16gb">2 vCPU  16384 Mb  4TB  300GB  (so-2vcpu-16gb)</option>
+                <option value="so-4vcpu-32gb">4 vCPU  32768 Mb  6TB  600GB  (so-4vcpu-32gb)</option>
+                <option value="so-8vcpu-64gb">8 vCPU  65536 Mb  7TB  1200GB  (so-8vcpu-64gb)</option>
+                <option value="so-16vcpu-128gb">16 vCPU  131072 Mb  8TB  2400GB  (so-16vcpu-128gb)</option>
+                <option value="so-24vcpu-192gb">24 vCPU  196608 Mb  9TB  3600GB  (so-24vcpu-192gb)</option>
+                <option value="so-32vcpu-256gb">32 vCPU  262144 Mb  10TB  4800GB  (so-32vcpu-256gb)</option>
+                <option value="so1_5-2vcpu-16gb">2 vCPU  16384 Mb  4TB  450GB  (so1_5-2vcpu-16gb)</option>
+                <option value="so1_5-4vcpu-32gb">4 vCPU  32768 Mb  6TB  900GB  (so1_5-4vcpu-32gb)</option>
+                <option value="so1_5-8vcpu-64gb">8 vCPU  65536 Mb  7TB  1800GB  (so1_5-8vcpu-64gb)</option>
+                <option value="so1_5-16vcpu-128gb">16 vCPU  131072 Mb  8TB  3600GB  (so1_5-16vcpu-128gb)</option>
+                <option value="so1_5-24vcpu-192gb">24 vCPU  196608 Mb  9TB  5400GB  (so1_5-24vcpu-192gb)</option>
+                <option value="so1_5-32vcpu-256gb">32 vCPU  262144 Mb  10TB  7200GB  (so1_5-32vcpu-256gb)</option>
+              </datalist>
             </div>
           </div>
 

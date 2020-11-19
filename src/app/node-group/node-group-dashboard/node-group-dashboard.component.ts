@@ -10,8 +10,8 @@ import {
   ScalingActionIncreaseSettings,
   ScalingActionType,
   ScalingComparisonType,
-  ScalingConditionMetricType,
   ScalingConditionType,
+  ScalingConditionSettingsType,
   ScalingRule
 } from '../../service/node-group.service';
 import { NodeGroupCreateComponent } from '../node-group-create/node-group-create.component';
@@ -92,15 +92,19 @@ export class NodeGroupDashboardComponent implements OnInit {
   getUserFriendlyScalingRuleCondition(rule: ScalingRule) {
     let description = 'When';
 
-    if (rule.condition.metric === ScalingConditionMetricType.CPUGroupAvg) {
+    if (rule.condition.type === ScalingConditionType.CPUGroupAvg) {
       description += ' average CPU';
     }
 
-    if (rule.condition.metric === ScalingConditionMetricType.BWGroupAvg) {
+    if (rule.condition.type === ScalingConditionType.BWGroupAvg) {
       description += ' average BW';
     }
 
-    if (rule.condition.settings.type === ScalingConditionType.Liner) {
+    if (rule.condition.type === ScalingConditionType.GroupFull) {
+      description += ' group is full';
+    }
+
+    if (rule.condition.settings.type === ScalingConditionSettingsType.Liner) {
       description += ' ';
 
       if (rule.condition.settings.comparison === ScalingComparisonType.More) {
