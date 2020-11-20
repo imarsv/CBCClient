@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NodeGroupCreateComponent } from './node-group-create.component';
 
@@ -6,7 +6,7 @@ describe('NodeGroupCreateComponent', () => {
   let component: NodeGroupCreateComponent;
   let fixture: ComponentFixture<NodeGroupCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NodeGroupCreateComponent ]
     })

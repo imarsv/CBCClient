@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StreamUsageDetailsComponent } from './stream-usage-details.component';
 
@@ -6,11 +6,11 @@ describe('StreamUsageDetailsComponent', () => {
   let component: StreamUsageDetailsComponent;
   let fixture: ComponentFixture<StreamUsageDetailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StreamUsageDetailsComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

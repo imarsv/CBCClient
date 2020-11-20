@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StreamBillDashboardComponent } from './stream-bill-dashboard.component';
 
@@ -6,11 +6,11 @@ describe('StreamBillDashboardComponent', () => {
   let component: StreamBillDashboardComponent;
   let fixture: ComponentFixture<StreamBillDashboardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StreamBillDashboardComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -36,67 +36,67 @@ import { NodeListComponent } from './node/node-list/node-list.component';
     RouterModule.forRoot([
         {
           path: 'streams', component: StreamsViewComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'streams/transcode/:id', pathMatch: 'full', component: TranscodeDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'streams/:mode', component: StreamDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'streams/:mode/:id', component: StreamDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'billing/stream/:id', component: StreamBillDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'billing/account/:id', component: AccountBillDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'billing/account', component: AccountBillDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'nodes', component: NodeListComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'nodes/:mode', component: NodeEditComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'nodes/:mode/:id', component: NodeEditComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'node-groups', component: NodeGroupsListComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'node-groups/:id', component: NodeGroupDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'storages', component: StorageDashboardComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'storages/:mode', component: StorageEditComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'storages/:mode/:id', component: StorageEditComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'accounts', component: AccountsViewComponent,
-          canActivate: [AuthGuardService]
+          canActivate: [ AuthGuardService ]
         },
         {
           path: 'login', component: AuthComponent
@@ -106,17 +106,18 @@ import { NodeListComponent } from './node/node-list/node-list.component';
       {
         // enableTracing: true,
         useHash: true,
+        relativeLinkResolution: 'legacy'
       }
     )
   ],
-  providers: [AuthService, AuthGuardService,
+  providers: [ AuthService, AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }],
-  declarations: [AppComponent, AuthComponent, NavbarComponent],
-  bootstrap: [AppComponent]
+    } ],
+  declarations: [ AppComponent, AuthComponent, NavbarComponent ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

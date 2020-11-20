@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NodeListViewComponent } from './node-list-view.component';
 
@@ -6,7 +6,7 @@ describe('NodeListViewComponent', () => {
   let component: NodeListViewComponent;
   let fixture: ComponentFixture<NodeListViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NodeListViewComponent ]
     })
