@@ -55,11 +55,34 @@ export class AccountBillDashboardComponent implements OnInit {
       this.concurrentSessions = data.concurrentSessions;
 
       const { duration, upload, download } = this.statistic
-        .reduce((acc, item) => {
-          acc.duration += item.duration;
-          acc.upload += item.upload;
-          acc.download += item.download;
-          return acc;
+        .reduce((statsAcc, item) => {
+
+          statsAcc.duration += item.duration;
+
+          const { incomingUploadTotal, incomingDownloadTotal } = item.incoming
+            .reduce((acc, val) => {
+              acc.incomingUploadTotal += val.upload;
+              acc.incomingDownloadTotal += val.download;
+              return acc;
+            }, { incomingUploadTotal: 0, incomingDownloadTotal: 0 });
+
+          const { internodeUploadTotal, internodeDownloadTotal } = item.internode
+            .reduce((acc, val) => {
+              acc.internodeUploadTotal += val.upload;
+              acc.internodeDownloadTotal += val.download;
+              return acc;
+            }, { internodeUploadTotal: 0, internodeDownloadTotal: 0 });
+
+          const { outgoingUploadTotal, outgoingDownloadTotal } = item.outgoing
+            .reduce((acc, val) => {
+              acc.outgoingUploadTotal += val.upload;
+              acc.outgoingDownloadTotal += val.download;
+              return acc;
+            }, { outgoingUploadTotal: 0, outgoingDownloadTotal: 0 });
+
+          statsAcc.upload += incomingUploadTotal + internodeUploadTotal + outgoingUploadTotal;
+          statsAcc.download += incomingDownloadTotal + internodeDownloadTotal + outgoingDownloadTotal;
+          return statsAcc;
         }, { duration: 0, upload: 0, download: 0 });
 
       this.durationTotal = duration;

@@ -26,8 +26,13 @@ export class InvoicePrintComponent implements OnInit {
 
   getEgress() {
     return this.statistic
-      .map(item => item.outgoing
-        .reduce((acc, outgoing) => acc + (outgoing.upload + outgoing.download), 0))
+      .map(item => {
+        const internodeTotal = item.internode
+          .reduce((acc, internode) => acc + (internode.upload + internode.download), 0);
+        const outgoingTotal = item.outgoing
+          .reduce((acc, outgoing) => acc + (outgoing.upload + outgoing.download), 0);
+        return internodeTotal + outgoingTotal;
+      })
       .reduce((acc, item) => acc + item, 0);
   }
 }

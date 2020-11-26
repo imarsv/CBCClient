@@ -27,34 +27,61 @@
       </tbody>
     </table>
 
-    <h5 class="pt-1">Outgoing</h5>
-    <table class="table">
-      <thead>
-      <tr>
-        <th class="w-50" scope="col">Node</th>
-        <th class="w-25" scope="col">Upload</th>
-        <th class="w-25" scope="col">Download</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of statistic.outgoing">
-        <th scope="row">{{ item.node }}</th>
-        <td>{{ item.upload | filesize }}</td>
-        <td>{{ item.download | filesize }}</td>
-      </tr>
-      <tr class="total">
-        <th scope="row">Total</th>
-        <th>{{ getOutgoingUploadTotal() | filesize }}</th>
-        <th>{{ getOutgoingDownloadTotal() | filesize }}</th>
-      </tr>
-      </tbody>
-    </table>
+    <ng-container *ngIf="statistic.internode.length > 0">
+      <h5 class="pt-1">Internode</h5>
+      <table class="table table-sm">
+        <thead>
+        <tr>
+          <th class="w-50" scope="col">Node</th>
+          <th class="w-25" scope="col">Upload</th>
+          <th class="w-25" scope="col">Download</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of statistic.internode">
+          <th scope="row">{{ item.node }}</th>
+          <td>{{ item.upload | filesize }}</td>
+          <td>{{ item.download | filesize }}</td>
+        </tr>
+        <tr class="total">
+          <th scope="row">Total</th>
+          <th>{{ getInternodeUploadTotal() | filesize }}</th>
+          <th>{{ getInternodeDownloadTotal() | filesize }}</th>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <ng-container *ngIf="statistic.outgoing.length > 0">
+      <h5 class="pt-1">Outgoing</h5>
+      <table class="table table-sm">
+        <thead>
+        <tr>
+          <th class="w-50" scope="col">Node</th>
+          <th class="w-25" scope="col">Upload</th>
+          <th class="w-25" scope="col">Download</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of statistic.outgoing">
+          <th scope="row">{{ item.node }}</th>
+          <td>{{ item.upload | filesize }}</td>
+          <td>{{ item.download | filesize }}</td>
+        </tr>
+        <tr class="total">
+          <th scope="row">Total</th>
+          <th>{{ getOutgoingUploadTotal() | filesize }}</th>
+          <th>{{ getOutgoingDownloadTotal() | filesize }}</th>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
 
     <table class="table table-borderless pt-2">
       <tbody>
       <tr>
         <th class="w-25" scope="row">
-<!--          <span class="h5">Total</span>-->
+          <!--          <span class="h5">Total</span>-->
         </th>
         <td class="w-25" scope="row">
           <div class="h5">
@@ -65,15 +92,17 @@
         </td>
         <td class="w-25" scope="row">
           <div class="h5">
-            <span [title]="statistic.upload + ' bytes'" class="badge badge-dark font-weight-bold h5">
-              {{ statistic.upload | filesize }}
+            <span [title]="getUploadTotal() + ' bytes'"
+                  class="badge badge-dark font-weight-bold h5">
+              {{ getUploadTotal() | filesize }}
             </span>
           </div>
         </td>
         <td class="w-25" scope="row">
           <div class="h5">
-            <span [title]="statistic.download + ' bytes'" class="badge badge-dark font-weight-bold h5">
-              {{ statistic.download | filesize }}
+            <span [title]="getDownloadTotal() + ' bytes'"
+                  class="badge badge-dark font-weight-bold h5">
+              {{ getDownloadTotal() | filesize }}
             </span>
           </div>
         </td>

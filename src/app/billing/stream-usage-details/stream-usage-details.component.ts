@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {StreamIncomingStatistic, StreamStatistic} from '../../service/stream-statistical.service';
+import { StreamStatistic } from '../../service/stream-statistical.service';
 
 @Component({
   selector: 'app-stream-usage-details',
@@ -30,6 +30,16 @@ export class StreamUsageDetailsComponent implements OnInit {
       .reduce((acc, val) => acc + val.download, 0);
   }
 
+  getInternodeUploadTotal() {
+    return this.statistic.internode
+      .reduce((acc, val) => acc + val.upload, 0);
+  }
+
+  getInternodeDownloadTotal() {
+    return this.statistic.internode
+      .reduce((acc, val) => acc + val.download, 0);
+  }
+
   getOutgoingUploadTotal() {
     return this.statistic.outgoing
       .reduce((acc, val) => acc + val.upload, 0);
@@ -40,4 +50,11 @@ export class StreamUsageDetailsComponent implements OnInit {
       .reduce((acc, val) => acc + val.download, 0);
   }
 
+  getUploadTotal() {
+    return this.getIncomingUploadTotal() + this.getInternodeUploadTotal() + this.getOutgoingUploadTotal();
+  }
+
+  getDownloadTotal() {
+    return this.getIncomingDownloadTotal() + this.getInternodeDownloadTotal() + this.getOutgoingDownloadTotal();
+  }
 }

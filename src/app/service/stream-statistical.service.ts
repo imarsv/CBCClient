@@ -18,10 +18,9 @@ export interface StreamOutgoingStatistic {
 export interface StreamStatistic {
   streamId: string;
   duration: number;
-  upload: number;
-  download: number;
   incoming: StreamIncomingStatistic[];
   outgoing: StreamOutgoingStatistic[];
+  internode: StreamOutgoingStatistic[];
 }
 
 export interface StatisticsReport {
