@@ -5,10 +5,11 @@ import { NodeEditComponent } from './node-edit/node-edit.component';
 import { StreamService } from '../service/stream.service';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxFilesizeModule } from 'ngx-filesize';
 
 @NgModule({
   imports: [
-    CommonModule, RouterModule, FormsModule, ReactiveFormsModule
+    CommonModule, RouterModule, FormsModule, ReactiveFormsModule, NgxFilesizeModule
   ],
   providers: [StreamService],
   declarations: [NodeListComponent, NodeEditComponent],

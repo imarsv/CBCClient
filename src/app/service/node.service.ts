@@ -11,9 +11,13 @@ export class Node {
   constructor(public id: string,
               public name: string,
               public connection: NodeConnection,
+              public settings: NodeSettings,
               public opened: boolean,
-              public enabled: boolean) {
-  }
+              public enabled: boolean) { }
+}
+
+export class NodeSettings {
+  constructor(public bandwidthLimitMbps: number) { }
 }
 
 export class NodeConnection {

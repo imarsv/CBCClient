@@ -30,9 +30,14 @@ export class NodeEditComponent implements OnInit {
       port: [4242, [Validators.required, Validators.min(0)]],
     });
 
+    const settings = this.fb.group({
+      bandwidthLimitMbps: [125000000, [Validators.required, Validators.min(0)]],
+    });
+
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(255)]],
       connection: connection,
+      settings: settings,
       opened: [false, [Validators.required]],
       enabled: [false, [Validators.required]],
     });
@@ -67,5 +72,9 @@ export class NodeEditComponent implements OnInit {
       this.nodeService.delete(this.id);
       this.router.navigateByUrl('/nodes');
     }
+  }
+
+  get bandwidthLimit() {
+    return (this.form.get('settings').get('bandwidthLimitMbps').value * 1000000) / 8;
   }
 }
