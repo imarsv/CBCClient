@@ -43,6 +43,7 @@ export class ScalingRuleViewComponent implements OnInit {
     const actionSettings = this.fb.group({
       provider: [ ComputingProvider.AWS, [ Validators.required ] ],
       value: [ '', [] ],
+      bandwidthLimitMbps: [1000, [Validators.required, Validators.min(0)]],
       amount: [ 1, [ Validators.required, Validators.min(1), Validators.max(32) ] ]
     });
     const action = this.fb.group({
@@ -92,6 +93,10 @@ export class ScalingRuleViewComponent implements OnInit {
     if (this.form.valid) {
       this.activeModal.close(this.form.value);
     }
+  }
+
+  get bandwidthLimit() {
+    return (this.form.get('action').get('settings').get('bandwidthLimitMbps').value * 1000000) / 8;
   }
 
 }

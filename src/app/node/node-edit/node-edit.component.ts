@@ -31,7 +31,7 @@ export class NodeEditComponent implements OnInit {
     });
 
     const settings = this.fb.group({
-      bandwidthLimitMbps: [125000000, [Validators.required, Validators.min(0)]],
+      bandwidthLimitMbps: [1000, [Validators.required, Validators.min(0)]],
     });
 
     this.form = this.fb.group({

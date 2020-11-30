@@ -11,12 +11,13 @@ import { NodeGroupsListComponent } from './node-groups-list/node-groups-list.com
 import { ScalingRuleViewComponent } from './scaling-rule-view/scaling-rule-view.component';
 import { NodeListViewComponent } from './node-list-view/node-list-view.component';
 import { AccountHolderService } from "../service/account-holder.service";
+import { NgxFilesizeModule } from 'ngx-filesize';
 
 @NgModule({
   declarations: [NodeGroupsListComponent, NodeGroupCreateComponent, NodeGroupDashboardComponent, ScalingRuleViewComponent,
     NodeListViewComponent],
   providers: [NodeGroupService, AccountHolderService],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgToggleModule, NgbButtonsModule, FormsModule, NgbDropdownModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgToggleModule, NgbButtonsModule, FormsModule, NgbDropdownModule, NgxFilesizeModule],
   exports: [NodeGroupsListComponent, NodeGroupDashboardComponent]
 })
 export class NodeGroupModule {}
