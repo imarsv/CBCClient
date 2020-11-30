@@ -24,14 +24,14 @@
     <div class="d-inline p-2 bg-light text-black h6 ml-2">
       <span><i class="fa fa-cloud-upload"></i> Size:</span>
       <span [title]="recording?.length + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
-        {{ recording?.length | filesize }}
+        {{ recording?.length | filesize: {standard: "iec", base: 10} }}
       </span>
     </div>
 
     <div class="d-inline p-2 bg-light text-black h6 ml-2">
       <span><i class="fa fa-cloud-upload"></i> Uploaded:</span>
       <span [title]="recording?.uploaded + ' bytes'" class="badge badge-dark font-weight-bold ml-1">
-        {{ recording?.uploaded | filesize }}
+        {{ recording?.uploaded | filesize: {standard: "iec", base: 10} }}
       </span>
     </div>
   </div>

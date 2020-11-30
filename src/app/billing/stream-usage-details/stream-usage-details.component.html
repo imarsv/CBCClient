@@ -15,14 +15,14 @@
       <tr *ngFor="let item of statistic.incoming">
         <th scope="row">{{ item.started | amUtc | amDateFormat:'MM.DD.YYYY HH:mm:ss' }}</th>
         <td> {{ item.duration }} seconds {{ item.duration > 60 ? '(' + (item.duration | amDuration:'seconds') + ')' : '' }}</td>
-        <td>{{ item.upload | filesize }}</td>
-        <td>{{ item.download | filesize }}</td>
+        <td>{{ item.upload | filesize: {standard: "iec", base: 10} }}</td>
+        <td>{{ item.download | filesize: {standard: "iec", base: 10} }}</td>
       </tr>
       <tr class="total">
         <th scope="row">Total</th>
         <th> {{ getStreamingDuration() }} seconds {{ getStreamingDuration() > 60 ? '(' + (getStreamingDuration() | amDuration:'seconds') + ')' : '' }}</th>
-        <th>{{ getIncomingUploadTotal() | filesize }}</th>
-        <th>{{ getIncomingDownloadTotal() | filesize }}</th>
+        <th>{{ getIncomingUploadTotal() | filesize: {standard: "iec", base: 10} }}</th>
+        <th>{{ getIncomingDownloadTotal() | filesize: {standard: "iec", base: 10} }}</th>
       </tr>
       </tbody>
     </table>
@@ -40,13 +40,13 @@
         <tbody>
         <tr *ngFor="let item of statistic.internode">
           <th scope="row">{{ item.node }}</th>
-          <td>{{ item.upload | filesize }}</td>
-          <td>{{ item.download | filesize }}</td>
+          <td>{{ item.upload | filesize: {standard: "iec", base: 10} }}</td>
+          <td>{{ item.download | filesize: {standard: "iec", base: 10} }}</td>
         </tr>
         <tr class="total">
           <th scope="row">Total</th>
-          <th>{{ getInternodeUploadTotal() | filesize }}</th>
-          <th>{{ getInternodeDownloadTotal() | filesize }}</th>
+          <th>{{ getInternodeUploadTotal() | filesize: {standard: "iec", base: 10} }}</th>
+          <th>{{ getInternodeDownloadTotal() | filesize: {standard: "iec", base: 10} }}</th>
         </tr>
         </tbody>
       </table>
@@ -65,13 +65,13 @@
         <tbody>
         <tr *ngFor="let item of statistic.outgoing">
           <th scope="row">{{ item.node }}</th>
-          <td>{{ item.upload | filesize }}</td>
-          <td>{{ item.download | filesize }}</td>
+          <td>{{ item.upload | filesize: {standard: "iec", base: 10} }}</td>
+          <td>{{ item.download | filesize: {standard: "iec", base: 10} }}</td>
         </tr>
         <tr class="total">
           <th scope="row">Total</th>
-          <th>{{ getOutgoingUploadTotal() | filesize }}</th>
-          <th>{{ getOutgoingDownloadTotal() | filesize }}</th>
+          <th>{{ getOutgoingUploadTotal() | filesize: {standard: "iec", base: 10} }}</th>
+          <th>{{ getOutgoingDownloadTotal() | filesize: {standard: "iec", base: 10} }}</th>
         </tr>
         </tbody>
       </table>
@@ -94,7 +94,7 @@
           <div class="h5">
             <span [title]="getUploadTotal() + ' bytes'"
                   class="badge badge-dark font-weight-bold h5">
-              {{ getUploadTotal() | filesize }}
+              {{ getUploadTotal() | filesize: {standard: "iec", base: 10} }}
             </span>
           </div>
         </td>
@@ -102,7 +102,7 @@
           <div class="h5">
             <span [title]="getDownloadTotal() + ' bytes'"
                   class="badge badge-dark font-weight-bold h5">
-              {{ getDownloadTotal() | filesize }}
+              {{ getDownloadTotal() | filesize: {standard: "iec", base: 10} }}
             </span>
           </div>
         </td>

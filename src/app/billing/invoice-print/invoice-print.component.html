@@ -23,7 +23,7 @@
 <div class="d-flex justify-content-between">
   <h4>Egress</h4>
   <div class="h4">
-    <span class="badge badge-dark font-weight-bold">{{ getEgress() | filesize }}</span>
+    <span class="badge badge-dark font-weight-bold">{{ getEgress() | filesize: {standard: "iec", base: 10} }}</span>
   </div>
 </div>
 <hr style="border-top: 3px solid gray;">
