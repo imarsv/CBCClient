@@ -226,6 +226,9 @@ export class NodeGroupDashboardComponent implements OnInit {
 
   async updatePersistentNodes() {
     const persistentNodes = await this.nodeGroupService.listPersistentNodes().toPromise();
+    persistentNodes
+      .sort((a, b) => a.name.localeCompare(b.name));
+
     const groupNodes = this.group.resources
       .filter(item => item.type === ResourceType.Persistent)
       .map(item => item.node);
@@ -267,6 +270,10 @@ export class NodeGroupDashboardComponent implements OnInit {
     this.nodeGroupService.get(this.id).subscribe(
       group => {
         this.group = group;
+
+        this.group.resources
+          .sort((a, b) => a.node.name.localeCompare(b.node.name));
+
         if (this.group.ownerId) {
           if (this.adminRole) {
             this.loadOwnerDetails();
