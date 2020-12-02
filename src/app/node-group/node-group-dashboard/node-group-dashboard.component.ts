@@ -7,7 +7,7 @@ import {
   NodeGroupResource,
   NodeGroupService,
   ResourceType,
-  ScalingActionIncreaseSettings,
+  ScalingActionIncreaseSettings, ScalingActionReduceSettings,
   ScalingActionType,
   ScalingComparisonType,
   ScalingConditionSettingsType,
@@ -19,7 +19,7 @@ import { ScalingRuleViewComponent } from '../scaling-rule-view/scaling-rule-view
 import { NodeListViewComponent } from '../node-list-view/node-list-view.component';
 import { Account, AccountService, Role } from '../../service/account.service';
 import { Observable } from 'rxjs';
-import { AccountHolderService } from "../../service/account-holder.service";
+import { AccountHolderService } from '../../service/account-holder.service';
 
 @Component({
   selector: 'app-node-group-dashboard',
@@ -33,7 +33,7 @@ export class NodeGroupDashboardComponent implements OnInit {
   resourceType = ResourceType;
   private id: string;
   private account: Account;
-  adminRole: boolean = false;
+  adminRole = false;
 
   constructor(private nodeGroupService: NodeGroupService,
               private accountService: AccountService,
@@ -273,6 +273,28 @@ export class NodeGroupDashboardComponent implements OnInit {
 
         this.group.resources
           .sort((a, b) => a.node.name.localeCompare(b.node.name));
+
+        this.group.scalingRules
+          .sort((a, b) => {
+            let compare = a.condition.type.localeCompare(b.condition.type);
+            if ((compare === 0) &&
+              (a.condition.settings.type === b.condition.settings.type) &&
+              (a.condition.settings.type === ScalingConditionSettingsType.Liner)) {
+                compare = b.condition.settings.comparison.localeCompare(a.condition.settings.comparison);
+                if (compare === 0) {
+                  compare = a.action.type.localeCompare(b.action.type);
+                  if ((compare === 0) &&
+                    (a.action.type === b.action.type) &&
+                    (a.action.type === ScalingActionType.Increase)) {
+                    const aSettings = <ScalingActionIncreaseSettings>a.action.settings;
+                    const bSettings = <ScalingActionIncreaseSettings>b.action.settings;
+                    compare = aSettings.provider.localeCompare(bSettings.provider);
+                  }
+                }
+            }
+
+            return compare;
+          });
 
         if (this.group.ownerId) {
           if (this.adminRole) {
