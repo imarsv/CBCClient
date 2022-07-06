@@ -30,7 +30,7 @@
     "@nth-cloud/ng-toggle": "^6.0.0",
     "bootstrap": "^4.5.3",
     "core-js": "^3.7.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "ngx-filesize": "^2.0.16",
     "ngx-moment": "^5.0.0",
     "rxjs": "^6.6.3",
